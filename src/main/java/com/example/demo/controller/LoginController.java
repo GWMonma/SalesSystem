@@ -31,7 +31,7 @@ public class LoginController {
     	message ="IDとパスワードを入力してください";
         model.addAttribute("indexForm", new LoginModel());
         model.addAttribute("message" , message);
-        return "Login";
+        return "html/Login";
 
     }
 
@@ -44,7 +44,7 @@ public class LoginController {
     	message ="IDとパスワードを入力してください";
         model.addAttribute("indexForm", new  LoginModel());
         model.addAttribute("message" , message);
-        return "Login";
+        return "html/Login";
     }
 
     @Autowired
@@ -62,7 +62,7 @@ public class LoginController {
    /*管理者メニュー画面へ遷移*/
    @PostMapping("BackManager")
    public String backmanager(Model model) {
-       return "ManagerMenu";
+       return "html/ManagerMenu";
    }
 
     //ログアウトする際にSessionを切る
@@ -70,7 +70,7 @@ public class LoginController {
     public String load() {
      userlogic.logout();
 
-      return "Login";
+      return "html/Login";
     }
 
 

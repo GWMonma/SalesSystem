@@ -25,7 +25,9 @@ public class UserLogic {
 	 UserJdbc userjdbc;
 
 	    public String post(String id,String pass, Model model) {
+	    	/*DB操作*/
 	    	Map<String, Object> list =userjdbc.result(id,pass,model);
+
 	    	/*一致している場合は管理者画面へ*/
 	       	if(list != null) {
 	       		// セッションでユーザーデータを保存
@@ -35,12 +37,12 @@ public class UserLogic {
 	       		message ="ログインしました！";
 	       		 model.addAttribute("message" , message);
 	       		 // 管理者メニューへ
-	       		 return "managermenu";
+	       		 return "html/managermenu";
 	       	}else {
 	       		message ="ログインに失敗しました";
 	       	 	model.addAttribute("message" , message);
        	 		// ログイン画面へ
-          		return "Login";
+          		return "html/Login";
 	       	}
 
 	    }
