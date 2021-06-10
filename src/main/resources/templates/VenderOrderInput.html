@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>発注入力</title>
 </head>
 <body>
 	<h2>発注情報入力</h2>
@@ -28,7 +28,6 @@
 	</th:if>
 	</div>
 	
-	
 	<div th:if="${totalPrice != null}">
 		<form method="POST" action="VenderOrderSave">
 			商品No：<p style="display:inline" th:text="${itemNo}" />
@@ -45,6 +44,9 @@
 	</th:if>
 	</div>
 		
+	<form action="#" th:action="@{/logout}" method="post">
+    	<input type="submit" value="logout">
+	</form>
 
 </body>
 </html>
