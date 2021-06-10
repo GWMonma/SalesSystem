@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ログイン</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+     <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
+</head>
+<body>
+<h1>ログイン画面</h1>
+<p th:text=" ${message}" />
+
+<form action="#" th:action="@{/ManagerMenu}" th:object="${indexForm}" method="post">
+    <p><input type="text" name="username" placeholder="ユーザーID"/></p>
+    <p><input type="password" name="password" placeholder="パスワード"/></p>
+
+    <p><input type="submit" value="ログイン" /> </p>
+    <p><input type="reset" value="リセット" /></p>
+</form>
+</body>
+</html>

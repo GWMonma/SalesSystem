@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>メニュー</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
+</head>
+<body>
+<h1 class="ttl">管理者メニュー</h1>
+   <p th:text=" ${message}" />
+
+   <form class="manager_menu"action="#" th:action="@{/MarketingManagement}" method="post">
+     <input type="submit" value="販売管理">
+   </form>
+
+   <form class="manager_menu" action="#" th:action="@{/InventoryManagement}" method="post">
+     <input type="submit" value="在庫管理">
+   </form>
+
+   <form class="manager_menu" action="#" th:action="@{/PurchaseManagement}" method="post">
+     <input type="submit" value="購買管理">
+   </form>
+
+<form action="#" th:action="@{/logout}" method="post">
+    <input type="submit" value="logout">
+</form>
+
+</body>
+</html>
