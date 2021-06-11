@@ -63,5 +63,8 @@ public class VenderOrderLogic {
 		
 		return returnList;
 	}
+	
+	//番号が存在するか確認する
+	
 
 }
