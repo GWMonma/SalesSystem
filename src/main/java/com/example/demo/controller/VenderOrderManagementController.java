@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.logic.VenderOrderLogic;
+import com.example.demo.model.InventoryModel;
+import com.example.demo.model.VenderOrderModel;
 
 @Controller
 public class VenderOrderManagementController {
@@ -20,13 +24,15 @@ public class VenderOrderManagementController {
 	//ページを表示
 	@RequestMapping("VenderOrderInput")
 	public String venderOrderInputPage(Model model) {
+		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
+		model.addAttribute("list", list);
 		return "html/VenderOrderInput";
 	}
 
 	//計算を行い、合計金額を表示する
 	@RequestMapping("VenderOrderCheck")
 	public String orderCheck(@RequestParam("itemNo") int itemNo, @RequestParam("itemBuyCount") int itemBuyCount, Model model) {
-		int totalPrice = venderOrderLogic.getVenderTotalPrice(itemNo, itemBuyCount);
+		int totalPrice = venderOrderLogic.getVenderOrderTotalPrice(itemNo, itemBuyCount);
 		if(totalPrice==-1) {
 			model.addAttribute("resultText", "エラーが発生しました。");
 		}else{
@@ -47,7 +53,7 @@ public class VenderOrderManagementController {
 		int checkItemTotalPrice = -10;
 		//金額が変更された場合
 		if(resultText.equals("金額が変更されました。申し訳ございませんが、もう一度ご確認ください。")) {
-			checkItemTotalPrice = venderOrderLogic.getVenderTotalPrice(itemNo, itemBuyCount);
+			checkItemTotalPrice = venderOrderLogic.getVenderOrderTotalPrice(itemNo, itemBuyCount);
 		}
 		//金額変更の際にエラーが発生した場合
 		if(checkItemTotalPrice==-1) {
@@ -61,6 +67,27 @@ public class VenderOrderManagementController {
 		model.addAttribute("resultText", resultText);
 		return "html/VenderOrderInput";
 	}
-		
+	
+	
+	//ページを表示
+	@RequestMapping("VenderOrderSearch")
+	public String venderOrderSearchPage(Model model) {
+		return "html/VenderOrderSearch";
+	}
+	
+	@RequestMapping("VenderOrderSearchResult")
+	public String venderOrderSearch(@RequestParam("searchWord") String searchWord, Model model) {
+		ArrayList<VenderOrderModel> returnList = venderOrderLogic.getVenderOrderLog(searchWord);
+		//検索結果を渡す
+		if(returnList.size()==0){
+			model.addAttribute("searchList", null);
+		}else{
+			model.addAttribute("searchList", returnList);
+		}	
+		model.addAttribute("resultText", "検索結果"+returnList.size()+"件");
+		return "html/VenderOrderSearch";
+	}
 	
 }
+
+
