@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.jdbc.VenderOrderJdbc;
 import com.example.demo.model.VenderOrderModel;
 
@@ -18,6 +19,9 @@ import com.example.demo.model.VenderOrderModel;
 public class  VenderStockManagementController  {
 	 @Autowired
 	 private VenderOrderJdbc venderOrderJdbc;
+	 
+	 @Autowired
+	 private ItemJdbc itemJdbc;
 
 	 
 	 //仕入管理画面表示
@@ -38,12 +42,27 @@ public class  VenderStockManagementController  {
 	    
 	 //日付の更新
 	    @RequestMapping("VenderOrderDateUpdate")
-	    public String venderOrderDateUpdate(@RequestParam("item_name") String item_name, @RequestParam("date_update") int vender_order_no, Model model){
-			String resultText = venderOrderJdbc.arrivalDueDateUpdate(vender_order_no);
-			ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
+	    public String venderOrderDateUpdate(@RequestParam("item_name") String item_name, @RequestParam("date_update") String vender_order_no, Model model){
+	    	int totalItemNo = itemJdbc.getItemDataList().size();
+	    	String resultText = null;
+	    	int no = -1;
+	    	ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
+	    	model.addAttribute("venderOrderList",list);
+	    	model.addAttribute("item_name", item_name);
+			
+	    	try {
+				no = Integer.parseInt(vender_order_no);
+			}catch(Exception ex){
+				model.addAttribute("resultText","数値を入力してください。");
+		        return "html/VenderStockManagement";
+			}
+			
+	    	if(totalItemNo<no) {
+	    		resultText = "入力された番号は存在しません。";
+	    	}else{
+	    		resultText = venderOrderJdbc.arrivalDueDateUpdate(no);
+	    	}
 			model.addAttribute("resultText",resultText);
-			model.addAttribute("venderOrderList",list);
-			model.addAttribute("item_name", item_name);
 	        return "html/VenderStockManagement";
 	    }
 

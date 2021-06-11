@@ -31,12 +31,28 @@ public class VenderOrderManagementController {
 
 	//計算を行い、合計金額を表示する
 	@RequestMapping("VenderOrderCheck")
-	public String orderCheck(@RequestParam("itemNo") int itemNo, @RequestParam("itemBuyCount") int itemBuyCount, Model model) {
-		int totalPrice = venderOrderLogic.getVenderOrderTotalPrice(itemNo, itemBuyCount);
+	public String orderCheck(@RequestParam("itemNo") String itemNo, @RequestParam("itemBuyCount") int itemBuyCount, Model model) {
+		int no = -1;
+		try {
+			no = Integer.parseInt(itemNo);
+		}catch(Exception ex){
+			model.addAttribute("resultText","数値を入力してください。");
+	        return "html/VenderOrderInput";
+		}
+		
+		int totalItemNo = itemJdbc.getItemDataList().size();
+    	if(totalItemNo<no) {
+    		model.addAttribute("resultText", "入力された番号は存在しません。");
+    		return "html/VenderOrderInput";
+    	}
+		
+		int totalPrice = venderOrderLogic.getVenderOrderTotalPrice(no, itemBuyCount);
+		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
+		model.addAttribute("list", list);
 		if(totalPrice==-1) {
 			model.addAttribute("resultText", "エラーが発生しました。");
 		}else{
-			int itemPrice = itemJdbc.getItemData(itemNo).getItemPrice();
+			int itemPrice = itemJdbc.getItemData(no).getItemPrice();
 			model.addAttribute("itemNo", itemNo);
 			model.addAttribute("itemBuyCount", itemBuyCount);
 			model.addAttribute("totalPrice", itemPrice * itemBuyCount);
@@ -48,9 +64,12 @@ public class VenderOrderManagementController {
 	//発注情報を保存する
 	@RequestMapping("VenderOrderSave")
 	public String venderOrderSave(@RequestParam("itemNo") int itemNo, @RequestParam("itemBuyCount") int itemBuyCount, @RequestParam("totalPrice") int totalPrice,Model model) {
+		
 		//保存するためのLogic
 		String resultText = venderOrderLogic.venderOrderSaveLogic(itemNo, itemBuyCount, totalPrice);
 		int checkItemTotalPrice = -10;
+		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
+		model.addAttribute("list", list);
 		//金額が変更された場合
 		if(resultText.equals("金額が変更されました。申し訳ございませんが、もう一度ご確認ください。")) {
 			checkItemTotalPrice = venderOrderLogic.getVenderOrderTotalPrice(itemNo, itemBuyCount);
