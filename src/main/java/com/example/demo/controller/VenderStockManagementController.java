@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,16 +30,20 @@ public class  VenderStockManagementController  {
 	 //フォームから入力された値を受け取りデータベースと照合
 	    @RequestMapping("VenderSearch")
 	    public String venderSearch(@RequestParam("item_name") String item_name, Model model){
-			List<VenderOrderModel> list = venderOrderJdbc.getVenderOrder(item_name);
+			ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
 			model.addAttribute("venderOrderList",list);
+			model.addAttribute("item_name", item_name);
 	        return "html/VenderStockManagement";
 	    }
 	    
 	 //日付の更新
 	    @RequestMapping("VenderOrderDateUpdate")
-	    public String venderOrderDateUpdate(@RequestParam("date_update") int vender_order_no, Model model){
+	    public String venderOrderDateUpdate(@RequestParam("item_name") String item_name, @RequestParam("date_update") int vender_order_no, Model model){
 			String resultText = venderOrderJdbc.arrivalDueDateUpdate(vender_order_no);
+			ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
 			model.addAttribute("resultText",resultText);
+			model.addAttribute("venderOrderList",list);
+			model.addAttribute("item_name", item_name);
 	        return "html/VenderStockManagement";
 	    }
 
