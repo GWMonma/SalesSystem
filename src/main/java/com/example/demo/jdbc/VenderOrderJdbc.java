@@ -1,10 +1,16 @@
 package com.example.demo.jdbc;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.InventoryModel;
+import com.example.demo.model.VenderOrderModel;
 
 @Component
 public class VenderOrderJdbc {
@@ -25,35 +31,39 @@ public class VenderOrderJdbc {
 	}
 	
 	
-//仕入管理　仕入れ情報検索
-		public List<VenderOrderModel> getVenderOrder(String item_name) {
-	
-	String sql = "SELECT * from venderorder where item_name like ?";
-	List<Map<String, Object>>venderOrderList = jdbcTemplate.queryForList(sql,'%'+item_name+'%');
-	List<VenderOrderModel> list = new ArrayList<>();
-	for(Map<String,Object> str1 : venderOrderList) {
-		VenderOrderModel vom = new VenderOrderModel();
-		vom.setVender_order_no((int)str1.get("vender_order_no"));
-		vom.setItem_name((String)str1.get("item_name"));
-		vom.setItem_product_no((String)str1.get("item_product_no"));
-		vom.setItem_buy_count((int)str1.get("item_buy_count"));
-		vom.setTotal_price((int)str1.get("total_price"));
-		vom.setArrival_due_date((Date)str1.get("arrival_due_date"));
-		list.add(vom);
+	//発注履歴を取得
+	public ArrayList<VenderOrderModel> getVenderOrderLog(String searchWord){
+		ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
+		try {
+			String sql = "SELECT * FROM venderorder WHERE item_name LIKE ?";
+			List<Map<String, Object>> itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%');
+			//格納する
+			for(Map<String, Object> mapData : itemDataList) {
+				VenderOrderModel returnData = new VenderOrderModel();
+				returnData.setVender_order_no((int)mapData.get("vender_order_no"));
+				returnData.setItem_name((String)mapData.get("item_name"));
+				returnData.setItem_product_no((String)mapData.get("item_product_no"));
+				returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+				returnData.setTotal_price((int)mapData.get("total_price"));
+				returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+				returnData.setArrival_due_date((Date)mapData.get("arrival_due_date"));
+				returnList.add(returnData);
+			}
+		}catch(Exception ex) {
+		
 		}
-	return list;
+		return returnList;
 	}
 	
 	
-//仕入れ管理　仕入日予定日の更新
+	//仕入れ管理　仕入日予定日の更新
 	public String arrivalDueDateUpdate(int vender_order_no) {
 		try {
 			this.jdbcTemplate.update("update venderorder set arrival_due_date=current_timestamp where vender_order_no=?",vender_order_no);
 		}catch(Exception ex) {
 			return "エラーが発生しました。";
 		}
-		return "更新が完了しました";
+		return "更新が完了しました。";
 	}
-	
-	
+
 }
