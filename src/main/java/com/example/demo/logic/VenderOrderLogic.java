@@ -1,6 +1,7 @@
 package com.example.demo.logic;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.jdbc.VenderOrderJdbc;
 import com.example.demo.model.InventoryModel;
+import com.example.demo.model.VenderOrderModel;
 
 @Service
 public class VenderOrderLogic {
@@ -42,7 +44,7 @@ public class VenderOrderLogic {
 	}
 	
 	//合計金額を計算
-	public int getVenderTotalPrice(int itemNo, int itemBuyCount) {
+	public int getVenderOrderTotalPrice(int itemNo, int itemBuyCount) {
 		InventoryModel itemData = itemJdbc.getItemData(itemNo);
 		int returnTotalPrice = -10;
 		//計算に失敗した場合
@@ -52,6 +54,14 @@ public class VenderOrderLogic {
 			returnTotalPrice = itemData.getItemPrice()*itemBuyCount;
 		}
 		return returnTotalPrice;
+	}
+	
+	//データベースから発注履歴を取得する。
+	public ArrayList<VenderOrderModel> getVenderOrderLog(String searchWord) {
+		ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
+		returnList = venderOrderJdbc.getVenderOrderLog(searchWord);
+		
+		return returnList;
 	}
 
 }
