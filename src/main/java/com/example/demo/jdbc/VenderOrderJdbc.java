@@ -25,7 +25,7 @@ public class VenderOrderJdbc {
 	}
 	
 	
-//仕入管理　検索機能
+//仕入管理　仕入れ情報検索
 		public List<VenderOrderModel> getVenderOrder(String item_name) {
 	
 	String sql = "SELECT * from venderorder where item_name like ?";
@@ -43,5 +43,17 @@ public class VenderOrderJdbc {
 		}
 	return list;
 	}
+	
+	
+//仕入れ管理　仕入日予定日の更新
+	public String arrivalDueDateUpdate(int vender_order_no) {
+		try {
+			this.jdbcTemplate.update("update venderorder set arrival_due_date=current_timestamp where vender_order_no=?",vender_order_no);
+		}catch(Exception ex) {
+			return "エラーが発生しました。";
+		}
+		return "更新が完了しました";
+	}
+	
 	
 }
