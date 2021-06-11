@@ -9,6 +9,7 @@ public class VenderOrderModel {
 	String item_product_no;
 	int item_buy_count;
 	int total_price;
+	Date item_buy_date;
 	Date arrival_due_date;
 
 	
@@ -50,7 +51,15 @@ public class VenderOrderModel {
 	public void setTotal_price(int total_price) {
 		this.total_price=total_price;
 	}
-
+	
+	
+	public Date getItem_buy_date() {
+		return item_buy_date;
+	}
+	public void setItem_buy_date(Date item_buy_date) {
+		this.item_buy_date = item_buy_date;
+	}
+	
 	
 	public Date getArrival_due_date() {
 		return  arrival_due_date;
