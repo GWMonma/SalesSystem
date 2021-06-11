@@ -5,14 +5,15 @@
 	<title>仕入管理</title>
 </head>
 <body >
-	<form method="POST" action="VenderSearch">
-	商品名<input type="text" name="item_name">	
+	<form method="POST" action="VenderSearch" >
+	商品名<input type="text" name="item_name" th:value="${item_name}" required>	
 	<input type="submit" value="検索">
 	</form>
 	
 	<form method="POST" action="VenderOrderDateUpdate">
-	商品番号<input type="text" name="date_update" size=5>
+	商品番号<input type="text" name="date_update" size=5 required>
 	<input type="submit" value="仕入日更新">
+	<input type="hidden" name="item_name" th:value="${item_name}" />
 	</form>
 	
 	<br>

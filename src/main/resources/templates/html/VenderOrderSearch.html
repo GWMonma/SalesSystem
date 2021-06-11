@@ -6,7 +6,34 @@
 </head>
 <body>
 <h1>発注検索画面</h1>
-<p th:text=" ${message}" />
+<p th:text=" ${resultText}" />
+
+<form action="VenderOrderSearchResult" method="POST">
+	<input type="text" name="searchWord" required/>
+	<input type="submit" value="検索"/>
+</form>
+<div th:if="${searchList != null}">
+	<table border="1">
+		<tr>
+			<th>発注番号</th>
+			<th>購入日</th>
+			<th>商品名</th>
+			<th>商品コード</th>
+			<th>購入数</th>
+			<th>合計金額</th>
+		</tr>
+		<tr th:each="orderData : ${searchList}" th:object="${orderData}">
+			<td th:text="*{vender_order_no}"/></td>
+			<td th:text="*{item_buy_date}"/></td>
+			<td th:text="*{item_name}"/></td>
+			<td th:text="*{item_product_no}"/></td>
+			<td th:text="*{item_buy_count}"/></td>
+			<td th:text="*{total_price}"/></td>
+		</tr>
+		</th:each>
+	</table>
+</th:if>
+</div>
 
 <form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
