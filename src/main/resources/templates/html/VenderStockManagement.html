@@ -1,15 +1,42 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>仕入れ管理</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="utf-8">
+	<title>仕入管理</title>
 </head>
-<body>
-<h1>仕入れ管理画面</h1>
-<p th:text=" ${message}" />
+<body >
+	<form method="POST" action="VenderSearch">
+	商品名<input type="text" name="item_name">	
+	<input type="submit" value="検索">
+	</form>
+	
+	<form method="POST" action="VenderOrderDateUpdate">
+	商品番号<input type="text" name="date_update" size=5>
+	<input type="submit" value="仕入日更新">
+	</form>
+	
+	<br>
+	<div th:if="${resultText} != null"> 
+		<h3 th:text="${resultText}"></h3>
+  	</div>
+  	
+	<table>
+		<tr>
+			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>金額</th><th>発注日</th><th>仕入れ予定日</th>
+		</tr>
+		<tr th:each="list : ${venderOrderList}">
 
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
+			<td th:text="${list.vender_order_no}"></td>
+			<td th:text="${list.item_name}"></td>
+			<td th:text="${list.item_product_no}"></td>
+			<td th:text="${list.item_buy_count}"></td>
+			<td th:text="${list.total_price}"></td>
+			<td th:text="${list.item_buy_date}"></td>
+			<td th:text="${list.arrival_due_date}"></td>
+		
+		</tr>
+	</table>
+
+  	
 </body>
 </html>
