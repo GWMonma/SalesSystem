@@ -135,7 +135,7 @@ public class InventoryManagementController {
 
 /*入荷管理画面へ遷移*/
     @RequestMapping("ArrivalManagement")
-	public String inventory(Model model) {
+	public String arrivalManagement(Model model) {
     	return "html/ArrivalManagement";
 	}
     
