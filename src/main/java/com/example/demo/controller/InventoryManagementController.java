@@ -33,6 +33,19 @@ public class InventoryManagementController {
 
 		 @Autowired
 		 ItemLogic itemLogic;
+	
+		 /*入荷管理画面へ遷移*/
+	   	@RequestMapping("ArrivalManagement")
+	    	public String arrival(Model model) {
+	    		if(session.getAttribute("data") == null) {
+	    			message ="IDとパスワードを入力してください";
+	    	    		model.addAttribute("indexForm", new LoginModel());
+	    	    		model.addAttribute("message" , message);
+	    	    		return "Login";
+	    		}
+
+	        	return "html/ArrivalManagement";
+	    	}
 
 		    /*出荷管理画面へ遷移*/
 		    @RequestMapping("ShipmentManagement")
@@ -124,12 +137,6 @@ public class InventoryManagementController {
 				model.addAttribute("resultText",resultText);
 		        return "html/ShipmentManagement";
 		    }
-
-		 /*入荷管理画面へ遷移*/
-		    @RequestMapping("ArrivalManagement")
-			public String arrival(Model model) {
-		    	return "html/ArrivalManagement";
-			}
 
 		    @RequestMapping("ArrivalDateUpdate")
 		    public String arrivalDueDateUpdate(@RequestParam("itemNo") String itemNo, Model model) {
