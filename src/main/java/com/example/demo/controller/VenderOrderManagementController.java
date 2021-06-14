@@ -31,10 +31,14 @@ public class VenderOrderManagementController {
 
 	//計算を行い、合計金額を表示する
 	@RequestMapping("VenderOrderCheck")
-	public String orderCheck(@RequestParam("itemNo") String itemNo, @RequestParam("itemBuyCount") int itemBuyCount, Model model) {
+	public String orderCheck(@RequestParam("itemNo") String itemNo, @RequestParam("itemBuyCount") String itemBuyCount, Model model) {
 		int no = -1;
+		int buyCount = -1;
+		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
+		model.addAttribute("list", list);
 		try {
 			no = Integer.parseInt(itemNo);
+			buyCount = Integer.parseInt(itemBuyCount);
 		}catch(Exception ex){
 			model.addAttribute("resultText","数値を入力してください。");
 	        return "html/VenderOrderInput";
@@ -46,8 +50,7 @@ public class VenderOrderManagementController {
     		return "html/VenderOrderInput";
     	}
 		
-		int totalPrice = venderOrderLogic.getVenderOrderTotalPrice(no, itemBuyCount);
-		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
+		int totalPrice = venderOrderLogic.getVenderOrderTotalPrice(no, buyCount);
 		model.addAttribute("list", list);
 		if(totalPrice==-1) {
 			model.addAttribute("resultText", "エラーが発生しました。");
@@ -55,7 +58,7 @@ public class VenderOrderManagementController {
 			int itemPrice = itemJdbc.getItemData(no).getItemPrice();
 			model.addAttribute("itemNo", itemNo);
 			model.addAttribute("itemBuyCount", itemBuyCount);
-			model.addAttribute("totalPrice", itemPrice * itemBuyCount);
+			model.addAttribute("totalPrice", itemPrice * buyCount);
 			model.addAttribute("resultText", "発注内容をご確認ください。");
 		}
 		return "html/VenderOrderInput";
