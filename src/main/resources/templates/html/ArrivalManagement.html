@@ -6,42 +6,17 @@
 </head>
 <body>
 <h1>入荷管理画面</h1>
-	<form method="POST" action="ArrivalManagementDateUpdate">
-	商品番号<input type="text" name="order_no" size=5 required>
-	出荷日<input type="text" name="date_update" size=10 required>
-	<input type="submit" value="出荷日更新">
-	<input type="hidden" name="item_name" th:value="${item_name}" />
+<p th:text=" ${resultText}" />
+	
+	<h4>入荷確定</h4>
+	<form method="POST" action="ArrivalDateUpdate">
+		商品No<input type="text" name="itemNo" required/>
+		　<input type="submit" value="入荷確定">
 	</form>
 	
-	<form method="POST" action="OrderSearch" >
-	商品名<input type="text" name="item_name" th:value="${item_name}" required>	
-	<input type="submit" value="検索">
+	<form action="#" th:action="@{/logout}" method="post">
+    	<input type="submit" value="logout">
 	</form>
-	
-	
-<div th:if="${clientOrderList != null}">
-	
-	<br>
-	<div th:if="${resultText} != null"> 
-		<h3 th:text="${resultText}"></h3>
-  	</div>
-  	
-	<table border="1">
-		<tr>
-			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>金額</th><th>受注日</th><th>出荷予定日</th>
-		</tr>
-		<tr th:each="list : ${clientOrderList}">
-
-			<td th:text="${list.client_order_no}"></td>
-			<td th:text="${list.item_name}"></td>
-			<td th:text="${list.item_product_no}"></td>
-			<td th:text="${list.item_buy_count}"></td>
-			<td th:text="${list.total_price}"></td>
-			<td th:text="${list.item_buy_date}"></td>
-			<td th:text="${list.shipment_due_date}"></td>
-		</tr>
-	</table>
-</div>
 
 </body>
 </html>
