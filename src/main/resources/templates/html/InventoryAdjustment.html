@@ -3,13 +3,62 @@
 <head>
     <title>在庫調整棚卸</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>在庫調整・棚卸画面</h1>
+<header class="header">
+
+       <div class="header_wrap">
+       	<h1 class="header_ttl">在庫調整・棚卸画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
 <p th:text=" ${message}" />
 
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
+<p th:text=" ${resultText}" />
+
+<form method="POST" action="InventrySearch" >
+	商品名<input type="text" name="item_name" th:value="${item_name}" required>
+	<input type="submit" value="検索">
+	</form>
+
+	<br>
+	<div th:if="${resultText} != null">
+		<h3 th:text="${resultText}"></h3>
+  	</div>
+
+	<table>
+		<tr>
+			<th>No</th><th>商品名</th><th>単価</th><th>在庫数</th>
+		</tr>
+		<tr th:each="list : ${searchList}">
+
+			<td th:text="${list.itemNo}"></td>
+			<td th:text="${list.itemName}"></td>
+			<td th:text="${list.itemPrice}"></td>
+			<td th:text="${list.itemStock}"></td>
+
+
+
+		</tr>
+	</table>
+
 </body>
 </html>

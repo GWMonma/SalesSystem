@@ -3,26 +3,49 @@
 <head>
     <title>在庫管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>在庫管理画面</h1>
+<header class="header">
 
-<form action="#" th:action="@{/MarketingManagement}" method="post">
+       <div class="header_wrap">
+       	<h1 class="header_ttl">在庫管理画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+
+   <form action="#" th:action="@{/ArrivalManagement}" method="post">
      <input type="submit" value="入荷管理">
    </form>
 
-   <form action="#" th:action="@{/InventoryManagement}" method="post">
+   <form action="#" th:action="@{/ShipmentManagement}" method="post">
      <input type="submit" value="出荷管理">
    </form>
 
-   <form action="#" th:action="@{/PurchaseManagement}" method="post">
+   <form action="#" th:action="@{/InventoryAdjustment}" method="post">
      <input type="submit" value="在庫調整/棚卸">
    </form>
 
 
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
+
+
 
 </body>
 </html>
