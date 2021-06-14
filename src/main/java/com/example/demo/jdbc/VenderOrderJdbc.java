@@ -65,5 +65,34 @@ public class VenderOrderJdbc {
 		}
 		return "更新が完了しました。";
 	}
+	
+	//入荷確定済みか確認する処理
+	public String CheckArrivalDue(int venderOrderNo) {
+		String returnText = null;
+		try {
+			String sql = "SELECT arrival_date FROM venderorder WHERE vender_order_no = ?";
+			Map<String, Object> data = this.jdbcTemplate.queryForMap(sql, venderOrderNo);
+			if(data.get("arrival_date")==null) {
+				returnText = null;
+			}else{
+				returnText = "入荷確定済み";
+			}
+			
+		}catch(Exception ex) {
+			return "エラーが発生しました。";
+		}
+		return returnText;
+	}
+	
+	//入荷確定処理
+	public String arrivalFixing(int venderOrderNo) {
+		try {
+			
+			this.jdbcTemplate.update("UPDATE venderorder SET arrival_date = CURDATE() WHERE vender_order_no = ?", venderOrderNo);
+		}catch(Exception ex) {
+			return "エラーが発生しました。";
+		}
+		return "入荷が確定しました。";		
+	}
 
 }
