@@ -96,52 +96,43 @@ public class InventoryManagementController {
 		}
 	
 	
-	//フォームから入力された値を受け取りデータベースと照合
-    @RequestMapping("OrderSearch")
-    public String orderSearch(@RequestParam("item_name") String item_name, Model model){
+  //データベースと照合して受注情報を表示(フォーム)
+    @RequestMapping("OrderSearchForm")
+    public String orderSearch1(@RequestParam("item_name") String item_name, Model model){
 		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
 		model.addAttribute("clientOrderList",list);
 		model.addAttribute("item_name", item_name);
-        return "html/ArrivalManagement";
+        return "html/ShipmentManagement";
     }
 	
 	
-	 //出荷予定日の更新
-	 @RequestMapping("ArrivalManagementDateUpdate")
-	    public String ArrivalManagementDateUpdate(@RequestParam("order_no") String client_order_no,@RequestParam("date_update") String shipment_due_date ,@RequestParam("item_name") String item_name, Model model){
+	    //出荷予定日の更新
+	 @RequestMapping("ShipmentManagementDateUpdate")
+	    public String shipmentManagementDateUpdate(@RequestParam("order_no") String client_order_no,@RequestParam("date_update") String shipment_due_date ,@RequestParam("item_name") String item_name, Model model){
 	    	
 		 	int totalItemNo = itemJdbc.getItemDataList().size();
 	    	String resultText = null;
 	    	int no = -1;
-	    	Date date;
 			
 	    	try {
 				no = Integer.parseInt(client_order_no);
 			}catch(Exception ex){
 				model.addAttribute("resultText","数値を入力してください。");
-		        return "html/ArrivalManagement";
-			}
-	    	
-	    	try {
-	    		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    		date = dateFormat.parse(shipment_due_date);
-			}catch(Exception ex){
-				model.addAttribute("resultText","日付の入力形式は'yyyy-MM-dd'です");
-		        return "html/ArrivalManagement";
+		        return "html/ShipmentManagement";
 			}
 			
 	    	if(totalItemNo<no) {
 	    		resultText = "入力された番号は存在しません。";
 	    	}else{
-	    		System.out.println(date);
-	    		resultText = clientOrderJdbc.shipmentDateUpdate(no,date);
+	    		resultText = clientOrderJdbc.shipmentDateUpdate(no,shipment_due_date);
 	    	}
 	    	ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
 	    	model.addAttribute("clientOrderList",list);
 	    	model.addAttribute("item_name", item_name);
 			model.addAttribute("resultText",resultText);
-	        return "html/ArrivalManagement";
+	        return "html/ShipmentManagement";
 	    }
+
 
 
 
