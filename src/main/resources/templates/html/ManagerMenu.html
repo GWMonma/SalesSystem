@@ -7,7 +7,31 @@
     <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1 class="ttl">管理者メニュー</h1>
+
+<header class="header">
+
+       <div class="header_wrap">
+       	<h1 class="header_ttl">管理者メニュー</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+
    <p th:text=" ${message}" />
 
    <form class="manager_menu"action="#" th:action="@{/MarketingManagement}" method="post">
