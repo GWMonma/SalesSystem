@@ -30,16 +30,22 @@
 	</div>
 </header>
 
-<p th:text=" ${message}" />
-
-<p th:text=" ${resultText}" />
-
+<!-- 検索 -->
 <form method="POST" action="InventrySearch" >
 	商品名<input type="text" name="item_name" th:value="${item_name}" required>
 	<input type="submit" value="検索">
-	</form>
+</form>
+
+<!-- 更新 -->
+<form method="POST" action="InventryUpdate" >
+	商品No<input type="text" name="item_no" th:value="${item_no}" required>
+	<br>
+	在庫数<input type="text" name="item_stock" th:value="${item_stock}" required>
+	<input type="submit" value="更新">
+</form>
 
 	<br>
+	<!-- メッセージ表示 -->
 	<div th:if="${resultText} != null">
 		<h3 th:text="${resultText}"></h3>
   	</div>
@@ -55,10 +61,13 @@
 			<td th:text="${list.itemPrice}"></td>
 			<td th:text="${list.itemStock}"></td>
 
-
-
 		</tr>
 	</table>
+
+	<!-- 管理画面に戻るボタン-->
+	<form class="manager_menu"action="#" th:action="@{/InventoryManagement}" method="post">
+	     	<input type="submit" value="在庫管理へ">
+	</form>
 
 </body>
 </html>
