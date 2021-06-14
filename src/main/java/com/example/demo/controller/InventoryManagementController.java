@@ -20,6 +20,14 @@ public class InventoryManagementController {
 	String message;
 	 @Autowired
 	 HttpSession session;
+	
+	@Autowired
+	private ItemJdbc itemJdbc;
+	
+	@Autowired
+	private ClientOrderJdbc clientOrderJdbc;
+	
+	
 
 	 /*入荷管理画面へ遷移*/
 	    @RequestMapping("ArrivalManagement")
@@ -86,6 +94,18 @@ public class InventoryManagementController {
 			model.addAttribute("resultText", "検索結果"+returnList.size()+"件");
 			return "html/InventoryAdjustment";
 		}
+	
+	
+	//フォームから入力された値を受け取りデータベースと照合
+    @RequestMapping("OrderSearch")
+    public String orderSearch(@RequestParam("item_name") String item_name, Model model){
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
+		model.addAttribute("clientOrderList",list);
+		model.addAttribute("item_name", item_name);
+        return "html/ArrivalManagement";
+    }
+
+
 
 
 }
