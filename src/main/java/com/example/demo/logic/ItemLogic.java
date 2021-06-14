@@ -21,4 +21,20 @@ public class ItemLogic {
 
 			return returnList;
 		}
+	
+	//入力確認
+	public String inputConfirmation(String... inputNo) {
+		String returnText = "intTrue";
+		int n = -1;
+		try {
+		for(String no: inputNo) {
+			System.out.println(no);
+			n = Integer.parseInt(no);
+		}
+		}catch(Exception ex){
+			returnText = "数値を入力してください。";
+		}
+		
+		return returnText;
+	}
 }
