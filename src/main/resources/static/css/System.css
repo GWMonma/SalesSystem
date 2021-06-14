@@ -1,8 +1,31 @@
 @charset "UTF-8";
 body{
-	background-color: #e6e6fa;
 	text-align: center;
 }
+
+/*header関連*/
+header{
+	height: 60px;
+	line-height: 60px;
+	width: 100%;
+	background-color: #89c3eb;
+}
+
+.header_wrap{
+	max-width: 1080px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+}
+
+.header_ul{
+ display: flex;
+}
+
+.header_li{
+	margin-right: 20px;
+}
+/*header関連ここまで*/
 
 .ttl{
 	font-size: 20px;
