@@ -78,4 +78,28 @@ public class ItemJdbc {
 			return returnList;
 		}
 
+		//任意の商品の在庫履歴を更新
+				public ArrayList<InventoryModel> getInventoryUpdate(String searchWord , String updateStock){
+					ArrayList<InventoryModel> returnList = new ArrayList<InventoryModel>();
+					try {
+						this.jdbcTemplate.update("UPDATE item SET item_stock = ? WHERE item_no= ?",updateStock,searchWord);
+						String sql = "SELECT * FROM item WHERE item_no LIKE ?";
+						List<Map<String, Object>> itemDataList = jdbcTemplate.queryForList(sql, searchWord);
+						//格納する
+						for(Map<String, Object> mapData : itemDataList) {
+							InventoryModel returnData = new InventoryModel();
+							returnData.setItemNo((int)mapData.get("item_no"));
+							returnData.setItemName((String)mapData.get("item_name"));
+							returnData.setItemPrice((int)mapData.get("item_price"));
+							returnData.setItemStock((int)mapData.get("item_stock"));
+
+
+							returnList.add(returnData);
+						}
+					}catch(Exception ex) {
+
+					}
+					return returnList;
+				}
+
 }
