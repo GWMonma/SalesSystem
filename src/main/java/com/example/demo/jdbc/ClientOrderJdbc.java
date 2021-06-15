@@ -15,8 +15,8 @@ public class ClientOrderJdbc {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	//仕入れ管理　仕入日予定日の更新
-	public String shipmentDateUpdate(int client_order_no,String shipment_due_date) {
+	//出荷予定日の更新
+	public String shipmentDueDateUpdateJdbc(int client_order_no,String shipment_due_date) {
 		try {
 			this.jdbcTemplate.update("update clientorder set shipment_due_date= ? where client_order_no= ?",shipment_due_date,client_order_no);
 		}catch(Exception ex) {
@@ -25,62 +25,78 @@ public class ClientOrderJdbc {
 		return "更新が完了しました。";
 	}
 	
+	//出荷日の更新
+	public String shipmentDateUpdateJdbc(int client_order_no) {
+		try {
+			this.jdbcTemplate.update("update clientorder set shipment_date = current_timestamp where client_order_no= ?",client_order_no);
+		}catch(Exception ex) {
+			return "エラーが発生しました。";
+		}
+		return "更新が完了しました。";
+	}
 	
-	//受注履歴を取得
-		public ArrayList<ClientOrderModel> getClientOrderLog(String searchWord){
-			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
-			try {
-				String sql = "SELECT * FROM clientorder WHERE item_name LIKE ?";
-				List<Map<String, Object>> itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%');
-				//格納する
-				for(Map<String, Object> mapData : itemDataList) {
-					ClientOrderModel returnData = new ClientOrderModel();
-					returnData.setClient_order_no((int)mapData.get("client_order_no"));
-					returnData.setItem_name((String)mapData.get("item_name"));
-					returnData.setItem_product_no((String)mapData.get("item_product_no"));
-					returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
-					returnData.setTotal_price((int)mapData.get("total_price"));
-					returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
-					returnData.setShipment_due_date((Date)mapData.get("shipment_due_date"));
-					returnList.add(returnData);
-				}
-			}catch(Exception ex) {
-			
+	
+	//商品名から受注履歴を取得
+	public ArrayList<ClientOrderModel> getClientOrderLog(String searchWord){
+		ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+		try {
+			String sql = "SELECT * FROM clientorder WHERE item_name LIKE ?";
+			List<Map<String, Object>> itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%');
+			//格納する
+			for(Map<String, Object> mapData : itemDataList) {
+				ClientOrderModel returnData = new ClientOrderModel();
+				returnData.setClient_order_no((int)mapData.get("client_order_no"));
+				returnData.setItem_name((String)mapData.get("item_name"));
+				returnData.setItem_product_no((String)mapData.get("item_product_no"));
+				returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+				returnData.setTotal_price((int)mapData.get("total_price"));
+				returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+				returnData.setShipment_due_date((Date)mapData.get("shipment_due_date"));
+				returnData.setShipment_date((Date)mapData.get("shipment_date"));
+				returnList.add(returnData);
 			}
-			return returnList;
+		}catch(Exception ex) {
+			
 		}
+		return returnList;
+	}
 		
-		public ArrayList<ClientOrderModel> getClientOrderLog2(String entered,String unentered,String shipped){
-			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
-			try {
-				List<Map<String, Object>> itemDataList;
-				if(entered!=null) {
-					String sql = "select * from clientorder where shipment_due_date is null";
-					itemDataList = jdbcTemplate.queryForList(sql);
-				}else if(unentered!=null) {
-					String sql = "select * from clientorder where shipment_due_date is not null";
-					itemDataList = jdbcTemplate.queryForList(sql);
-				}else {
-					String sql = "select * from clientorder where shipment_due_date is not null";
-					itemDataList = jdbcTemplate.queryForList(sql);
-				}
-				
-				//格納する
-				for(Map<String, Object> mapData : itemDataList) {
-					ClientOrderModel returnData = new ClientOrderModel();
-					returnData.setClient_order_no((int)mapData.get("client_order_no"));
-					returnData.setItem_name((String)mapData.get("item_name"));
-					returnData.setItem_product_no((String)mapData.get("item_product_no"));
-					returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
-					returnData.setTotal_price((int)mapData.get("total_price"));
-					returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
-					returnData.setShipment_due_date((Date)mapData.get("shipment_due_date"));
-					returnList.add(returnData);
-				}
-			}catch(Exception ex) {
-			
+	//ボタンから受注情報を取得
+	public ArrayList<ClientOrderModel> getButtonClientOrderLog(String entered,String unentered,String shipped){
+		ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+		try {
+			List<Map<String, Object>> itemDataList;
+			if(entered!=null) {
+				//出荷予定日未記入の情報を取得
+				String sql = "select * from clientorder where shipment_due_date is null";
+				itemDataList = jdbcTemplate.queryForList(sql);
+			}else if(unentered!=null) {
+				//出荷予定日記入済みかつ未出荷の情報を取得
+				String sql = " select * from clientorder where shipment_due_date is not null && shipment_date is null";
+				itemDataList = jdbcTemplate.queryForList(sql);
+			}else {
+				//出荷日記入済み(出荷済み)の情報を取得
+				String sql = "select * from clientorder where shipment_date is not null";
+				itemDataList = jdbcTemplate.queryForList(sql);
 			}
-			return returnList;
+				
+			//格納する
+			for(Map<String, Object> mapData : itemDataList) {
+				ClientOrderModel returnData = new ClientOrderModel();
+				returnData.setClient_order_no((int)mapData.get("client_order_no"));
+				returnData.setItem_name((String)mapData.get("item_name"));
+				returnData.setItem_product_no((String)mapData.get("item_product_no"));
+				returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+				returnData.setTotal_price((int)mapData.get("total_price"));
+				returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+				returnData.setShipment_due_date((Date)mapData.get("shipment_due_date"));
+				returnData.setShipment_date((Date)mapData.get("shipment_date"));
+				returnList.add(returnData);
+			}
+		}catch(Exception ex) {
+			
 		}
+		return returnList;
+	}
 
 }
