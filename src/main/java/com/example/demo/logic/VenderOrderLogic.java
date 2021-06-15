@@ -57,17 +57,9 @@ public class VenderOrderLogic {
 	}
 	
 	//データベースから発注履歴を取得する。
-	public ArrayList<VenderOrderModel> getVenderOrderLog(String searchWord) {
+	public ArrayList<VenderOrderModel> getVenderOrderLog(String... searchWord) {
 		ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
 		returnList = venderOrderJdbc.getVenderOrderLog(searchWord);
-		
-		return returnList;
-	}
-	
-	//入荷前、入荷済みボタン用。データベースから発注履歴を取得する。
-	public ArrayList<VenderOrderModel> arrivalStateVenderOrderLogLogic(String selectBtn) {
-		ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
-		returnList = venderOrderJdbc.arrivalStateVenderOrderLog(selectBtn);
 		
 		return returnList;
 	}
