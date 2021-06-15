@@ -11,7 +11,8 @@ public class VenderOrderModel {
 	int total_price;
 	Date item_buy_date;
 	Date arrival_due_date;
-
+	Date arrival_date;
+	
 	
 	public int getVender_order_no() {
 		return vender_order_no;
@@ -19,7 +20,7 @@ public class VenderOrderModel {
 	public void setVender_order_no(int vender_order_no) {
 		this.vender_order_no=vender_order_no;
 	}
-
+	
 	
 	public String getItem_name() {
 		return item_name;
@@ -69,12 +70,12 @@ public class VenderOrderModel {
 	}
 
 
-
-
-
-
-	
-	
+	public Date getArrival_date() {
+		return arrival_date;
+	}
+	public void setArrival_date(Date arrival_date) {
+		this.arrival_date = arrival_date;
+	}
 	
 	
 }
