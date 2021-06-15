@@ -129,7 +129,7 @@ public class InventoryManagementController {
 
 	//出荷予定日の更新
 	@RequestMapping("ShipmentDueDateUpdate")
-	public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("item_name") String item_name, Model model){
+	public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord, Model model){
 	 	int totalItemNo = clientOrderJdbc.getClientOrderDataList().size();
 	    String resultText = null;
 	   	int no = -1;
@@ -144,9 +144,9 @@ public class InventoryManagementController {
 		}else{
 			resultText = clientOrderJdbc.shipmentDueDateUpdateJdbc(no,shipment_due_date);
 		}
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
 		model.addAttribute("clientOrderList",list);
-		model.addAttribute("item_name", item_name);
+		model.addAttribute("item_name", searchWord);
 		model.addAttribute("resultText",resultText);
 		return "html/ShipmentManagement";
 	}
@@ -154,8 +154,8 @@ public class InventoryManagementController {
 	
 	//出荷日の更新(出荷確定処理)
 	@RequestMapping("ShipmentDateUpdate")
-	public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("item_name") String item_name, Model model){
-		int totalItemNo = itemJdbc.getItemDataList().size();
+	public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord, Model model){
+		int totalItemNo = clientOrderJdbc.getClientOrderDataList().size();
 		String resultText = null;
 		int no = -1;
 		try {
@@ -169,9 +169,9 @@ public class InventoryManagementController {
 		}else{
 			resultText = clientOrderJdbc.shipmentDateUpdateJdbc(no);
 		}
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
 		model.addAttribute("clientOrderList",list);
-		model.addAttribute("item_name", item_name);
+		model.addAttribute("item_name", searchWord);
 		model.addAttribute("resultText",resultText);
 		return "html/ShipmentManagement";
 	}
