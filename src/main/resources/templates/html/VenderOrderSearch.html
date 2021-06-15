@@ -6,14 +6,22 @@
 </head>
 <body>
 <h1>発注検索画面</h1>
-<p th:text=" ${resultText}" />
+<div th:if="${resultText == null}">
+	<h4>商品名を入力してください。</h4>
+</th:if>
+</div>
+<div th:if="${resultText != null}">
+	<h4 th:text="${resultText}"></h4>
+</th:if>
+</div>
 
 <form action="VenderOrderSearchResult" method="POST">
-	<input type="text" name="searchWord" required/>
+	<input type="text" name="searchWord" placeholder="商品名" th:value="${searchWord}" required/>
 	<input type="submit" value="検索"/>
 </form>
+<br>
 <div th:if="${searchList != null}">
-	<table border="1">
+	<table border="1" align="center">
 		<tr>
 			<th>発注番号</th>
 			<th>購入日</th>
