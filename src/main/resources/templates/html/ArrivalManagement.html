@@ -20,6 +20,8 @@
 		<input type="text" name="itemNo" placeholder="入荷番号" required/>
 		　<input type="submit" value="入荷確定">
 		<input type="hidden" name="searchItemName" th:value="${searchItemName}">
+		<input type="hidden" name="selectBtn" th:value="${selectBtn}"/>
+		<input type="hidden" name="search" th:value="${search}"/>
 	</form>
 	
 	<br>
@@ -27,6 +29,11 @@
 	
 	<h4>入荷情報検索</h4>
 	<form method="POST" action="ArrivalDataSearch">
+		<button type="submit" name="selectBtn" value="beforeArrival">入荷前</button>
+		<button type="submit" name="selectBtn" value="available">入荷済み</button>
+	</form>
+	<br>
+	<form method="POST" action="ArrivalDataKeywordSearch">
 		<input type="text" name="searchItemName" placeholder="商品名" th:value="${searchItemName}" required/>
 		　<input type="submit" value="検索"/>
 	</form>
