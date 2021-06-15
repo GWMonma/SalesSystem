@@ -222,7 +222,8 @@ public class InventoryManagementController {
     	
     	//intに変換可能か確認する
     	String noConfirmationStr = itemLogic.inputConfirmation(itemNo);
-    	if(noConfirmationStr.equals("数値を入力してください。")){
+    	if(noConfirmationStr.equals("true")){
+    	}else{
     		model.addAttribute("resultText", noConfirmationStr);
     		return "html/ArrivalManagement";
     	}
