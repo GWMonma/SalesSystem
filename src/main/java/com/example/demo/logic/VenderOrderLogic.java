@@ -64,4 +64,30 @@ public class VenderOrderLogic {
 		return returnList;
 	}
 	
+	//入荷前、入荷済みボタン用。データベースから発注履歴を取得する。
+	public ArrayList<VenderOrderModel> arrivalStateVenderOrderLogLogic(String selectBtn) {
+		ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
+		returnList = venderOrderJdbc.arrivalStateVenderOrderLog(selectBtn);
+		
+		return returnList;
+	}
+	
+	//入荷前、入荷済みボタン用。どのボタンが押されたか判断。
+	public String arrivalStateBtnStr(String selectBtn) {
+		String returnText = null;
+		if(selectBtn.equals("beforeArrival")) {
+			returnText = "入荷前";
+		
+		}else if(selectBtn.equals("available")) {
+			returnText = "入荷済み";
+		
+		}else{
+			returnText = "エラー";
+		
+		}
+		
+		return returnText;
+	
+	}
+	
 }
