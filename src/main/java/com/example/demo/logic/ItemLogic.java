@@ -36,9 +36,15 @@ public class ItemLogic {
 	//入力確認
 	public String inputConfirmation(String... inputNo) {
 		String returnText = "true";
+		int inputNoInt;
 		try {
 		for(String no: inputNo) {
-			Integer.parseInt(no);
+			inputNoInt = Integer.parseInt(no);
+			//負の数か判断する
+			
+			if(Math.signum(inputNoInt) == -1.0) {
+				return "負数の番号は存在しません。";
+			}
 		}
 		}catch(Exception ex){
 			returnText = "数値を入力してください。";
