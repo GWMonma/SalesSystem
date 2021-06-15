@@ -111,45 +111,44 @@ public class InventoryManagementController {
 //出荷管理↓
 	//データベースと照合して受注情報を表示(ボタン)
 	@RequestMapping("ClientOrderSearchButton")
-	public String orderSearchButton(@RequestParam(name="unentered" ,required = false) String unentered,@RequestParam(name="entered", required = false) String entered,@RequestParam(name="shipped", required = false) String shipped, Model model){
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getButtonClientOrderLog(unentered,entered,shipped);
+		public String orderSearchButton(@RequestParam("searchWord") String searchWord,Model model){
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
 		model.addAttribute("clientOrderList",list);
 		return "html/ShipmentManagement";
 	}
-		    
-	
+			    
+		
 	//商品名をデータベースと照合して受注情報を表示(フォーム)
 	@RequestMapping("ClientOrderSearchForm")
-	public String orderSearchForm(@RequestParam("item_name") String item_name, Model model){
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
+	public String orderSearchForm(@RequestParam("searchWord") String searchWord, Model model){
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
 		model.addAttribute("clientOrderList",list);
-		model.addAttribute("item_name", item_name);
+		model.addAttribute("item_name", searchWord);
 	  	return "html/ShipmentManagement";
 	}
-
 
 	//出荷予定日の更新
 	@RequestMapping("ShipmentDueDateUpdate")
 	public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("item_name") String item_name, Model model){
 	 	int totalItemNo = clientOrderJdbc.getClientOrderDataList().size();
-	    	String resultText = null;
+	    String resultText = null;
 	   	int no = -1;
-			try {
-				no = Integer.parseInt(client_order_no);
-			}catch(Exception ex){
-				model.addAttribute("resultText","数値を入力してください。");
-			        return "html/ShipmentManagement";
-			}
-		    	if(totalItemNo<no) {
-		    		resultText = "入力された番号は存在しません。";
-		    	}else{
-		    		resultText = clientOrderJdbc.shipmentDueDateUpdateJdbc(no,shipment_due_date);
-		    	}
+		try {
+			no = Integer.parseInt(client_order_no);
+		}catch(Exception ex){
+			model.addAttribute("resultText","数値を入力してください。");
+	        return "html/ShipmentManagement";
+		}
+		if(totalItemNo<no) {
+			resultText = "入力された番号は存在しません。";
+		}else{
+			resultText = clientOrderJdbc.shipmentDueDateUpdateJdbc(no,shipment_due_date);
+		}
 		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
 		model.addAttribute("clientOrderList",list);
 		model.addAttribute("item_name", item_name);
 		model.addAttribute("resultText",resultText);
-	        return "html/ShipmentManagement";
+		return "html/ShipmentManagement";
 	}
 		 	
 	
@@ -166,9 +165,9 @@ public class InventoryManagementController {
 			return "html/ShipmentManagement";
 		}
 		if(totalItemNo<no) {
-				resultText = "入力された番号は存在しません。";
+			resultText = "入力された番号は存在しません。";
 		}else{
-				resultText = clientOrderJdbc.shipmentDateUpdateJdbc(no);
+			resultText = clientOrderJdbc.shipmentDateUpdateJdbc(no);
 		}
 		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(item_name);
 		model.addAttribute("clientOrderList",list);
