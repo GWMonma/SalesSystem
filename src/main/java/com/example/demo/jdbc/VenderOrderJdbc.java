@@ -30,7 +30,6 @@ public class VenderOrderJdbc {
 		return "発注が完了しました。";
 	}
 	
-	
 	//発注履歴を取得
 	public ArrayList<VenderOrderModel> getVenderOrderLog(String searchWord){
 		ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
@@ -56,6 +55,38 @@ public class VenderOrderJdbc {
 		return returnList;
 	}
 	
+	//入荷前、入荷済みボタン用。発注履歴を取得
+		public ArrayList<VenderOrderModel> arrivalStateVenderOrderLog(String selectBtn){
+			ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
+			try {
+				String sql = null;
+				//入荷前の場合
+				if(selectBtn.equals("beforeArrival")){
+					sql = "SELECT * FROM venderorder WHERE arrival_date IS NULL";
+				
+				//入荷済みの場合
+				}else if(selectBtn.equals("available")) {
+					sql = "SELECT * FROM venderorder WHERE arrival_date IS NOT NULL";
+				}
+				List<Map<String, Object>> itemDataList = jdbcTemplate.queryForList(sql);
+				//格納する
+				for(Map<String, Object> mapData : itemDataList) {
+					VenderOrderModel returnData = new VenderOrderModel();
+					returnData.setVender_order_no((int)mapData.get("vender_order_no"));
+					returnData.setItem_name((String)mapData.get("item_name"));
+					returnData.setItem_product_no((String)mapData.get("item_product_no"));
+					returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+					returnData.setTotal_price((int)mapData.get("total_price"));
+					returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+					returnData.setArrival_due_date((Date)mapData.get("arrival_due_date"));
+					returnData.setArrival_date((Date)mapData.get("arrival_date"));
+					returnList.add(returnData);
+				}
+			}catch(Exception ex) {
+			
+			}
+			return returnList;
+		}
 	
 	//仕入れ管理　仕入日予定日の更新
 	public String arrivalDueDateUpdate(int vender_order_no) {
