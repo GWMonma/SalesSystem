@@ -106,7 +106,8 @@ public class VenderOrderManagementController {
 		}else{
 			model.addAttribute("searchList", returnList);
 		}	
-		model.addAttribute("resultText", "検索結果"+returnList.size()+"件");
+		model.addAttribute("resultText", "検索結果："+returnList.size()+"件");
+		model.addAttribute("searchWord", searchWord);
 		return "html/VenderOrderSearch";
 	}
 	
