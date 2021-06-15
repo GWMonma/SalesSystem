@@ -177,9 +177,7 @@ public class InventoryManagementController {
 	}
 //出荷管理↑
 	
-	
-
-	
+		
   //在庫の更新
     @RequestMapping("InventryUpdate")
   		public String inventoryadjustmentupdate(@RequestParam("item_no") String searchWord, @RequestParam("item_stock") String updateStock,Model model)
@@ -198,9 +196,11 @@ public class InventoryManagementController {
   			return "html/InventoryAdjustment";
   		}
 
+	
     //入荷確定処理
     @RequestMapping("ArrivalDateUpdate")
-    public String arrivalDueDateUpdate(@RequestParam("itemNo") String itemNo, @RequestParam("searchItemName") String searchItemName, Model model) {
+    public String arrivalDueDateUpdate(@RequestParam("itemNo") String itemNo, @RequestParam("searchItemName") String searchItemName, @RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model) {
+    	System.out.println(search+"で検索。itemName："+searchItemName+"　btnName："+selectBtn);
     	//intに変換可能か確認する
     	String noConfirmationStr = itemLogic.inputConfirmation(itemNo);
     	if(noConfirmationStr.equals("数値を入力してください。")){
@@ -212,12 +212,21 @@ public class InventoryManagementController {
     	String resultText = itemLogic.checkItemNoLogic(Integer.parseInt(itemNo));
     	model.addAttribute("resultText", resultText);
     	
+    	//検索方法によって取得情報を変更する
     	ArrayList<VenderOrderModel> searchList = new ArrayList<VenderOrderModel>();
-    	System.out.println("searchItemName:"+searchItemName);
-    	if(searchItemName.equals("")) {
-    	}else{
+    	//キーワード検索
+    	if(selectBtn==null) {
+    	}else if(search.equals("word")){
     		searchList = venderOrderLogic.getVenderOrderLog(searchItemName);
+    		model.addAttribute("search", "word");
     		model.addAttribute("searchItemName", searchItemName);
+    	}
+    	//button検索
+    	if(searchItemName==null) {
+    	}else if(search.equals("button")){
+    		searchList = venderOrderLogic.arrivalStateVenderOrderLogLogic(selectBtn);
+    		model.addAttribute("search", "button");
+        	model.addAttribute("selectBtn", selectBtn);
     	}
     	if(searchList.size()>0) {
     		model.addAttribute("searchList", searchList);
@@ -225,18 +234,37 @@ public class InventoryManagementController {
         return "html/ArrivalManagement";
     }
     
+	
     //検索機能
-    @RequestMapping("ArrivalDataSearch")
+    @RequestMapping("ArrivalDataKeywordSearch")
     public String arrivalDateSearch(@RequestParam("searchItemName") String searchItemName, Model model) {
     	ArrayList<VenderOrderModel> searchList = venderOrderLogic.getVenderOrderLog(searchItemName);
     	if(searchList.size()>0) {
     		model.addAttribute("searchList", searchList);
     	}
     	model.addAttribute("resultText", "検索結果："+searchList.size()+"件");
+    	model.addAttribute("search", "word");
     	model.addAttribute("searchItemName", searchItemName);
     	return "html/ArrivalManagement";
     }
-
-
+    
+	
+    //入荷前、入荷済みボタン用。検索機能
+    @RequestMapping("ArrivalDataSearch")
+    public String arrivalDataSearchBtn(@RequestParam("selectBtn") String selectBtn, Model model) {
+    	String selectBtnText = venderOrderLogic.arrivalStateBtnStr(selectBtn);
+    	if(selectBtnText.equals("エラー")) {
+    		model.addAttribute("resultText", selectBtnText+"が発生しました。");
+    		return "html/ArrivalManagement";
+    	}
+    	ArrayList<VenderOrderModel> searchList = venderOrderLogic.arrivalStateVenderOrderLogLogic(selectBtn);
+    	if(searchList.size()>0) {
+    		model.addAttribute("searchList", searchList);
+    	}
+    	model.addAttribute("search", "button");
+    	model.addAttribute("selectBtn", selectBtn);
+    	model.addAttribute("resultText", selectBtnText+"："+searchList.size()+"件");
+    	return "html/ArrivalManagement";
+    }
 
 }
