@@ -75,5 +75,35 @@ public class ClientOrderJdbc {
 			}
 			return returnList;
 		}
+		
+
+		//受注情報を全件取得
+		public  ArrayList<ClientOrderModel> getClientOrderDataList(){
+			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+			try {
+			String sql = "SELECT * FROM clientorder";
+			List <Map<String, Object>> clientOrderDataList = this.jdbcTemplate.queryForList(sql);
+			//格納する
+			for(Map<String, Object> clientOrderData : clientOrderDataList) {
+				ClientOrderModel returnData = new ClientOrderModel();
+				returnData.setClient_order_no((int)clientOrderData.get("client_order_no"));
+				returnData.setItem_name((String)clientOrderData.get("item_name"));
+				returnData.setItem_product_no((String)clientOrderData.get("item_product_no"));
+				returnData.setItem_buy_count((int)clientOrderData.get("item_buy_count"));
+				returnData.setTotal_price((int)clientOrderData.get("total_price"));
+				returnData.setItem_buy_date((Date)clientOrderData.get("item_buy_date"));
+				returnData.setShipment_due_date((Date)clientOrderData.get("shipment_due_date"));
+				returnData.setShipment_date((Date)clientOrderData.get("shipment_date"));
+				returnList.add(returnData);
+			}
+			}catch(Exception ex) {
+				return null;
+			}
+			return returnList;
+		}
+		
+		
+		
+		
 
 }
