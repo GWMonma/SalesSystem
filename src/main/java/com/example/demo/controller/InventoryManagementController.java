@@ -201,6 +201,25 @@ public class InventoryManagementController {
     @RequestMapping("ArrivalDateUpdate")
     public String arrivalDueDateUpdate(@RequestParam("itemNo") String itemNo, @RequestParam("searchItemName") String searchItemName, @RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model) {
     	System.out.println(search+"で検索。itemName："+searchItemName+"　btnName："+selectBtn);
+    	
+    	//検索方法によって取得情報を変更する
+    	ArrayList<VenderOrderModel> searchList = new ArrayList<VenderOrderModel>();
+    	//キーワード検索
+    	if(selectBtn.equals("")&& search.equals("word")){
+    		searchList = venderOrderLogic.getVenderOrderLog(searchItemName);
+    		model.addAttribute("search", "word");
+    		model.addAttribute("searchItemName", searchItemName);
+    	}
+    	//button検索
+    	if(searchItemName.equals("") && search.equals("button")){
+    		searchList = venderOrderLogic.getVenderOrderLog(selectBtn, "button");
+    		model.addAttribute("search", "button");
+        	model.addAttribute("selectBtn", selectBtn);
+    	}
+    	if(searchList.size()>0) {
+    		model.addAttribute("searchList", searchList);
+    	}
+    	
     	//intに変換可能か確認する
     	String noConfirmationStr = itemLogic.inputConfirmation(itemNo);
     	if(noConfirmationStr.equals("数値を入力してください。")){
@@ -212,25 +231,6 @@ public class InventoryManagementController {
     	String resultText = itemLogic.checkItemNoLogic(Integer.parseInt(itemNo));
     	model.addAttribute("resultText", resultText);
     	
-    	//検索方法によって取得情報を変更する
-    	ArrayList<VenderOrderModel> searchList = new ArrayList<VenderOrderModel>();
-    	//キーワード検索
-    	if(selectBtn==null) {
-    	}else if(search.equals("word")){
-    		searchList = venderOrderLogic.getVenderOrderLog(searchItemName);
-    		model.addAttribute("search", "word");
-    		model.addAttribute("searchItemName", searchItemName);
-    	}
-    	//button検索
-    	if(searchItemName==null) {
-    	}else if(search.equals("button")){
-    		searchList = venderOrderLogic.getVenderOrderLog(selectBtn, "button");
-    		model.addAttribute("search", "button");
-        	model.addAttribute("selectBtn", selectBtn);
-    	}
-    	if(searchList.size()>0) {
-    		model.addAttribute("searchList", searchList);
-    	}
         return "html/ArrivalManagement";
     }
     
