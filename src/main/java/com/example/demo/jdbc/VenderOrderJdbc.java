@@ -47,6 +47,7 @@ public class VenderOrderJdbc {
 				returnData.setTotal_price((int)mapData.get("total_price"));
 				returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
 				returnData.setArrival_due_date((Date)mapData.get("arrival_due_date"));
+				returnData.setArrival_date((Date)mapData.get("arrival_date"));
 				returnList.add(returnData);
 			}
 		}catch(Exception ex) {
