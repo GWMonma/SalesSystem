@@ -36,13 +36,14 @@ public class VenderOrderManagementController {
 		int buyCount = -1;
 		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
 		model.addAttribute("list", list);
-		try {
+		String retrunText = itemLogic.inputConfirmation(itemNo, itemBuyCount);
+		if(retrunText.equals("true")){
 			no = Integer.parseInt(itemNo);
 			buyCount = Integer.parseInt(itemBuyCount);
-		}catch(Exception ex){
-			model.addAttribute("resultText","数値を入力してください。");
+    	}else{
+    		model.addAttribute("resultText",retrunText);
 	        return "html/VenderOrderInput";
-		}
+    	}
 		
 		int totalItemNo = itemJdbc.getItemDataList().size();
     	if(totalItemNo<no) {
