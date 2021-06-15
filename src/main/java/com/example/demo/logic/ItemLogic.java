@@ -35,12 +35,10 @@ public class ItemLogic {
 
 	//入力確認
 	public String inputConfirmation(String... inputNo) {
-		String returnText = "intTrue";
-		int n = -1;
+		String returnText = "true";
 		try {
 		for(String no: inputNo) {
-			System.out.println(no);
-			n = Integer.parseInt(no);
+			Integer.parseInt(no);
 		}
 		}catch(Exception ex){
 			returnText = "数値を入力してください。";
