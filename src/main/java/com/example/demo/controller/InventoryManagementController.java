@@ -224,7 +224,7 @@ public class InventoryManagementController {
     	//button検索
     	if(searchItemName==null) {
     	}else if(search.equals("button")){
-    		searchList = venderOrderLogic.arrivalStateVenderOrderLogLogic(selectBtn);
+    		searchList = venderOrderLogic.getVenderOrderLog(selectBtn, "button");
     		model.addAttribute("search", "button");
         	model.addAttribute("selectBtn", selectBtn);
     	}
@@ -234,7 +234,6 @@ public class InventoryManagementController {
         return "html/ArrivalManagement";
     }
     
-	
     //検索機能
     @RequestMapping("ArrivalDataKeywordSearch")
     public String arrivalDateSearch(@RequestParam("searchItemName") String searchItemName, Model model) {
@@ -248,7 +247,6 @@ public class InventoryManagementController {
     	return "html/ArrivalManagement";
     }
     
-	
     //入荷前、入荷済みボタン用。検索機能
     @RequestMapping("ArrivalDataSearch")
     public String arrivalDataSearchBtn(@RequestParam("selectBtn") String selectBtn, Model model) {
@@ -257,7 +255,7 @@ public class InventoryManagementController {
     		model.addAttribute("resultText", selectBtnText+"が発生しました。");
     		return "html/ArrivalManagement";
     	}
-    	ArrayList<VenderOrderModel> searchList = venderOrderLogic.arrivalStateVenderOrderLogLogic(selectBtn);
+    	ArrayList<VenderOrderModel> searchList = venderOrderLogic.getVenderOrderLog(selectBtn, "button");
     	if(searchList.size()>0) {
     		model.addAttribute("searchList", searchList);
     	}
