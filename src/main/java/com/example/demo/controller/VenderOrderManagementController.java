@@ -19,6 +19,9 @@ public class VenderOrderManagementController {
 	private VenderOrderLogic venderOrderLogic;
 	
 	@Autowired
+	private ItemLogic itemLogic;
+	
+	@Autowired
 	private ItemJdbc itemJdbc;
 	
 	//ページを表示
