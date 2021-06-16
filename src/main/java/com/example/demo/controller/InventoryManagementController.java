@@ -113,7 +113,10 @@ public class InventoryManagementController {
 	@RequestMapping("ClientOrderSearchButton")
 		public String orderSearchButton(@RequestParam("searchWord") String searchWord,Model model){
 		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
-		model.addAttribute("clientOrderList",list);
+		if(list.size()>0) {
+			model.addAttribute("clientOrderList",list);
+    	}
+		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 		return "html/ShipmentManagement";
 	}
 			    
@@ -122,59 +125,50 @@ public class InventoryManagementController {
 	@RequestMapping("ClientOrderSearchForm")
 	public String orderSearchForm(@RequestParam("searchWord") String searchWord, Model model){
 		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
-		model.addAttribute("clientOrderList",list);
+		if(list.size()>0) {
+			model.addAttribute("clientOrderList",list);
+    	}
 		model.addAttribute("item_name", searchWord);
+		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	  	return "html/ShipmentManagement";
 	}
 
 	//出荷予定日の更新
 	@RequestMapping("ShipmentDueDateUpdate")
 	public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord, Model model){
-	 	int totalItemNo = clientOrderJdbc.getClientOrderDataList().size();
-	    String resultText = null;
-	   	int no = -1;
-		try {
-			no = Integer.parseInt(client_order_no);
-		}catch(Exception ex){
-			model.addAttribute("resultText","数値を入力してください。");
-	        return "html/ShipmentManagement";
-		}
-		if(totalItemNo<no) {
-			resultText = "入力された番号は存在しません。";
-		}else{
-			resultText = clientOrderJdbc.shipmentDueDateUpdateJdbc(no,shipment_due_date);
-		}
+		//intに変換可能か確認する
+    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
+    	if(noConfirmationStr.equals("true")){
+    	}else{
+    		model.addAttribute("resultText", noConfirmationStr);
+    		return "html/ShipmentManagement";
+    	}
+    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
 		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
 		model.addAttribute("clientOrderList",list);
 		model.addAttribute("item_name", searchWord);
-		model.addAttribute("resultText",resultText);
+		model.addAttribute("resultText",returnText);
 		return "html/ShipmentManagement";
 	}
 		 	
 	
 	//出荷日の更新(出荷確定処理)
-	@RequestMapping("ShipmentDateUpdate")
-	public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord, Model model){
-		int totalItemNo = clientOrderJdbc.getClientOrderDataList().size();
-		String resultText = null;
-		int no = -1;
-		try {
-			no = Integer.parseInt(client_order_no);
-		}catch(Exception ex){
-			model.addAttribute("resultText","数値を入力してください。");
+		@RequestMapping("ShipmentDateUpdate")
+		public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord, Model model){
+			//intに変換可能か確認する
+	    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
+	    	if(noConfirmationStr.equals("true")){
+	    	}else{
+	    		model.addAttribute("resultText", noConfirmationStr);
+	    		return "html/ShipmentManagement";
+	    	}
+	    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
+			ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
+			model.addAttribute("clientOrderList",list);
+			model.addAttribute("item_name", searchWord);
+			model.addAttribute("resultText",returnText);
 			return "html/ShipmentManagement";
 		}
-		if(totalItemNo<no) {
-			resultText = "入力された番号は存在しません。";
-		}else{
-			resultText = clientOrderJdbc.shipmentDateUpdateJdbc(no);
-		}
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
-		model.addAttribute("clientOrderList",list);
-		model.addAttribute("item_name", searchWord);
-		model.addAttribute("resultText",resultText);
-		return "html/ShipmentManagement";
-	}
 //出荷管理↑
 	
 		
