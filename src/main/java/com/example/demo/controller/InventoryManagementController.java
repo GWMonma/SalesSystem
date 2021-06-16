@@ -111,8 +111,13 @@ public class InventoryManagementController {
 //出荷管理↓
 	//データベースと照合して受注情報を表示(ボタン)
 	@RequestMapping("ClientOrderSearchButton")
-		public String orderSearchButton(@RequestParam("searchWord") String searchWord,Model model){
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
+		public String orderSearchButton(@RequestParam("selectBtn") String selectBtn,Model model){
+		String selectBtnText = itemLogic.shipmentStateBtnStr(selectBtn);
+		if(selectBtnText.equals("エラー")) {
+    		model.addAttribute("resultText", selectBtnText+"が発生しました。");
+    		return "html/ArrivalManagement";
+    	}
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(selectBtnText);
 		if(list.size()>0) {
 			model.addAttribute("clientOrderList",list);
     	}
@@ -134,27 +139,8 @@ public class InventoryManagementController {
 	}
 
 	//出荷予定日の更新
-	@RequestMapping("ShipmentDueDateUpdate")
-	public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord, Model model){
-		//intに変換可能か確認する
-    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
-    	if(noConfirmationStr.equals("true")){
-    	}else{
-    		model.addAttribute("resultText", noConfirmationStr);
-    		return "html/ShipmentManagement";
-    	}
-    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
-		model.addAttribute("clientOrderList",list);
-		model.addAttribute("item_name", searchWord);
-		model.addAttribute("resultText",returnText);
-		return "html/ShipmentManagement";
-	}
-		 	
-	
-	//出荷日の更新(出荷確定処理)
-		@RequestMapping("ShipmentDateUpdate")
-		public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord, Model model){
+		@RequestMapping("ShipmentDueDateUpdate")
+		public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord, Model model){
 			//intに変換可能か確認する
 	    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
 	    	if(noConfirmationStr.equals("true")){
@@ -169,6 +155,25 @@ public class InventoryManagementController {
 			model.addAttribute("resultText",returnText);
 			return "html/ShipmentManagement";
 		}
+		 	
+	
+		//出荷日の更新(出荷確定処理)
+				@RequestMapping("ShipmentDateUpdate")
+				public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord, Model model){
+					//intに変換可能か確認する
+			    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
+			    	if(noConfirmationStr.equals("true")){
+			    	}else{
+			    		model.addAttribute("resultText", noConfirmationStr);
+			    		return "html/ShipmentManagement";
+			    	}
+			    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
+					ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
+					model.addAttribute("clientOrderList",list);
+					model.addAttribute("item_name", searchWord);
+					model.addAttribute("resultText",returnText);
+					return "html/ShipmentManagement";
+				}
 //出荷管理↑
 	
 		
