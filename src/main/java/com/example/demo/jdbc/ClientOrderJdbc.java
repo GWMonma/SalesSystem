@@ -43,7 +43,7 @@ public class ClientOrderJdbc {
 				List<Map<String, Object>> itemDataList;
 				if(searchWord.equals("出荷予定日未入力の商品")) {
 					//出荷予定日未記入の情報を取得
-					String sql = "select * from clientorder where shipment_due_date is null";
+					String sql = "select * from clientorder where shipment_due_date is null && shipment_date is null";
 					itemDataList = jdbcTemplate.queryForList(sql);
 				}else if(searchWord.equals("出荷前の商品")) {
 					//出荷予定日記入済みかつ未出荷の情報を取得
@@ -119,6 +119,9 @@ public class ClientOrderJdbc {
 			}
 			return returnText;
 		}
+		
+		
+		
 		
 
 }
