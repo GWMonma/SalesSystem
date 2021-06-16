@@ -10,14 +10,17 @@
 	商品番号<input type="text" name="client_order_no" size=5 required>
 	出荷日<input type="date" name="shipment_due_date" size=10 required>
 	<input type="submit" value="出荷予定日更新">
-	<input type="hidden" name="searchWord" th:value="${item_name}" />	
+	<input type="hidden" name="searchWord" th:value="${item_name}" />
+	<input type="hidden" name="selectBtn" th:value="${selectBtn}"/>
+	<input type="hidden" name="search" th:value="${search}"/>	
 	</form>
 	
 	<form method="POST" action="ShipmentDateUpdate">
 	商品番号<input type="text" name="client_order_no" size=5 required>
 	<input type="submit" value="出荷">
 	<input type="hidden" name="searchWord" th:value="${item_name}" />
-	
+	<input type="hidden" name="selectBtn" th:value="${selectBtn}"/>
+	<input type="hidden" name="search" th:value="${search}"/>	
 	</form>
 	 
 	<form method="POST" action="ClientOrderSearchButton" >
