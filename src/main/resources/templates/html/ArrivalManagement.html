@@ -27,7 +27,14 @@
 	<br>
 	<hr width="100%" size="3" noshade>
 	
-	<h4>入荷情報検索</h4>
+	<div th:if="${searchResultText != null}">
+		<h4 th:text="'入荷情報検索　'+${searchResultText}"></h4>
+	</th:if>
+	</div>
+	<div th:if="${searchResultText == null}">
+		<h4>入荷情報検索</h4>
+	</th:if>
+	</div>
 	<form method="POST" action="ArrivalDataSearch">
 		<button type="submit" name="selectBtn" value="beforeArrival">入荷前</button>
 		<button type="submit" name="selectBtn" value="available">入荷済み</button>
