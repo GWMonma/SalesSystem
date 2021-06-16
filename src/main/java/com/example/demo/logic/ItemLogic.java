@@ -81,4 +81,43 @@ public class ItemLogic {
 
 		return returnText;
 	}
+	
+	
+//出荷管理↓
+	//出荷確定処理を行う前の確認処理
+			public String checkClientOrderNoLogic(int client_order_no) {
+				String returnText = "";
+				int clientOrderLogSize = clientOrderJdbc.getClientOrderLog("").size();
+				String checkShipmentDate = clientOrderJdbc.CheckShipmentDue(client_order_no);
+				//番号が存在するか確認
+		    	if(client_order_no>clientOrderLogSize) {
+		    		return "出荷番号が存在しません。";
+		    	}
+
+		    	//出荷確定済みか確認
+		    	if(checkShipmentDate == null) {
+		        	//出荷確定処理を行う
+		    		returnText = shipmentFixingLogic(client_order_no);
+		    	}else if(checkShipmentDate.equals("出荷済み")){
+		    		returnText = "出荷済みです。";
+		    	}else {
+		    		returnText = "エラーが発生しました。";
+		    	}
+
+				return returnText;
+			}
+			
+			
+	//出荷確定処理
+		public String shipmentFixingLogic(int client_order_no) {
+			String returnText = clientOrderJdbc.shipmentDateUpdateJdbc(client_order_no);
+			return returnText;
+		}
+		
+	//出荷日更新処理
+		public String shipmentDueDateUpdateLogic(int client_order_no,String shipment_due_date) {
+			String returnText = clientOrderJdbc.shipmentDueDateUpdateJdbc(client_order_no,shipment_due_date);
+			return returnText;
+		}
+//出荷管理↑
 }
