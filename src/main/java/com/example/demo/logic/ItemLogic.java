@@ -119,5 +119,28 @@ public class ItemLogic {
 			String returnText = clientOrderJdbc.shipmentDueDateUpdateJdbc(client_order_no,shipment_due_date);
 			return returnText;
 		}
+		
+		
+
+	//どのボタンが押されたか判断
+		public String shipmentStateBtnStr(String selectBtn) {
+			String returnText = null;
+			if(selectBtn.equals("shipped")) {
+				returnText = "出荷済みの商品";
+				
+			}else if(selectBtn.equals("entered")) {
+				returnText = "出荷前の商品";
+				
+			}else if(selectBtn.equals("unentered")) {
+				returnText="出荷予定日未入力の商品";
+			}
+			else{
+				returnText = "エラー";
+			}
+				
+			return returnText;
+			
+		}
+		
 //出荷管理↑
 }
