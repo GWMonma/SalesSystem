@@ -22,7 +22,7 @@ public class ClientOrderJdbc {
 		}catch(Exception ex) {
 			return "エラーが発生しました。";
 		}
-		return "更新が完了しました。";
+		return "出荷予定日の更新が完了しました。";
 	}
 	
 	//出荷日の更新
@@ -32,7 +32,7 @@ public class ClientOrderJdbc {
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
 			}
-			return "更新が完了しました。";
+			return "出荷が完了しました。";
 		}
 	
 	
@@ -102,8 +102,23 @@ public class ClientOrderJdbc {
 			return returnList;
 		}
 		
-		
-		
+		//出荷確定済みか確認する処理
+		public String CheckShipmentDue(int client_order_no) {
+			String returnText = null;
+			try {
+				String sql = "SELECT shipment_date FROM clientorder WHERE client_order_no = ?";
+				Map<String, Object> data = this.jdbcTemplate.queryForMap(sql, client_order_no);
+				if(data.get("shipment_date")==null) {
+					returnText = null;
+				}else{
+					returnText = "出荷済み";
+				}
+				
+			}catch(Exception ex) {
+				return "エラーが発生しました。";
+			}
+			return returnText;
+		}
 		
 
 }
