@@ -45,6 +45,9 @@ public class ItemLogic {
 			if(Math.signum(inputNoInt) == -1.0) {
 				return "負数の番号は存在しません。";
 			}
+			if(inputNoInt==0) {
+				return "入力された番号は存在しません。";
+			}
 		}
 		}catch(Exception ex){
 			returnText = "数値を入力してください。";
