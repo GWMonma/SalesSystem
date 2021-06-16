@@ -64,8 +64,8 @@
 			<td th:text="*{item_name}"/></td>
 			<td th:text="*{item_product_no}"/></td>
 			<td th:text="*{item_buy_count}"/></td>
-			<td th:text="*{arrival_due_date}"/></td>
-			<td th:text="*{arrival_date}"/></td>
+			<td th:text="*{arrival_due_date} ?: '未入力'"/></td>
+			<td th:text="*{arrival_date} ?: '未入力'"/></td>
 		</tr>
 		</th:each>
 	</table>
