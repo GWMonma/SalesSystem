@@ -10,36 +10,36 @@
 	商品番号<input type="text" name="client_order_no" size=5 required>
 	出荷日<input type="date" name="shipment_due_date" size=10 required>
 	<input type="submit" value="出荷予定日更新">
-	<input type="hidden" name="searchWord" th:value="${item_name}" />
+	<input type="hidden" name="searchWord" th:value="${item_name}" />	
 	</form>
 	
 	<form method="POST" action="ShipmentDateUpdate">
 	商品番号<input type="text" name="client_order_no" size=5 required>
 	<input type="submit" value="出荷">
 	<input type="hidden" name="searchWord" th:value="${item_name}" />
+	
 	</form>
 	 
 	<form method="POST" action="ClientOrderSearchButton" >
-	<input type="submit" name="searchWord" value="出荷予定日未入力の商品">
-	<input type="submit" name="searchWord" value="出荷前の商品">
-	<input type="submit" name="searchWord" value="出荷済みの商品">
+	<button type="submit" name="selectBtn" value="unentered">出荷日予定未入力</button>
+	<button type="submit" name="selectBtn" value="entered">出荷前</button>
+	<button type="submit" name="selectBtn" value="shipped">出荷済</button>
 	</form>
 	<form method="POST" action="ClientOrderSearchForm" >
 	商品名<input type="text" name="searchWord" th:value="${item_name}" required>	
 	<input type="submit" value="検索">
 	</form>
-	
-	
-<div th:if="${clientOrderList != null}">
-	
-	<br>
 	<div th:if="${resultText} != null"> 
 		<h3 th:text="${resultText}"></h3>
   	</div>
+	
+<div th:if="${clientOrderList != null}">
+	
+	
   	
 	<table border="1">
 		<tr>
-			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>金額</th><th>受注日</th><th>出荷予定日</th><th>出荷日</th><th>出荷</th>
+			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>金額</th><th>受注日</th><th>出荷予定日</th><th>出荷日</th>
 		</tr>
 		<tr th:each="list : ${clientOrderList}">
 
@@ -51,7 +51,6 @@
 			<td th:text="${list.item_buy_date}"></td>
 			<td th:text="${list.shipment_due_date ?: '未入力'}"></td>
 			<td th:text="${list.shipment_date} ?: '未入力'"></td>
-			<td th:if="${list.shipment_date} != null">〇</td>
 			
 		</tr>
 	</table>
