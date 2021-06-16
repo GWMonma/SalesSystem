@@ -121,6 +121,8 @@ public class InventoryManagementController {
 		if(list.size()>0) {
 			model.addAttribute("clientOrderList",list);
     	}
+		model.addAttribute("search", "button");
+		model.addAttribute("selectBtn", selectBtn);
 		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 		return "html/ShipmentManagement";
 	}
@@ -134,13 +136,51 @@ public class InventoryManagementController {
 			model.addAttribute("clientOrderList",list);
     	}
 		model.addAttribute("item_name", searchWord);
+		model.addAttribute("search", "word");
 		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	  	return "html/ShipmentManagement";
 	}
 
 	//出荷予定日の更新
 		@RequestMapping("ShipmentDueDateUpdate")
-		public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord, Model model){
+		public String shipmentDueDateUpdate(@RequestParam("client_order_nso") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+			ArrayList<ClientOrderModel> list = new ArrayList<ClientOrderModel>();
+			//intに変換可能か確認する
+	    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
+	    	if(noConfirmationStr.equals("true")){
+	    	}else{
+	    		model.addAttribute("resultText", noConfirmationStr);
+	    		return "html/ShipmentManagement";
+	    	}
+	    	String returnText = itemLogic.checkShipmentDueDateLogic(Integer.parseInt(client_order_no),shipment_due_date);
+			model.addAttribute("resultText",returnText);
+			
+	    	//キーワード検索
+	    	if(selectBtn.equals("")&& search.equals("word")){
+				list = clientOrderJdbc.getClientOrderLog(searchWord);
+	    		model.addAttribute("search", "word");
+	    		model.addAttribute("item_name", searchWord);
+	    		model.addAttribute("resultText", "検索結果："+list.size()+"件");
+	    	}
+	    	//button検索
+	    	if(searchWord.equals("") && search.equals("button")){
+	    		String selectBtnText = itemLogic.shipmentStateBtnStr(selectBtn);
+	    		list = clientOrderJdbc.getClientOrderLog(selectBtnText);
+	    		model.addAttribute("search", "button");
+	        	model.addAttribute("selectBtn", selectBtn);
+	        	model.addAttribute("resultText", selectBtnText+"："+list.size()+"件");
+	    	}
+	    	if(list.size()>0) {
+	    		model.addAttribute("clientOrderList", list);
+	    	}
+
+			return "html/ShipmentManagement";
+		}
+		 	
+		//出荷日の更新(出荷確定処理)
+		@RequestMapping("ShipmentDateUpdate")
+		public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+			ArrayList<ClientOrderModel> list = new ArrayList<ClientOrderModel>();
 			//intに変換可能か確認する
 	    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
 	    	if(noConfirmationStr.equals("true")){
@@ -149,32 +189,31 @@ public class InventoryManagementController {
 	    		return "html/ShipmentManagement";
 	    	}
 	    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
-			ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
-			model.addAttribute("clientOrderList",list);
-			model.addAttribute("item_name", searchWord);
-			model.addAttribute("resultText",returnText);
+	    	model.addAttribute("resultText",returnText);
+	    	
+			//キーワード検索
+	    	if(selectBtn.equals("")&& search.equals("word")){
+				list = clientOrderJdbc.getClientOrderLog(searchWord);
+	    		model.addAttribute("search", "word");
+	    		model.addAttribute("item_name", searchWord);
+	    		model.addAttribute("resultText", "検索結果："+list.size()+"件");
+	    	}
+	    	//button検索
+	    	if(searchWord.equals("") && search.equals("button")){
+	    		String selectBtnText = itemLogic.shipmentStateBtnStr(selectBtn);
+	    		list = clientOrderJdbc.getClientOrderLog(selectBtnText);
+	    		model.addAttribute("search", "button");
+	        	model.addAttribute("selectBtn", selectBtn);
+	        	model.addAttribute("resultText", selectBtnText+"："+list.size()+"件");
+	    	}
+	    	if(list.size()>0) {
+	    		model.addAttribute("clientOrderList", list);
+	    	}
+			
 			return "html/ShipmentManagement";
 		}
-		 	
-	
-		//出荷日の更新(出荷確定処理)
-				@RequestMapping("ShipmentDateUpdate")
-				public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord, Model model){
-					//intに変換可能か確認する
-			    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
-			    	if(noConfirmationStr.equals("true")){
-			    	}else{
-			    		model.addAttribute("resultText", noConfirmationStr);
-			    		return "html/ShipmentManagement";
-			    	}
-			    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
-					ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
-					model.addAttribute("clientOrderList",list);
-					model.addAttribute("item_name", searchWord);
-					model.addAttribute("resultText",returnText);
-					return "html/ShipmentManagement";
-				}
 //出荷管理↑
+	
 	
 		
   //在庫の更新
