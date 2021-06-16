@@ -203,12 +203,15 @@ public class InventoryManagementController {
     		searchList = venderOrderLogic.getVenderOrderLog(searchItemName);
     		model.addAttribute("search", "word");
     		model.addAttribute("searchItemName", searchItemName);
+    		model.addAttribute("searchResultText", "検索結果："+searchList.size()+"件");
     	}
     	//button検索
     	if(searchItemName.equals("") && search.equals("button")){
     		searchList = venderOrderLogic.getVenderOrderLog(selectBtn, "button");
+    		String selectBtnText = venderOrderLogic.arrivalStateBtnStr(selectBtn);
     		model.addAttribute("search", "button");
         	model.addAttribute("selectBtn", selectBtn);
+        	model.addAttribute("searchResultText", selectBtnText+"："+searchList.size()+"件");
     	}
     	if(searchList.size()>0) {
     		model.addAttribute("searchList", searchList);
@@ -236,7 +239,7 @@ public class InventoryManagementController {
     	if(searchList.size()>0) {
     		model.addAttribute("searchList", searchList);
     	}
-    	model.addAttribute("resultText", "検索結果："+searchList.size()+"件");
+    	model.addAttribute("searchResultText", "検索結果："+searchList.size()+"件");
     	model.addAttribute("search", "word");
     	model.addAttribute("searchItemName", searchItemName);
     	return "html/ArrivalManagement";
@@ -256,8 +259,8 @@ public class InventoryManagementController {
     	}
     	model.addAttribute("search", "button");
     	model.addAttribute("selectBtn", selectBtn);
-    	model.addAttribute("resultText", selectBtnText+"："+searchList.size()+"件");
+    	model.addAttribute("searchResultText", selectBtnText+"："+searchList.size()+"件");
     	return "html/ArrivalManagement";
     }
-
+	
 }
