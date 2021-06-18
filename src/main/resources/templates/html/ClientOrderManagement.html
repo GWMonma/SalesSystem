@@ -5,8 +5,24 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+	<input type="submit" value="管理者メニューへ">
+	</form>
 <h1>受注管理画面</h1>
 <p th:text=" ${message}" />
+
+
+<form action="#" th:action="@{/ClientOrderInput}" method="post">
+     <input type="submit" value="受注入力">
+   </form>
+
+   <form action="#" th:action="@{/ClientOrderSearch}" method="post">
+     <input type="submit" value="受注検索">
+   </form>
+   
+   <form action="#" th:action="@{/logout}" method="post">
+    <input type="submit" value="logout">
+    </form>
 
 
 </body>
