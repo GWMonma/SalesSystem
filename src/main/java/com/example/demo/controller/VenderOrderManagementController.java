@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.jdbc.ItemJdbc;
+import com.example.demo.logic.ItemLogic;
 import com.example.demo.logic.VenderOrderLogic;
 import com.example.demo.model.InventoryModel;
 import com.example.demo.model.VenderOrderModel;
