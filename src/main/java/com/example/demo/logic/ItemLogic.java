@@ -47,7 +47,7 @@ public class ItemLogic {
 			//負の数か判断する
 			
 			if(Math.signum(inputNoInt) == -1.0) {
-				return "負数の番号は存在しません。";
+				return "負数は入力できません。";
 			}
 			if(inputNoInt==0) {
 				return "入力された番号は存在しません。";
