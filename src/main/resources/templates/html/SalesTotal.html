@@ -3,13 +3,69 @@
 <head>
     <title>売上集計</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>売上集計画面</h1>
-<p th:text=" ${message}" />
 
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
+<header class="header">
+
+       <div class="header_wrap">
+       	<h1 class="header_ttl">売上集計</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+<div th:if="${resultText == null}">
+	<h4>商品名を入力してください。</h4>
+</th:if>
+</div>
+<div th:if="${resultText != null}">
+	<h4 th:text="${resultText}"></h4>
+</th:if>
+</div>
+
+<!-- 検索 -->
+<form method="POST" action="SalesSearch" >
+	商品名<input type="text" name="item_name" th:value="${item_name}" required>
+	<input type="submit" value="検索">
 </form>
+
+<div th:if="${searchList != null}">
+	<table border="1" align="center">
+		<tr>
+			<th>No</th>
+			<th>商品名</th>
+			<th>数量</th>
+			<th>金額</th>
+			<th>売上日</th>
+		</tr>
+		<tr th:each="orderData : ${searchList}" th:object="${orderData}">
+			<td th:text="*{client_order_no}"/></td>
+			<td th:text="*{item_name}"/></td>
+			<td th:text="*{item_buy_count}"/></td>
+			<td th:text="*{total_price}"/></td>
+			<td th:text="*{item_buy_date}"/></td>
+		</tr>
+		</th:each>
+	</table>
+</th:if>
+</div>
+
 </body>
 </html>
