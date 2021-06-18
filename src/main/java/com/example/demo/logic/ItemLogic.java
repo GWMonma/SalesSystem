@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.jdbc.ClientOrderJdbc;
 import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.jdbc.VenderOrderJdbc;
 import com.example.demo.model.InventoryModel;
@@ -16,6 +17,9 @@ public class ItemLogic {
 
 	@Autowired
 	ItemJdbc itemjdbc;
+	
+	@Autowired
+	ClientOrderJdbc clientOrderJdbc;
 
 	//データベースから在庫履歴を取得する。
 			public ArrayList<InventoryModel>getInventoryLog(String searchWord) {
