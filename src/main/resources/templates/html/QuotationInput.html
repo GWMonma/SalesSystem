@@ -5,8 +5,68 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<h1>見積入力画面</h1>
-<p th:text=" ${message}" />
+<h2>見積情報入力</h2>
+	<div th:if="${resultText == null}">
+		<h4>見積情報を入力してください。</h4>
+	</th:if>
+	</div>
+	<div th:if="${resultText != null}">
+		<h4 th:text="${resultText}"></h4>
+	</th:if>
+	</div>
+	
+	<div th:if="${totalPrice == null}">
+		<form method="POST" action="Quotationcheck">
+			商品No<input type="text" name="itemNo" required/>
+			<br><br>
+			個　数<input type="text" name="itemBuyCount" required/>
+			<br><br>
+			金　額<input type="text" name="totalPrice" value="未定" readonly/>
+			<br><br>
+			<input type="submit" value="最終確認">
+		</form>
+	</th:if>
+	</div>
+	
+	<div th:if="${totalPrice != null}">
+		<form method="POST" action="quotationSave">
+			商品No<p style="display:inline" th:text="${itemNo}"/>
+			<br><br>
+			個　数<p style="display:inline" th:text="${itemBuyCount}"/>
+			<br><br>
+			金　額<p style="display:inline" th:text="${totalPrice}"/>
+			<br><br>
+			<input type="hidden" name="itemNo" th:value="${itemNo}"/>
+			<input type="hidden" name="itemBuyCount" th:value="${itemBuyCount}"/>
+			<input type="hidden" name="totalPrice" th:value="${totalPrice}"/>
+			<input type="submit" value="見積登録">
+			</form>
+	</th:if>
+	</div>
+	
+	<div th:id="${list != null}">
+		<br><br>
+		<details>
+			<summary>商品一覧表</summary>
+		
+			<table border="1">
+				<tr>
+					<th>商品番号</th>
+					<th>商品名</th>
+					<th>商品コード</th>
+					<th>金額</th>
+					<th>在庫</th>
+				</tr>
+				<tr th:each="data : ${list}" th:object="${data}">
+					<td th:text="*{itemNo}"/></td>
+					<td th:text="*{itemName}"/></td>
+					<td th:text="*{itemProductNo}"/></td>
+					<td th:text="*{itemPrice}"/></td>
+					<td th:text="*{itemStock}"/></td>
+				</tr>
+			</table>
+		</details>
+	</div>
 
 <form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
