@@ -120,8 +120,23 @@ public class ClientOrderJdbc {
 			return returnText;
 		}
 		
-		
-		
-		
-
-}
+	//見積情報を全件取得
+			public  ArrayList<ClientOrderModel> getQuotationDataList(int userNo){
+				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+				try {
+				String sql = "select * from quotation join item on quotation.item_no = item.item_no where user_no=?";
+				List <Map<String, Object>> quotationDataList = this.jdbcTemplate.queryForList(sql,userNo);
+			//格納する
+				for(Map<String, Object> quotationData : quotationDataList) {
+					ClientOrderModel returnData = new ClientOrderModel();
+					returnData.setQuotation_no((int)quotationData.get("quotation_no"));
+					returnData.setItem_name((String)quotationData.get("item_name"));
+					returnData.setItem_buy_count((int)quotationData.get("item_buy_count"));
+					returnData.setItem_price((int)quotationData.get("item_price"));
+					returnList.add(returnData);
+				}
+				}catch(Exception ex) {
+					return null;
+				}
+				return returnList;
+			}
