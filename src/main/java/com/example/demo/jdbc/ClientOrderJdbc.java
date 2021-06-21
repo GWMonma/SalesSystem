@@ -120,30 +120,4 @@ public class ClientOrderJdbc {
 			return returnText;
 		}
 
-		//売上履歴を取得
-				public ArrayList<ClientOrderModel> getSalesSearch(String SearchWord){
-					ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
-					try {
-						String sql;
-						List<Map<String, Object>> itemDataList = new ArrayList<Map<String, Object>>();
-
-							sql = "SELECT * FROM clientorder WHERE item_name LIKE ?";
-							itemDataList = jdbcTemplate.queryForList(sql, '%'+SearchWord+'%');
-						//格納する
-						for(Map<String, Object> mapData : itemDataList) {
-							ClientOrderModel returnData = new ClientOrderModel();
-							returnData.setClient_order_no((int)mapData.get("client_order_no"));
-							returnData.setItem_name((String)mapData.get("item_name"));
-							returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
-							returnData.setTotal_price((int)mapData.get("total_price"));
-							returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
-							returnList.add(returnData);
-						}
-					}catch(Exception ex) {
-
-					}
-					return returnList;
-				}
-
-
 }
