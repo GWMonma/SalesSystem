@@ -18,8 +18,7 @@ public class QuotationJdbc {
 	//見積情報を保存
 	public String quotationSave(int userNo,int itemBuyCount, int itemNo) {
 		try {
-			this.jdbcTemplate.update("INSERT INTO quotation"
-				+ "(user_no, item_buy_count, item_no)"
+			this.jdbcTemplate.update("INSERT INTO quotation (user_no, item_buy_count, item_no)"
 				+"VALUES(?, ?, ?);",
 				userNo, itemBuyCount, itemNo);
 		}catch(Exception ex) {
@@ -36,7 +35,7 @@ public class QuotationJdbc {
 		}catch(Exception ex) {
 			return "エラーが発生しました。";
 		}
-		return "削除が完了しました。";
+		return "見積情報の削除が完了しました。";
 	}
 	
 	//見積情報を取得
