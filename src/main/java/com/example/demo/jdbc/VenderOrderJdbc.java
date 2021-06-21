@@ -110,7 +110,7 @@ public class VenderOrderJdbc {
 		}catch(Exception ex) {
 			return "エラーが発生しました。";
 		}
-		return "入荷が確定しました。";		
+		return "入荷が確定";		
 	}
 
 }
