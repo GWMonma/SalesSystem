@@ -38,22 +38,23 @@ public class VenderOrderJdbc {
 			List<Map<String, Object>> itemDataList = new ArrayList<Map<String, Object>>();
 			//引数が1つの場合はキーワード検索
 			if(searchWord.length==1) {
-				System.out.println("キーワード検索");
 				sql = "SELECT * FROM venderorder WHERE item_name LIKE ?";
 				itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord[0]+'%');
 				
-			//引数が2つの場合はボタン検索
+			//引数が2つの場合はボタン検索、発注番号で取得
 			}else if(searchWord.length==2 && searchWord[0].equals("beforeArrival")){
-				System.out.println("入荷前検索");
 				sql = "SELECT * FROM venderorder WHERE arrival_date IS NULL";
 				itemDataList = jdbcTemplate.queryForList(sql);
 				
 			}else if(searchWord.length==2 && searchWord[0].equals("available")) {
-				System.out.println("入荷済み検索");
 				sql = "SELECT * FROM venderorder WHERE arrival_date IS NOT NULL";
 				itemDataList = jdbcTemplate.queryForList(sql);
+				
+			}else if(searchWord.length==2 && searchWord[1].equals("no")) {
+				sql = "SELECT * FROM venderorder WHERE vender_order_no = ?";
+				itemDataList = jdbcTemplate.queryForList(sql, searchWord[0]);
 			}
-			
+		
 			//格納する
 			for(Map<String, Object> mapData : itemDataList) {
 				VenderOrderModel returnData = new VenderOrderModel();
