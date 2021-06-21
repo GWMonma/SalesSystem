@@ -14,7 +14,7 @@ import com.example.demo.model.ClientOrderModel;
 public class ClientOrderJdbc {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	//出荷予定日の更新
 	public String shipmentDueDateUpdateJdbc(int client_order_no,String shipment_due_date) {
 		try {
@@ -24,7 +24,7 @@ public class ClientOrderJdbc {
 		}
 		return "出荷予定日の更新が完了しました。";
 	}
-	
+
 	//出荷日の更新
 		public String shipmentDateUpdateJdbc(int client_order_no) {
 			try {
@@ -34,8 +34,8 @@ public class ClientOrderJdbc {
 			}
 			return "出荷が完了しました。";
 		}
-	
-	
+
+
 	//商品名から受注履歴を取得
 		public ArrayList<ClientOrderModel> getClientOrderLog(String searchWord){
 			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
@@ -71,11 +71,11 @@ public class ClientOrderJdbc {
 					returnList.add(returnData);
 				}
 			}catch(Exception ex) {
-			
+
 			}
 			return returnList;
 		}
-		
+
 
 		//受注情報を全件取得
 		public  ArrayList<ClientOrderModel> getClientOrderDataList(){
@@ -101,7 +101,7 @@ public class ClientOrderJdbc {
 			}
 			return returnList;
 		}
-		
+
 		//出荷確定済みか確認する処理
 		public String CheckShipmentDue(int client_order_no) {
 			String returnText = null;
@@ -113,13 +113,13 @@ public class ClientOrderJdbc {
 				}else{
 					returnText = "出荷済み";
 				}
-				
+
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
 			}
 			return returnText;
 		}
-		
+
 	//見積情報を全件取得
 			public  ArrayList<ClientOrderModel> getQuotationDataList(int userNo){
 				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
@@ -140,8 +140,34 @@ public class ClientOrderJdbc {
 				}
 				return returnList;
 			}
-			
-			
-			
+
+			//売上履歴を取得
+			public ArrayList<ClientOrderModel> getSalesSearch(String SearchWord){
+				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+				try {
+					String sql;
+					List<Map<String, Object>> itemDataList = new ArrayList<Map<String, Object>>();
+
+						sql = "SELECT * FROM clientorder WHERE item_name LIKE ?";
+						itemDataList = jdbcTemplate.queryForList(sql, '%'+SearchWord+'%');
+					//格納する
+					for(Map<String, Object> mapData : itemDataList) {
+						ClientOrderModel returnData = new ClientOrderModel();
+						returnData.setClient_order_no((int)mapData.get("client_order_no"));
+						returnData.setItem_name((String)mapData.get("item_name"));
+						returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+						returnData.setTotal_price((int)mapData.get("total_price"));
+						returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+						returnList.add(returnData);
+					}
+				}catch(Exception ex) {
+
+				}
+				return returnList;
+			}
+
+
+
+
 
 }
