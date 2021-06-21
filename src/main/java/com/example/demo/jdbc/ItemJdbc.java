@@ -101,5 +101,16 @@ public class ItemJdbc {
 					}
 					return returnList;
 				}
+	
+		//在庫を追加する
+				public String InventoryAddition(String itemProductNo, int itemBuyCount) {
+					try {
+						this.jdbcTemplate.update("UPDATE item SET item_stock = item_stock + ? WHERE item_product_no = ?"
+								, itemBuyCount, itemProductNo);
+					}catch(Exception ex) {
+						return "しましたが、在庫追加段階でエラーが発生しました。";
+					}
+					return "し、在庫追加が完了しました。";
+				}
 
 }
