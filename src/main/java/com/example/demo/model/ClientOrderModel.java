@@ -14,6 +14,12 @@ public class ClientOrderModel {
 	Date shipment_date;
 	int completed_delivery;
 	
+	int quotation_no;
+	int item_price;
+
+	
+	
+	
 	public int getClient_order_no() {
 		return client_order_no;
 	}
@@ -91,16 +97,32 @@ public class ClientOrderModel {
 	
 	
 	
-	public int getComplete_delivery() {
+	public int getCompleted_delivery() {
 		return completed_delivery;
 	}
-	public void setComplete_delivery(int completed_delivery) {
+	public void setCompleted_delivery(int completed_delivery) {
 		this.completed_delivery=completed_delivery;
 	}	
 	
 	
+	public int getQuotation_no() {
+		return quotation_no;
+	}
+
+	public void setQuotation_no(int quotation_no) {
+		this.quotation_no = quotation_no;
+	}
+	
+	public int getItem_price() {
+		return item_price;
+	}
+
+	public void setItem_price(int item_price) {
+		this.item_price = item_price;
+	}
 	
 	
+
 	
 
 }
