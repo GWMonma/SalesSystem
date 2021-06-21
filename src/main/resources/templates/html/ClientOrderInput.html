@@ -5,12 +5,44 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<h1>受注入力画面</h1>
-<p th:text=" ${message}" />
+<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+	<input type="submit" value="管理者メニューへ">
+	</form>
+	<h1>受注入力画面</h1>
+	<div th:if="${message} != null"> 
+	<h3 th:text="${message}"></h3>
+  	</div>
+	<div th:if="${resultText} != null"> 
+	<h3 th:text="${resultText}"></h3>
+  	</div>
+	
 
-<form action="#" th:action="@{/logout}" method="post">
+	<div th:if="${QuotationList != null}">
+  	
+	<table border="1">
+		<tr>
+			<th>No</th><th>商品名</th><th>商品個数</th><th>単価</th><th>合計金額</th>
+		</tr>
+		<tr th:each="list : ${QuotationList}">
+
+			<td th:text="${list.quotation_no}"></td>
+			<td th:text="${list.item_name}"></td>
+			<td th:text="${list.item_buy_count}"></td>
+			<td th:text="${list.item_price}"></td>
+			<td th:text="${list.item_price} * ${list.item_buy_count}"></td>
+			
+		</tr>
+	</table>
+	</div>
+
+ 
+	<form method="POST" action="clientOrderFixing">
+	<input type="submit" value="受注">
+	</form>
+
+	<form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
-</form>
+	</form>
 
 </body>
 </html>
