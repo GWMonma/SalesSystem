@@ -20,7 +20,7 @@ public class QuotationLogic {
 	 ItemJdbc itemJdbc;
 	 
 	 @Autowired
-	 QuotationJdbc quotationJabc;
+	 QuotationJdbc quotationJdbc;
 	 
 	 @Autowired
 	 HttpSession session;
@@ -30,7 +30,7 @@ public class QuotationLogic {
 		//見積情報を保存
 		Map<String, Object> list = (Map<String, Object>) session.getAttribute("data");
 		int userNo = (int) list.get("user_no");
-		return quotationJabc.quotationSave(userNo, itemBuyCount, itemNo);
+		return quotationJdbc.quotationSave(userNo, itemBuyCount, itemNo);
 		
 		}
 	
