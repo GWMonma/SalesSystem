@@ -63,13 +63,13 @@ public class ItemJdbc {
 				List<Map<String, Object>> itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%');
 				//格納する
 				for(Map<String, Object> mapData : itemDataList) {
-					InventoryModel returnData = new InventoryModel();
-					returnData.setItemNo((int)mapData.get("item_no"));
-					returnData.setItemName((String)mapData.get("item_name"));
-					returnData.setItemPrice((int)mapData.get("item_price"));
-					returnData.setItemStock((int)mapData.get("item_stock"));
-
-
+						InventoryModel returnData = new InventoryModel();
+						returnData.setItemNo((int)mapData.get("item_no"));
+						returnData.setItemName((String)mapData.get("item_name"));
+						returnData.setItemProductNo((String)mapData.get("item_product_no"));
+						returnData.setItemPrice((int)mapData.get("item_price"));
+						returnData.setItemStock((int)mapData.get("item_stock"));
+						returnList.add(returnData);
 					returnList.add(returnData);
 				}
 			}catch(Exception ex) {
@@ -92,8 +92,6 @@ public class ItemJdbc {
 							returnData.setItemName((String)mapData.get("item_name"));
 							returnData.setItemPrice((int)mapData.get("item_price"));
 							returnData.setItemStock((int)mapData.get("item_stock"));
-
-
 							returnList.add(returnData);
 						}
 					}catch(Exception ex) {
