@@ -17,11 +17,11 @@
 	
 	<div th:if="${totalPrice == null}">
 		<form method="POST" action="Quotationcheck">
-			商品No　　<input type="text" name="itemNo" required/>
+			商品No<input type="text" name="itemNo" required/>
 			<br><br>
-			個　数　　<input type="text" name="itemBuyCount" required/>
+			個　数<input type="text" name="itemBuyCount" required/>
 			<br><br>
-			金　額　　<input type="text" name="totalPrice" value="未定" readonly/>
+			金　額<input type="text" name="totalPrice" value="未定" readonly/>
 			<br><br>
 			<input type="submit" value="最終確認">
 		</form>
