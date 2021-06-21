@@ -233,12 +233,29 @@ public class InventoryManagementController {
   			model.addAttribute("resultText", "更新しました！");
   			return "html/InventoryAdjustment";
   		}
-
 	
     //入荷確定処理
     @RequestMapping("ArrivalDateUpdate")
     public String arrivalDueDateUpdate(@RequestParam("itemNo") String itemNo, @RequestParam("searchItemName") String searchItemName, @RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model) {
-    	System.out.println(search+"で検索。itemName："+searchItemName+"　btnName："+selectBtn);
+    	int no;
+    	//intに変換可能か確認する
+    	String noConfirmationStr = itemLogic.inputConfirmation(itemNo);
+    	if(noConfirmationStr.equals("true")){
+    		no = Integer.parseInt(itemNo);
+    	}else{
+    		model.addAttribute("resultText", noConfirmationStr);
+    		return "html/ArrivalManagement";
+    	}
+    	
+    	//入力された番号が存在するか、既に確定されているか確認し、入荷確定処理を行う。
+    	String resultText = itemLogic.checkItemNoLogic(no);
+    	if(resultText.equals("入荷が確定")){
+        	//在庫を追加する
+        	String resultText2 = itemLogic.InventoryAdditionLogic(no);
+        	model.addAttribute("resultText", resultText+resultText2);
+    	}else{
+        	model.addAttribute("resultText", resultText);
+    	}
     	
     	//検索方法によって取得情報を変更する
     	ArrayList<VenderOrderModel> searchList = new ArrayList<VenderOrderModel>();
@@ -249,7 +266,8 @@ public class InventoryManagementController {
     		model.addAttribute("searchItemName", searchItemName);
     		model.addAttribute("searchResultText", "検索結果："+searchList.size()+"件");
     	}
-    	//button検索
+    	
+    	//ボタン検索
     	if(searchItemName.equals("") && search.equals("button")){
     		searchList = venderOrderLogic.getVenderOrderLog(selectBtn, "button");
     		String selectBtnText = venderOrderLogic.arrivalStateBtnStr(selectBtn);
@@ -261,19 +279,8 @@ public class InventoryManagementController {
     		model.addAttribute("searchList", searchList);
     	}
     	
-    	//intに変換可能か確認する
-    	String noConfirmationStr = itemLogic.inputConfirmation(itemNo);
-    	if(noConfirmationStr.equals("true")){
-    	}else{
-    		model.addAttribute("resultText", noConfirmationStr);
-    		return "html/ArrivalManagement";
-    	}
+    	return "html/ArrivalManagement";
     	
-    	//入力された番号が存在するか、既に確定されているか確認し、入荷確定処理を行う。
-    	String resultText = itemLogic.checkItemNoLogic(Integer.parseInt(itemNo));
-    	model.addAttribute("resultText", resultText);
-    	
-        return "html/ArrivalManagement";
     }
     
     //検索機能

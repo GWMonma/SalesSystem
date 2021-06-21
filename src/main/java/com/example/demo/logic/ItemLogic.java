@@ -89,6 +89,17 @@ public class ItemLogic {
 		return returnText;
 	}
 	
+	//在庫追加処理
+	public String InventoryAdditionLogic(int venderOrderNo) {
+		String returnText = null;
+		//品番と入荷数を取得
+		ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(String.valueOf(venderOrderNo), "no");
+		String itemProductNo = list.get(0).getItem_product_no();
+		int itemBuyCount = list.get(0).getItem_buy_count();
+		//在庫を追加
+		returnText = itemJdbc.InventoryAddition(itemProductNo, itemBuyCount);
+		return returnText;
+	}
 	
 //出荷管理↓
 	//出荷確定処理を行う前の確認処理
