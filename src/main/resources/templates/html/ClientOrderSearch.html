@@ -5,8 +5,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+	<input type="submit" value="管理者メニューへ">
+	</form>
 <h1>受注検索画面</h1>
-<p th:text=" ${message}" />
+	<form method="POST" action="COSearch" >
+	商品名<input type="text" name="searchWord" th:value="${item_name}" required>	
+	<input type="submit" value="検索">
+	</form>
+	<div th:if="${resultText} != null"> 
+		<h3 th:text="${resultText}"></h3>
+  	</div>
+	
+<div th:if="${clientOrderList != null}">
+	
+	
+  	
+	<table border="1">
+		<tr>
+			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>合計金額</th><th>受注日</th><th>出荷予定日</th><th>出荷日</th>
+		</tr>
+		<tr th:each="list : ${clientOrderList}">
+
+			<td th:text="${list.client_order_no}"></td>
+			<td th:text="${list.item_name}"></td>
+			<td th:text="${list.item_product_no}"></td>
+			<td th:text="${list.item_buy_count}"></td>
+			<td th:text="${list.total_price}"></td>
+			<td th:text="${list.item_buy_date}"></td>
+			<td th:text="${list.shipment_due_date ?: '未入力'}"></td>
+			<td th:text="${list.shipment_date} ?: '未入力'"></td>
+			
+		</tr>
+	</table>
+	
+	
+</div>
+
+	<form method="POST" action="" >
+	<button type="submit" name="orderConfirmation ">注文請書出力</button>
+	</form>
+	
+
 
 <form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
