@@ -30,11 +30,11 @@
 
 	<div th:if="${totalPrice != null}">
 		<form method="POST" action="VenderOrderSave">
-			商品No：<p style="display:inline" th:text="${itemNo}" />
+			商品No　　<p style="display:inline" th:text="${itemNo}" />
 			<br><br>
-			個　数：<p style="display:inline" th:text="${itemBuyCount}" />
+			個　数　　<p style="display:inline" th:text="${itemBuyCount}" />
 			<br><br>
-			金　額：<p style="display:inline" th:text="${totalPrice}" />
+			金　額　　<p style="display:inline" th:text="${totalPrice}" />
 			<br><br>
 			<input type="hidden" name="itemNo" th:value="${itemNo}" />
 			<input type="hidden" name="itemBuyCount" th:value="${itemBuyCount}" />
