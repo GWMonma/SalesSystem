@@ -120,7 +120,8 @@ public class ClientOrderJdbc {
 			return returnText;
 		}
 
-	//見積情報を全件取得
+	
+		//見積情報を全件取得
 			public  ArrayList<ClientOrderModel> getQuotationDataList(int userNo){
 				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
 				try {
@@ -140,6 +141,47 @@ public class ClientOrderJdbc {
 				}
 				return returnList;
 			}
+	
+	//受注確定
+		public String clientOrderFixingJdbc(int userNo,ArrayList<ClientOrderModel> list) {		
+			try {
+				for(ClientOrderModel li:list) {
+					//item_product_no取得
+					Map<String, Object> map = jdbcTemplate.queryForMap(" select item_product_no from item where item_name=?", li.getItem_name());
+					String item_product_no = (String) map.get("item_product_no");
+					System.out.println("item_product_no = "+item_product_no);
+					//total_price取得
+					map = jdbcTemplate.queryForMap("select * from quotation join item on quotation.item_no=item.item_no where user_no=? && quotation_no=?",userNo,li.getQuotation_no());
+					int item_price = (int) map.get("item_price");
+					int item_buy_count = (int) map.get("item_buy_count");
+					int total_price =item_price * item_buy_count;
+					System.out.println("total_price = "+total_price);
+						
+					//見積データを受注データに変更し追加
+					this.jdbcTemplate.update("insert into clientorder(user_no,item_name,item_product_no,item_buy_count,total_price,item_buy_date,completed_delivery) "
+											+ "values(?,?,?,?,?,current_timestamp,0)",userNo,li.getItem_name(),item_product_no,li.getItem_buy_count(),total_price);
+					
+				}
+			}catch(Exception ex) {
+				return "エラーが発生しました。";
+			}
+			return "受注が完了しました。";
+		}
+			
+			
+	//見積情報の削除
+		public String quotationDataDelete(int userNo) {
+			try {
+				//見積データを削除
+				this.jdbcTemplate.update("delete from quotation where user_no=?",userNo);
+				//オートインクリメントのリセット
+				this.jdbcTemplate.update("alter table quotation auto_increment = 1;");
+			}catch(Exception ex) {
+				return "エラーが発生しました。";
+			}
+			return "受注が完了しました。";
+		}
+		
 
 			//売上履歴を取得
 			public ArrayList<ClientOrderModel> getSalesSearch(String SearchWord){
