@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import com.example.demo.model.ClientOrderModel;
 @Component
 public class ClientOrderJdbc {
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
 	//出荷予定日の更新
 	public String shipmentDueDateUpdateJdbc(int client_order_no,String shipment_due_date) {
 		try {
@@ -139,28 +142,6 @@ public class ClientOrderJdbc {
 			}
 			
 			
-			//受注確定
-			public String clientOrderFixingJdbc(int userNo) {		
-				
-				try {
 			
-					//見積データを受注データに変更し追加
-					this.jdbcTemplate.update("insert into clientorder INSERT INTO clientorder(user_no,item_name,item_product_no,item_buy_count,total_price,item_buy_date,completed_delivery) values(?,?,?,?,?,?,0)",userNo,item_name,item_product_no,item_buy_count,total_price,item_buy_date);
-					
-				}catch(Exception ex) {
-					return "エラーが発生しました。";
-				}
-				return "受注が完了しました。";
-			}
-			
-			public String quotationDataDelete(int userNo) {
-			try {
-				//見積データを削除
-				this.jdbcTemplate.update("delete from quotation where user_no=?",userNo);
-			}catch(Exception ex) {
-				return "エラーが発生しました。";
-			}
-			return "見積の削除が完了しました。";
-		}
 
 }
