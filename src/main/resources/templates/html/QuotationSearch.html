@@ -6,7 +6,43 @@
 </head>
 <body>
 <h1>見積検索画面</h1>
-<p th:text=" ${message}" />
+<div th:if="${resultText == null}">
+	<h4>商品名を入力してください。</h4>
+</th:if>
+</div>
+<div th:if="${resultText != null}">
+	<h4 th:text="${resultText}"></h4>
+</th:if>
+</div>
+
+<form action="QuotationSearchResult" method="POST">
+	<input type="text" name="searchWord" placeholder="商品名" th:value="${searchWord}" required/>
+	<input type="submit" value="検索"/>
+</form>
+<br>
+<div th:if="${searchList != null}">
+	<form action="QuotationDeleteResult" method="POST">
+	<input type="hidden" name="searchWord" th:value="${searchWord}" />
+	<table border="1" align="center">
+		<tr>
+			<th>見積番号</th>
+			<th>商品名</th>
+			<th>商品コード</th>
+			<th>購入数</th>
+			<th>合計金額</th>
+			<th>削除</th>
+		</tr>
+		<tr th:each="QuotationSearchData : ${searchList}" th:object="${QuotationSearchData}">
+			<td th:text="*{quotationNo}"/></td>
+			<td th:text="*{itemName}"/></td>
+			<td th:text="*{itemProductNo}"/></td>
+			<td th:text="*{itemBuyCount}"/></td>
+			<td th:text="*{totalPrice}"/></td>
+			<td><button type="submit" name="deleteButton" th:value="*{quotationNo}">×</button></td>
+		</tr>
+	</table>
+	</form>
+</div>
 
 <form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
