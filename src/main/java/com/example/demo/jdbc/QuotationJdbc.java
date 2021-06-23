@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.model.InventoryModel;
 import com.example.demo.model.QuotationModel;
+
 @Component
 public class QuotationJdbc {
 	@Autowired
@@ -27,6 +28,18 @@ public class QuotationJdbc {
 		return "見積情報の保存が完了しました。";
 	}
 	
+	//見積情報を上書き保存
+	public String quotationUpdate(int quotationNo, int userNo,int itemBuyCount) {
+		System.out.println("UPDATE quotation SET item_buy_count = "+itemBuyCount+" WHERE quotation_no = "+quotationNo+" AND user_no = "+userNo);
+		try {
+			this.jdbcTemplate.update("UPDATE quotation SET item_buy_count = ? WHERE quotation_no = ? AND user_no = ?"
+				,itemBuyCount, quotationNo, userNo);
+		}catch(Exception ex) {
+			return "エラーが発生しました。";
+		}
+		return "見積情報の更新が完了しました。";
+	}
+	
 	//見積情報を削除
 	public String quotationDelete(int quotationNo) {
 		System.out.println("DB:"+quotationNo);
@@ -36,6 +49,23 @@ public class QuotationJdbc {
 			return "エラーが発生しました。";
 		}
 		return "見積情報の削除が完了しました。";
+	}
+	
+	//見積情報が存在するか
+	public ArrayList<Integer> quotationCheck(int userNo, int itemNo) {
+		ArrayList<Integer> returnList = new ArrayList<Integer>();
+		List<Map<String, Object>> quotationSearchList = new ArrayList<Map<String, Object>>();
+		String sql = "SELECT * FROM quotation WHERE user_no = ? AND item_no = ?";
+		quotationSearchList = jdbcTemplate.queryForList(sql, userNo, itemNo);
+		//存在しない場合
+		if(quotationSearchList.size()==0) {
+			returnList.add(-1);
+		//存在する場合
+		}else{
+			returnList.add((int) quotationSearchList.get(0).get("item_buy_count"));
+			returnList.add((int) quotationSearchList.get(0).get("quotation_no"));
+		}
+		return returnList;
 	}
 	
 	//見積情報を取得
