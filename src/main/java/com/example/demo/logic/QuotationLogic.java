@@ -1,10 +1,19 @@
 package com.example.demo.logic;
 
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +21,7 @@ import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.jdbc.QuotationJdbc;
 import com.example.demo.model.InventoryModel;
 import com.example.demo.model.QuotationModel;
-import com.example.demo.model.InventoryModel;
+
 
 @Service
 public class QuotationLogic {
@@ -26,13 +35,26 @@ public class QuotationLogic {
 	 HttpSession session;
 	 
 	//データベースに見積情報を保存する
-	public String quotationSaveLogic(int itemNo, int itemBuyCount) {			
-		//見積情報を保存
+	public String quotationSaveLogic(int itemNo, int itemBuyCount) {
 		Map<String, Object> list = (Map<String, Object>) session.getAttribute("data");
 		int userNo = (int) list.get("user_no");
-		return quotationJdbc.quotationSave(userNo, itemBuyCount, itemNo);
+		//既に保存されているか確認
+		ArrayList<Integer> returnList = quotationJdbc.quotationCheck(userNo, itemNo);
 		
+		if(returnList.get(0)==-1) {//保存されていない場合
+			return quotationJdbc.quotationSave(userNo, itemBuyCount, itemNo);
+		
+		}else{//保存されている場合
+			int itemStock = itemJdbc.getItemData(itemNo).getItemStock();
+			
+			if(itemStock<returnList.get(0)+itemBuyCount) {//在庫数を上回っている場合
+				return "既に保存されている購入数に加算した結果、購入希望数が在庫数を超えています。";
+			
+			}else{
+				return quotationJdbc.quotationUpdate(returnList.get(1), userNo, (returnList.get(0)+itemBuyCount));
+			}
 		}
+	}
 	
 	//合計金額を計算
 		public int getQuotationTotalPrice(int itemNo, int itemBuyCount) {
