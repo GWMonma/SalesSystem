@@ -106,18 +106,23 @@ public class InventoryManagementController {
 			return "html/InventoryAdjustment";
 		}
 	
-
-
+	
 //出荷管理↓
+ @Autowired
+ ClientOrderLogic COLogic;
+	
 	//データベースと照合して受注情報を表示(ボタン)
 	@RequestMapping("ClientOrderSearchButton")
 		public String orderSearchButton(@RequestParam("selectBtn") String selectBtn,Model model){
-		String selectBtnText = itemLogic.shipmentStateBtnStr(selectBtn);
+		//セッションからuser_noを取得
+    	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+		int userNo = (int) sessionlist.get("user_no");
+		String selectBtnText = COLogic.shipmentStateBtnStr(selectBtn);
 		if(selectBtnText.equals("エラー")) {
     		model.addAttribute("resultText", selectBtnText+"が発生しました。");
     		return "html/ArrivalManagement";
     	}
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(selectBtnText);
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(selectBtnText, userNo);
 		if(list.size()>0) {
 			model.addAttribute("clientOrderList",list);
     	}
@@ -131,7 +136,10 @@ public class InventoryManagementController {
 	//商品名をデータベースと照合して受注情報を表示(フォーム)
 	@RequestMapping("ClientOrderSearchForm")
 	public String orderSearchForm(@RequestParam("searchWord") String searchWord, Model model){
-		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
+		//セッションからuser_noを取得
+    	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+		int userNo = (int) sessionlist.get("user_no");
+		ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord, userNo);
 		if(list.size()>0) {
 			model.addAttribute("clientOrderList",list);
     	}
@@ -140,10 +148,14 @@ public class InventoryManagementController {
 		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	  	return "html/ShipmentManagement";
 	}
-
+	
+	
 	//出荷予定日の更新
 		@RequestMapping("ShipmentDueDateUpdate")
-		public String shipmentDueDateUpdate(@RequestParam("client_order_nso") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+		public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+			//セッションからuser_noを取得
+	    	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+			int userNo = (int) sessionlist.get("user_no");
 			ArrayList<ClientOrderModel> list = new ArrayList<ClientOrderModel>();
 			//intに変換可能か確認する
 	    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
@@ -152,20 +164,20 @@ public class InventoryManagementController {
 	    		model.addAttribute("resultText", noConfirmationStr);
 	    		return "html/ShipmentManagement";
 	    	}
-	    	String returnText = itemLogic.checkShipmentDueDateLogic(Integer.parseInt(client_order_no),shipment_due_date);
+	    	String returnText = COLogic.checkShipmentDueDateLogic(Integer.parseInt(client_order_no),shipment_due_date, userNo);
 			model.addAttribute("resultText",returnText);
 			
 	    	//キーワード検索
 	    	if(selectBtn.equals("")&& search.equals("word")){
-				list = clientOrderJdbc.getClientOrderLog(searchWord);
+				list = clientOrderJdbc.getClientOrderLog(searchWord, userNo);
 	    		model.addAttribute("search", "word");
 	    		model.addAttribute("item_name", searchWord);
 	    		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	    	}
 	    	//button検索
 	    	if(searchWord.equals("") && search.equals("button")){
-	    		String selectBtnText = itemLogic.shipmentStateBtnStr(selectBtn);
-	    		list = clientOrderJdbc.getClientOrderLog(selectBtnText);
+	    		String selectBtnText = COLogic.shipmentStateBtnStr(selectBtn);
+	    		list = clientOrderJdbc.getClientOrderLog(selectBtnText, userNo);
 	    		model.addAttribute("search", "button");
 	        	model.addAttribute("selectBtn", selectBtn);
 	        	model.addAttribute("resultText", selectBtnText+"："+list.size()+"件");
@@ -180,6 +192,9 @@ public class InventoryManagementController {
 		//出荷日の更新(出荷確定処理)
 		@RequestMapping("ShipmentDateUpdate")
 		public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+			//セッションからuser_noを取得
+	    	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+			int userNo = (int) sessionlist.get("user_no");
 			ArrayList<ClientOrderModel> list = new ArrayList<ClientOrderModel>();
 			//intに変換可能か確認する
 	    	String noConfirmationStr = itemLogic.inputConfirmation(client_order_no);
@@ -188,20 +203,20 @@ public class InventoryManagementController {
 	    		model.addAttribute("resultText", noConfirmationStr);
 	    		return "html/ShipmentManagement";
 	    	}
-	    	String returnText = itemLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no));
+	    	String returnText = COLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no), userNo);
 	    	model.addAttribute("resultText",returnText);
 	    	
 			//キーワード検索
 	    	if(selectBtn.equals("")&& search.equals("word")){
-				list = clientOrderJdbc.getClientOrderLog(searchWord);
+				list = clientOrderJdbc.getClientOrderLog(searchWord, userNo);
 	    		model.addAttribute("search", "word");
 	    		model.addAttribute("item_name", searchWord);
 	    		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	    	}
 	    	//button検索
 	    	if(searchWord.equals("") && search.equals("button")){
-	    		String selectBtnText = itemLogic.shipmentStateBtnStr(selectBtn);
-	    		list = clientOrderJdbc.getClientOrderLog(selectBtnText);
+	    		String selectBtnText = COLogic.shipmentStateBtnStr(selectBtn);
+	    		list = clientOrderJdbc.getClientOrderLog(selectBtnText, userNo);
 	    		model.addAttribute("search", "button");
 	        	model.addAttribute("selectBtn", selectBtn);
 	        	model.addAttribute("resultText", selectBtnText+"："+list.size()+"件");
