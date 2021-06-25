@@ -17,15 +17,17 @@ public class ClientOrderJdbc {
 	private JdbcTemplate jdbcTemplate;
 
 	//出荷予定日の更新
-	public String shipmentDueDateUpdateJdbc(int client_order_no,String shipment_due_date) {
-		try {
-			this.jdbcTemplate.update("update clientorder set shipment_due_date= ? where client_order_no= ?",shipment_due_date,client_order_no);
-		}catch(Exception ex) {
-			return "エラーが発生しました。";
+		public String shipmentDueDateUpdateJdbc(int client_order_no,String shipment_due_date) {
+			try {
+				System.out.println("client_order_no="+client_order_no);
+				System.out.println("shipment_due_date="+shipment_due_date);
+				this.jdbcTemplate.update("update clientorder set shipment_due_date= ? where client_order_no= ?",shipment_due_date,client_order_no);
+			}catch(Exception ex) {
+				return "エラーが発生しました。";
+			}
+			return "出荷予定日の更新が完了しました。";
 		}
-		return "出荷予定日の更新が完了しました。";
-	}
-
+	
 	//出荷日の更新
 		public String shipmentDateUpdateJdbc(int client_order_no) {
 			try {
@@ -35,28 +37,43 @@ public class ClientOrderJdbc {
 			}
 			return "出荷が完了しました。";
 		}
-
-
+		
+	//受注情報から削除
+		public String clientOrderDataDelete(int userNo) {
+			try {
+				//データを削除
+				this.jdbcTemplate.update("delete from clientorder where client_order_no=?",userNo);
+				//オートインクリメントのリセット
+				this.jdbcTemplate.update("alter table clientorder auto_increment = 1;");
+			}catch(Exception ex) {
+				return "エラーが発生しました。";
+			}
+			return "受注が完了しました。";
+		}
+	
+	
 	//商品名から受注履歴を取得
-		public ArrayList<ClientOrderModel> getClientOrderLog(String searchWord){
+		public ArrayList<ClientOrderModel> getClientOrderLog(String searchWord,int userNo){
 			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
 			try {
+				System.out.println("userNo＝"+userNo);
 				List<Map<String, Object>> itemDataList;
 				if(searchWord.equals("出荷予定日未入力の商品")) {
 					//出荷予定日未記入の情報を取得
-					String sql = "select * from clientorder where shipment_due_date is null && shipment_date is null";
-					itemDataList = jdbcTemplate.queryForList(sql);
+					String sql = "select * from clientorder where shipment_due_date is null && shipment_date is null && user_no=?";
+					itemDataList = jdbcTemplate.queryForList(sql,userNo);
 				}else if(searchWord.equals("出荷前の商品")) {
 					//出荷予定日記入済みかつ未出荷の情報を取得
-					String sql = " select * from clientorder where shipment_due_date is not null && shipment_date is null";
-					itemDataList = jdbcTemplate.queryForList(sql);
+					String sql = " select * from clientorder where shipment_due_date is not null && shipment_date is null && user_no=?";
+					itemDataList = jdbcTemplate.queryForList(sql,userNo);
 				}else if(searchWord.equals("出荷済みの商品")){
 					//出荷日記入済み(出荷済み)の情報を取得
-					String sql = "select * from clientorder where shipment_date is not null";
-					itemDataList = jdbcTemplate.queryForList(sql);
+					String sql = "select * from clientorder where shipment_date is not null && user_no=?";
+					itemDataList = jdbcTemplate.queryForList(sql,userNo);
 				}else {
-					String sql = "SELECT * FROM clientorder WHERE item_name LIKE ?";
-					itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%');
+					System.out.println("userNo="+userNo);
+					String sql = "SELECT * FROM clientorder WHERE item_name LIKE ? && user_no=?";
+					itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%',userNo);
 				}
 				//格納する
 				for(Map<String, Object> mapData : itemDataList) {
@@ -72,13 +89,13 @@ public class ClientOrderJdbc {
 					returnList.add(returnData);
 				}
 			}catch(Exception ex) {
-
+			
 			}
 			return returnList;
 		}
+		
 
-
-		//受注情報を全件取得
+	//受注情報を全件取得
 		public  ArrayList<ClientOrderModel> getClientOrderDataList(){
 			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
 			try {
@@ -102,8 +119,8 @@ public class ClientOrderJdbc {
 			}
 			return returnList;
 		}
-
-		//出荷確定済みか確認する処理
+		
+	//出荷予定日入力前のチェック
 		public String CheckShipmentDue(int client_order_no) {
 			String returnText = null;
 			try {
@@ -114,37 +131,37 @@ public class ClientOrderJdbc {
 				}else{
 					returnText = "出荷済み";
 				}
-
+				
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
 			}
 			return returnText;
 		}
-
-
-		//見積情報を全件取得
-			public  ArrayList<ClientOrderModel> getQuotationDataList(int userNo){
-				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
-				try {
-				String sql = "select * from quotation join item on quotation.item_no = item.item_no where user_no=?";
-				List <Map<String, Object>> quotationDataList = this.jdbcTemplate.queryForList(sql,userNo);
-			//格納する
-				for(Map<String, Object> quotationData : quotationDataList) {
-					ClientOrderModel returnData = new ClientOrderModel();
-					returnData.setQuotation_no((int)quotationData.get("quotation_no"));
-					returnData.setItem_name((String)quotationData.get("item_name"));
-					returnData.setItem_buy_count((int)quotationData.get("item_buy_count"));
-					returnData.setItem_price((int)quotationData.get("item_price"));
-					returnList.add(returnData);
-				}
-				}catch(Exception ex) {
-					return null;
-				}
-				return returnList;
+		
+	//見積情報を全件取得
+		public  ArrayList<ClientOrderModel> getQuotationDataList(int userNo){
+			ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+			try {
+			String sql = "select * from quotation join item on quotation.item_no = item.item_no where user_no=?";
+			List <Map<String, Object>> quotationDataList = this.jdbcTemplate.queryForList(sql,userNo);
+		//格納する
+			for(Map<String, Object> quotationData : quotationDataList) {
+				ClientOrderModel returnData = new ClientOrderModel();
+				returnData.setQuotation_no((int)quotationData.get("quotation_no"));
+				returnData.setItem_name((String)quotationData.get("item_name"));
+				returnData.setItem_buy_count((int)quotationData.get("item_buy_count"));
+				returnData.setItem_price((int)quotationData.get("item_price"));
+				returnList.add(returnData);
 			}
-
+			}catch(Exception ex) {
+				return null;
+			}
+			return returnList;
+		}
+			
+			
 	//受注確定
-		public String clientOrderFixingJdbc(int userNo,ArrayList<ClientOrderModel> list) {
+		public String clientOrderFixingJdbc(int userNo,ArrayList<ClientOrderModel> list) {		
 			try {
 				for(ClientOrderModel li:list) {
 					//item_product_no取得
@@ -157,19 +174,19 @@ public class ClientOrderJdbc {
 					int item_buy_count = (int) map.get("item_buy_count");
 					int total_price =item_price * item_buy_count;
 					System.out.println("total_price = "+total_price);
-
+						
 					//見積データを受注データに変更し追加
 					this.jdbcTemplate.update("insert into clientorder(user_no,item_name,item_product_no,item_buy_count,total_price,item_buy_date,completed_delivery) "
 											+ "values(?,?,?,?,?,current_timestamp,0)",userNo,li.getItem_name(),item_product_no,li.getItem_buy_count(),total_price);
-
+					
 				}
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
 			}
 			return "受注が完了しました。";
 		}
-
-
+			
+			
 	//見積情報の削除
 		public String quotationDataDelete(int userNo) {
 			try {
@@ -182,7 +199,6 @@ public class ClientOrderJdbc {
 			}
 			return "受注が完了しました。";
 		}
-
 
 			//売上履歴を取得
 			public ArrayList<ClientOrderModel> getSalesSearch(String SearchWord){
