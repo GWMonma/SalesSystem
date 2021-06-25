@@ -2,6 +2,7 @@ package com.example.demo.jdbc;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +121,7 @@ public class ClientOrderJdbc {
 			return returnText;
 		}
 
-	
+
 		//見積情報を全件取得
 			public  ArrayList<ClientOrderModel> getQuotationDataList(int userNo){
 				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
@@ -141,9 +142,9 @@ public class ClientOrderJdbc {
 				}
 				return returnList;
 			}
-	
+
 	//受注確定
-		public String clientOrderFixingJdbc(int userNo,ArrayList<ClientOrderModel> list) {		
+		public String clientOrderFixingJdbc(int userNo,ArrayList<ClientOrderModel> list) {
 			try {
 				for(ClientOrderModel li:list) {
 					//item_product_no取得
@@ -156,19 +157,19 @@ public class ClientOrderJdbc {
 					int item_buy_count = (int) map.get("item_buy_count");
 					int total_price =item_price * item_buy_count;
 					System.out.println("total_price = "+total_price);
-						
+
 					//見積データを受注データに変更し追加
 					this.jdbcTemplate.update("insert into clientorder(user_no,item_name,item_product_no,item_buy_count,total_price,item_buy_date,completed_delivery) "
 											+ "values(?,?,?,?,?,current_timestamp,0)",userNo,li.getItem_name(),item_product_no,li.getItem_buy_count(),total_price);
-					
+
 				}
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
 			}
 			return "受注が完了しました。";
 		}
-			
-			
+
+
 	//見積情報の削除
 		public String quotationDataDelete(int userNo) {
 			try {
@@ -181,7 +182,7 @@ public class ClientOrderJdbc {
 			}
 			return "受注が完了しました。";
 		}
-		
+
 
 			//売上履歴を取得
 			public ArrayList<ClientOrderModel> getSalesSearch(String SearchWord){
@@ -192,6 +193,34 @@ public class ClientOrderJdbc {
 
 						sql = "SELECT * FROM clientorder WHERE item_name LIKE ?";
 						itemDataList = jdbcTemplate.queryForList(sql, '%'+SearchWord+'%');
+					//格納する
+					for(Map<String, Object> mapData : itemDataList) {
+						ClientOrderModel returnData = new ClientOrderModel();
+						System.out.println(mapData);
+						returnData.setClient_order_no((int)mapData.get("client_order_no"));
+						returnData.setItem_name((String)mapData.get("item_name"));
+						returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+						returnData.setTotal_price((int)mapData.get("total_price"));
+						returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+						returnList.add(returnData);
+						System.out.println(returnData);
+					}
+				}catch(Exception ex) {
+
+				}
+				return returnList;
+			}
+
+	//新しいの
+			//売上出力
+			public ArrayList<ClientOrderModel> getSalesOutput(String SearchWord){
+				ArrayList<ClientOrderModel> returnList = new ArrayList<ClientOrderModel>();
+				try {
+					String sql;
+					List<Map<String, Object>> itemDataList = new ArrayList<Map<String, Object>>();
+
+					sql = "SELECT *   FROM  clientorder WHERE item_buy_date LIKE ?;";
+					itemDataList = jdbcTemplate.queryForList(sql, '%'+SearchWord+'%');
 					//格納する
 					for(Map<String, Object> mapData : itemDataList) {
 						ClientOrderModel returnData = new ClientOrderModel();
@@ -208,7 +237,25 @@ public class ClientOrderJdbc {
 				return returnList;
 			}
 
+			//売上合計
+			public Map<String, Object>  getSalesTotalPrice(String SearchWord){
+				Map<String, Object> returnList = new HashMap<String, Object>();
 
+				try {
+					String sql;
+					Map<String, Object> itemDataList = new HashMap<String, Object>();
+						sql = "SELECT  SUM(total_price) AS month_total  FROM  clientorder WHERE item_buy_date LIKE ? GROUP BY DATE_FORMAT(item_buy_date, '%m');";
+						itemDataList = jdbcTemplate.queryForMap(sql, '%'+SearchWord+'%');
+
+						System.out.println(itemDataList);
+
+						returnList = (Map<String, Object>) itemDataList;
+
+				}catch(Exception ex) {
+					System.out.println("エラーが発生しました。");
+				}
+				return returnList;
+			}
 
 
 
