@@ -13,9 +13,15 @@
 	商品名<input type="text" name="searchWord" th:value="${item_name}" required>	
 	<input type="submit" value="検索">
 	</form>
+	<br>
+	<form method="POST" action="orderConfirmation" >
+	 <input type="submit" value="帳票出力"> 
+	<input type="hidden" name="searchWord" th:value="${item_name}" />
+	</form>
 	<div th:if="${resultText} != null"> 
 		<h3 th:text="${resultText}"></h3>
   	</div>
+ 
 	
 <div th:if="${clientOrderList != null}">
 	
@@ -23,7 +29,7 @@
   	
 	<table border="1">
 		<tr>
-			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>合計金額</th><th>受注日</th><th>出荷予定日</th><th>出荷日</th>
+			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>合計金額</th><th>受注日</th>
 		</tr>
 		<tr th:each="list : ${clientOrderList}">
 
@@ -33,20 +39,14 @@
 			<td th:text="${list.item_buy_count}"></td>
 			<td th:text="${list.total_price}"></td>
 			<td th:text="${list.item_buy_date}"></td>
-			<td th:text="${list.shipment_due_date ?: '未入力'}"></td>
-			<td th:text="${list.shipment_date} ?: '未入力'"></td>
+
 			
+	
 		</tr>
 	</table>
 	
 	
 </div>
-
-	<form method="POST" action="" >
-	<button type="submit" name="orderConfirmation ">注文請書出力</button>
-	</form>
-	
-
 
 <form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
