@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +55,25 @@ public class SalesManagementController  {
 			model.addAttribute("searchWord", SearchWord);
 	        return "html/SalesTotal";
 	    }
+
+	    /*新しいの*/
+	    /*売上出力表示*/
+	    @RequestMapping("SalesOutput")
+	    public String salesOutput(@RequestParam("item_month") String SearchWord,Model model) throws EncryptedDocumentException, IOException {
+	    	ArrayList<ClientOrderModel> returnList = Clientlogic.getSalesOutput(SearchWord);
+	    	System.out.println(returnList);
+
+	    	//検索結果を渡す
+			if(returnList.size()==0){
+				model.addAttribute("message", "出力できませんでした。");
+			}else{
+				model.addAttribute("message", "出力できました。");
+			}
+	        return "html/SalesTotal";
+	    }
+
+
+
 }
 
 
