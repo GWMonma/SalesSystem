@@ -1,5 +1,6 @@
 package com.example.demo.logic;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -157,18 +158,35 @@ public class ClientOrderLogic {
 			    System.out.println(model.getTotal_price());
 		    }
 
-		    int i = 1;
-		    	// 出力用のストリームを用意
-	     	    FileOutputStream out = new FileOutputStream("C:\\Users\\Education\\Desktop\\売上書"+ i +".xlsx");
-	     	   // ファイルへ出力
-	    	    workbook.write(out);
-	    	    out.close();
-	    	    ++i;
-	    	    System.out.println(i);
+	  //ファイルの出力
+		FileOutputStream output = null;
+		String path = "C:\\Users\\Education\\Desktop\\売上書.xlsx";
+			int pathNo = 1;
+			//ファイルの存在を確認する
+			File file = new File(path);
+			while(file.exists()) {
+				//存在する場合
+				path = "C:\\Users\\Education\\Desktop\\売上書("+pathNo+").xlsx";
+				file = new File(path);
+				pathNo++;
+			}
 
-	    if(workbook != null) {
-	    	System.out.println("Excelファイルを出力しました！");
-	    }
+			try{
+				output = new FileOutputStream(path);
+				//書き込み
+				workbook.write(output);
+			}catch(Exception ex){
+				ex.printStackTrace();
+				System.out.println("エラー1");
+			}finally {
+				try {
+					if(workbook!=null) {workbook.close();}
+					if(output!=null) {output.close();}
+				}catch(Exception ex2) {
+					ex2.printStackTrace();
+					System.out.println("エラー2");
+				}
+			}
 
 		return returnList;
 	}
