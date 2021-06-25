@@ -67,5 +67,17 @@
 </th:if>
 </div>
 
+<!-- 売上書出力 -->
+<form method="POST" action="SalesOutput" >
+	 <input type="month" name="item_month" th:value="${item_month}" required>
+   <input class="btn btn-danger" type="submit" value="出力表示" />
+</form>
+
+<div th:if="${message != null}">
+	    <p th:text="${message}"></p>
+</div>
+
+
+
 </body>
 </html>
