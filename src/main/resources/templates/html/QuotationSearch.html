@@ -33,7 +33,7 @@
 			<th>削除</th>
 		</tr>
 		<tr th:each="QuotationSearchData : ${searchList}" th:object="${QuotationSearchData}">
-			<td th:text="*{quotationNo}"/></td>
+			<!-- <td th:text="*{quotationNo}"/></td> -->
 			<td th:text="*{itemName}"/></td>
 			<td th:text="*{itemProductNo}"/></td>
 			<td th:text="*{itemBuyCount}"/></td>
@@ -43,6 +43,9 @@
 	</table>
 	</form>
 </div>
+<form action="QuotationOutput" method="POST">
+	<input type="submit" value="見積書を取得する"/>
+</form>
 
 <form action="#" th:action="@{/logout}" method="post">
     <input type="submit" value="logout">
