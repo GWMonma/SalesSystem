@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.jdbc.ClientOrderJdbc;
+import com.example.demo.logic.ClientOrderLogic;
 import com.example.demo.model.ClientOrderModel;
 import com.example.demo.model.LoginModel;
 
@@ -24,6 +25,9 @@ public class ClientOrderManagementController {
 	String message;
 	 @Autowired
 	 HttpSession session;
+	 
+	 @Autowired
+	 ClientOrderLogic COLogic;
 	 
 
 
@@ -87,12 +91,37 @@ public class ClientOrderManagementController {
 	//商品名をデータベースと照合して受注情報を表示(フォーム)
 		@RequestMapping("COSearch")
 		public String clientOrderSearch(@RequestParam("searchWord") String searchWord, Model model){
-			ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord);
+			//セッションからuser_noを取得
+			Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+			int userNo = (int) sessionlist.get("user_no");
+			ArrayList<ClientOrderModel> list = clientOrderJdbc.getClientOrderLog(searchWord, userNo);
 			if(list.size()>0) {
 				model.addAttribute("clientOrderList",list);
 	    	}
 			model.addAttribute("item_name", searchWord);
 			model.addAttribute("resultText", "検索結果："+list.size()+"件");
+		  	return "html/ClientOrderSearch";
+		}
+		
+		
+
+		//帳票出力
+		@RequestMapping("orderConfirmation")
+		public String ClientOrderOutput(@RequestParam("searchWord") String searchWord,Model model){
+			String	result =null;
+			if(searchWord=="") {
+				result = "受注情報を検索してください";
+					model.addAttribute("resultText", result);
+					return "html/ClientOrderSearch";
+				}
+			//セッションからuser_noを取得
+			Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+			int userNo = (int) sessionlist.get("user_no");
+			//出力
+			COLogic.newClientOrderExcel(searchWord,userNo);
+			result = "帳票出力が完了しました(ドキュメント内に保存されています)";
+			model.addAttribute("resultText", result);
+
 		  	return "html/ClientOrderSearch";
 		}
 		
@@ -129,6 +158,8 @@ public class ClientOrderManagementController {
 			model.addAttribute("resultText", "見積件数："+list.size()+"件");
 		  	return "html/ClientOrderinput";
 		}
+		
+		
 
 
 }
