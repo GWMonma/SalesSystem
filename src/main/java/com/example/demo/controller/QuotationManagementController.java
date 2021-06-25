@@ -170,5 +170,20 @@ public class QuotationManagementController  {
 		 }
 		 return "html/QuotationSearch";
 	 }
+	 
+	 //見積書を出力
+	 @RequestMapping("QuotationOutput")
+	 public String QuotationOutput(@RequestParam("searchWord") String searchWord, Model model) {
+		 String resultText = quotationLogic.QuotationOutputLogic();
+		 model.addAttribute("resultText", resultText);
+		 //出力後に検索を行う
+		 ArrayList<QuotationModel> searchList =  quotationLogic.quotationSearchListLogic(searchWord);
+		 model.addAttribute("searchWord", searchWord);
+		 model.addAttribute("resultText", resultText);
+		 if(searchList.size()>0) {
+			 model.addAttribute("searchList", searchList);
+		 }
+		 return "html/QuotationSearch";
+	 }
 	
 }

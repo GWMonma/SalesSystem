@@ -87,6 +87,10 @@ public class QuotationJdbc {
 			if(searchNoList.size()>0) {
 				String sql = "SELECT * FROM quotation WHERE user_no = ? AND item_no in ("+noStr.toString()+")";
 				quotationSearchList = jdbcTemplate.queryForList(sql, userNo);
+			}else if(searchNoList.size()==0) {
+				String sql = "SELECT * FROM quotation WHERE user_no = ?";
+				quotationSearchList = jdbcTemplate.queryForList(sql, userNo);
+			}
 				//格納する
 				for(Map<String, Object> mapData : quotationSearchList) {
 					QuotationModel returnData = new QuotationModel();
@@ -106,12 +110,9 @@ public class QuotationJdbc {
 					}
 					
 				}
-			}
-			
 		}catch(Exception ex) {
 		}
 		
 		return returnList;
-	}
 	
 }
