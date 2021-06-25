@@ -34,8 +34,13 @@ public class  VenderStockManagementController  {
 	 //フォームから入力された値を受け取りデータベースと照合
 	    @RequestMapping("VenderSearch")
 	    public String venderSearch(@RequestParam("item_name") String item_name, Model model){
-			ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
-			model.addAttribute("venderOrderList",list);
+	    	ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
+	    	if(list.size()>0) {
+				model.addAttribute("venderOrderList",list);
+				model.addAttribute("resultText",list.size()+"件");
+	    	}else {
+	    		model.addAttribute("resultText", "該当する仕入れ情報はありません");
+	    	}
 			model.addAttribute("item_name", item_name);
 	        return "html/VenderStockManagement";
 	    }
@@ -43,13 +48,9 @@ public class  VenderStockManagementController  {
 	 //日付の更新
 	    @RequestMapping("VenderOrderDateUpdate")
 	    public String venderOrderDateUpdate(@RequestParam("item_name") String item_name, @RequestParam("date_update") String vender_order_no, Model model){
-	    	int totalItemNo = itemJdbc.getItemDataList().size();
+	    	int totalItemNo = venderOrderJdbc.getVenderOrderDataList().size();
 	    	String resultText = null;
 	    	int no = -1;
-	    	ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
-	    	model.addAttribute("venderOrderList",list);
-	    	model.addAttribute("item_name", item_name);
-			
 	    	try {
 				no = Integer.parseInt(vender_order_no);
 			}catch(Exception ex){
@@ -63,6 +64,9 @@ public class  VenderStockManagementController  {
 	    		resultText = venderOrderJdbc.arrivalDueDateUpdate(no);
 	    	}
 			model.addAttribute("resultText",resultText);
+			ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
+	    	model.addAttribute("venderOrderList",list);
+	    	model.addAttribute("item_name", item_name);
 	        return "html/VenderStockManagement";
 	    }
 
