@@ -3,19 +3,37 @@
 <head>
     <title>受注入力</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
-	<input type="submit" value="管理者メニューへ">
-	</form>
-	<h1>受注入力画面</h1>
+<header class="header">
+       <div class="header_wrap">
+       	<h1 class="header_ttl">受注入力画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
 	<div th:if="${message} != null"> 
 	<h3 th:text="${message}"></h3>
-  	</div>
+  	</div><br>
 	<div th:if="${resultText} != null"> 
 	<h3 th:text="${resultText}"></h3>
   	</div>
-	
+	<br>
 
 	<div th:if="${QuotationList != null}">
   	
@@ -34,14 +52,13 @@
 		</tr>
 	</table>
 	</div>
-
- 
+<br>
 	<form method="POST" action="clientOrderFixing">
-	<input type="submit" value="受注">
+	<input class="btn"  type="submit" value="受注" onclick="return confirm('受注入力')">
 	</form>
-
+<br>
 	<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
+    <input class="btn"  type="submit" value="logout">
 	</form>
 
 </body>
