@@ -450,14 +450,14 @@ public class ClientOrderLogic {
 	        sheet.setMargin(Sheet.FooterMargin, 1.3); //フッターマージン
 			//列の幅設定
 	        sheet.setColumnWidth(0, 200);
-	        sheet.setColumnWidth(1, 1500);
+	        sheet.setColumnWidth(1, 1000);
 	        sheet.setColumnWidth(2, 1200);
 	        sheet.setColumnWidth(3, 4500);
 	        sheet.setColumnWidth(4, 6000);
 	        sheet.setColumnWidth(5, 1500);
 	        sheet.setColumnWidth(6, 3000);
-	        sheet.setColumnWidth(7, 3000);
-	        sheet.setColumnWidth(8, 1500);
+	        sheet.setColumnWidth(7, 4000);
+	        sheet.setColumnWidth(8, 1000);
 	      
 			//セルの結合
 			sheet.addMergedRegion(new CellRangeAddress(2, 3, 2, 6));
@@ -625,7 +625,8 @@ public class ClientOrderLogic {
 					cell.setCellValue(list.get(no-9).getTotal_price());
 					cell.setCellStyle(styleVerticalCenterGrid);
 					cell = row.createCell(7);
-					cell.setCellValue(list.get(no-9).getItem_buy_date());
+					SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
+					cell.setCellValue(df.format(list.get(no-9).getItem_buy_date()));
 					cell.setCellStyle(styleVerticalCenterGrid);
 					continue;
 				}
@@ -654,13 +655,13 @@ public class ClientOrderLogic {
 					
 			//ファイルの出力
 			FileOutputStream output = null;
-			String path = "C:\\Users\\Education\\Documents\\Quotation.xlsx";
+			String path = "C:\\Users\\Education\\Documents\\受注情報.xlsx";
 				int pathNo = 1;
 				//ファイルの存在を確認する
 				File file = new File(path);
 				while(file.exists()) {
 					//存在する場合
-					path = "C:\\Users\\Education\\DocumentsQuotation("+pathNo+").xlsx";
+					path = "C:\\Users\\Education\\Documents\\受注情報("+pathNo+").xlsx";
 					file = new File(path);
 					pathNo++;
 				}
@@ -682,13 +683,8 @@ public class ClientOrderLogic {
 					}
 				}
 			
-			return "見積書の保存が完了しました。";
+			return "受注情報の保存が完了しました。";
 		}
 
 }
-
-
-
-}
-
 
