@@ -112,7 +112,7 @@ public class QuotationJdbc {
 				}
 		}catch(Exception ex) {
 		}
-		
 		return returnList;
+	}
 	
 }
