@@ -3,9 +3,31 @@
 <head>
     <title>見積検索</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>見積検索画面</h1>
+	<header class="header">
+		<div class="header_wrap">
+		<h1 class="header_ttl">見積検索画面</h1>
+
+			<nav  class="header_nav">
+				<ul  class="header_ul">
+					<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+						<input class="btn header_btn" type="submit" value="管理者メニューへ">
+					</form>
+					</li>
+
+					<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+						<input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+					</li>
+				</ul>
+	    	</nav>
+		</div>
+	</header>
 <div th:if="${resultText == null}">
 	<h4>商品名を入力してください。</h4>
 </th:if>
@@ -14,16 +36,17 @@
 	<h4 th:text="${resultText}"></h4>
 </th:if>
 </div>
+<br>
 
 <form action="QuotationSearchResult" method="POST">
 	<input type="text" name="searchWord" placeholder="商品名" th:value="${searchWord}" required/>
-	<input type="submit" value="検索"/>
+	<input class="btn" type="submit" value="検索"/>
 </form>
 <br>
 <div th:if="${searchList != null}">
 	<form action="QuotationDeleteResult" method="POST">
 	<input type="hidden" name="searchWord" th:value="${searchWord}" />
-	<table border="1" align="center">
+	<table>
 		<tr>
 			<th>商品名</th>
 			<th>商品コード</th>
@@ -36,17 +59,15 @@
 			<td th:text="*{itemProductNo}"/></td>
 			<td th:text="*{itemBuyCount}"/></td>
 			<td th:text="*{totalPrice}"/></td>
-			<td><button type="submit" name="deleteButton" th:value="*{quotationNo}">×</button></td>
+			<td><button class ="btn" type="submit" name="deleteButton" th:value="*{quotationNo}">×</button></td>
 		</tr>
 	</table>
 	</form>
 </div>
+<br>
 <form action="QuotationOutput" method="POST">
-	<input type="submit" value="見積書を取得する"/>
-</form>
-
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
+	<input class="btn" type="submit" value="見積書を取得する"/>
+	<input type="hidden" name="searchWord" th:value="${searchWord}" />
 </form>
 </body>
 </html>
