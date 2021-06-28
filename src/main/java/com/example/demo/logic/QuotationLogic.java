@@ -47,10 +47,16 @@ public class QuotationLogic {
 		int userNo = (int) list.get("user_no");
 		//既に保存されているか確認
 		ArrayList<Integer> returnList = quotationJdbc.quotationCheck(userNo, itemNo);
-		
-		if(returnList.get(0)==-1) {//保存されていない場合
+		//20件以上は保存できないように設定するため、件数を取得
+		ArrayList<InventoryModel> searchNoList = itemJdbc.getInventoryLog("");
+		int quotationListNo = quotationJdbc.quotationSearchList(userNo, searchNoList).size();
+		System.out.println("件数："+quotationListNo);
+		if(returnList.get(0)==-1 && quotationListNo < 20) {//保存されていない場合
 			return quotationJdbc.quotationSave(userNo, itemBuyCount, itemNo);
 		
+		}else if(returnList.get(0)==-1 && quotationListNo == 20) {
+			return "見積情報を20件以上保存することはできません。";
+			
 		}else{//保存されている場合
 			int itemStock = itemJdbc.getItemData(itemNo).getItemStock();
 			
@@ -99,8 +105,8 @@ public class QuotationLogic {
 			String returntext = quotationJdbc.quotationDelete(quotationNo);
 			return returntext;
 		}
-	
-		//見積書を出力
+		
+	//見積書を出力
 		public String QuotationOutputLogic() {
 			//ユーザー番号を取得
 			Map<String, Object> list = (Map<String, Object>) session.getAttribute("data");
@@ -121,6 +127,14 @@ public class QuotationLogic {
 			Workbook workbook1 = new XSSFWorkbook();
 			//シートの作成
 			Sheet sheet = workbook1.createSheet("見積書");
+			//セルの線を削除
+			sheet.setDisplayGridlines(false);
+			//幅を設定
+			sheet.setColumnWidth(2,2600);
+			sheet.setColumnWidth(3,5200);
+			sheet.setColumnWidth(4,5200);
+			sheet.setColumnWidth(5,2600);
+			sheet.setColumnWidth(6,5200);
 			//セルの結合
 			sheet.addMergedRegion(new CellRangeAddress(2, 3, 2, 6));
 			sheet.addMergedRegion(new CellRangeAddress(4, 4, 2, 4));
