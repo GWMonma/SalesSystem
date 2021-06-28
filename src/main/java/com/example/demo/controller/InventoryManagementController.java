@@ -109,10 +109,10 @@ public class InventoryManagementController {
 		}
 	
 	
-//出荷管理↓
- @Autowired
- ClientOrderLogic COLogic;
-	
+//出荷管理↓	
+		 @Autowired
+		 ClientOrderLogic COLogic;
+
 	//データベースと照合して受注情報を表示(ボタン)
 	@RequestMapping("ClientOrderSearchButton")
 		public String orderSearchButton(@RequestParam("selectBtn") String selectBtn,Model model){
@@ -150,8 +150,7 @@ public class InventoryManagementController {
 		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	  	return "html/ShipmentManagement";
 	}
-	
-	
+
 	//出荷予定日の更新
 		@RequestMapping("ShipmentDueDateUpdate")
 		public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
@@ -168,6 +167,7 @@ public class InventoryManagementController {
 	    	}
 	    	String returnText = COLogic.checkShipmentDueDateLogic(Integer.parseInt(client_order_no),shipment_due_date, userNo);
 			model.addAttribute("resultText",returnText);
+			
 			
 	    	//キーワード検索
 	    	if(selectBtn.equals("")&& search.equals("word")){
@@ -187,7 +187,7 @@ public class InventoryManagementController {
 	    	if(list.size()>0) {
 	    		model.addAttribute("clientOrderList", list);
 	    	}
-
+	    	model.addAttribute("message","出荷予定日の更新が完了しました");
 			return "html/ShipmentManagement";
 		}
 		 	
@@ -208,6 +208,7 @@ public class InventoryManagementController {
 	    	String returnText = COLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no), userNo);
 	    	model.addAttribute("resultText",returnText);
 	    	
+	    	
 			//キーワード検索
 	    	if(selectBtn.equals("")&& search.equals("word")){
 				list = clientOrderJdbc.getClientOrderLog(searchWord, userNo);
@@ -226,7 +227,7 @@ public class InventoryManagementController {
 	    	if(list.size()>0) {
 	    		model.addAttribute("clientOrderList", list);
 	    	}
-			
+	    	model.addAttribute("message","出荷が完了しました");
 			return "html/ShipmentManagement";
 		}
 //出荷管理↑
