@@ -1,15 +1,43 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>発注管理</title>
+    <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>発注管理画面</h1>
-<p th:text=" ${message}" />
+<header class="header">
 
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
+       <div class="header_wrap">
+       	<h1 class="header_ttl">発注管理画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input  class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input  class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+<p class="message" th:text=" ${message}" />
+
+<form class="manager_form" action="#" th:action="@{/VenderOrderInput}" method="post">
+     <input class="btn" type="submit" value="発注入力">
+   </form>
+
+   <form class="manager_form" action="#" th:action="@{/VenderOrderSearch}" method="post">
+     <input class="btn" type="submit" value="発注検索">
+   </form>
 </body>
 </html>

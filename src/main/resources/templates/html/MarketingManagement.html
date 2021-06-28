@@ -3,25 +3,45 @@
 <head>
     <title>販売管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>販売管理画面</h1>
 
-<form action="#" th:action="@{/MarketingManagement}" method="post">
-     <input type="submit" value="見積管理">
+<header class="header">
+
+       <div class="header_wrap">
+       	<h1 class="header_ttl">販売管理画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+	<form class="manager_form" action="#" th:action="@{/QuotationManagement}" method="post">
+	     <input class="btn" type="submit" value="見積管理">
+	</form>
+
+   <form class="manager_form" action="#" th:action="@{/ClientOrderManagement}" method="post">
+     <input class="btn" type="submit" value="受注管理">
    </form>
 
-   <form action="#" th:action="@{/InventoryManagement}" method="post">
-     <input type="submit" value="受注管理">
+   <form class="manager_form" action="#" th:action="@{/SalesTotal}" method="post">
+     <input class="btn" type="submit" value="売上集計">
    </form>
-
-   <form action="#" th:action="@{/PurchaseManagement}" method="post">
-     <input type="submit" value="売上集計">
-   </form>
-
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
 
 </body>
 </html>
