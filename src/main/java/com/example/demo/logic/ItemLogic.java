@@ -9,6 +9,7 @@ import com.example.demo.jdbc.ClientOrderJdbc;
 import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.jdbc.VenderOrderJdbc;
 import com.example.demo.model.InventoryModel;
+import com.example.demo.model.VenderOrderModel;
 
 @Service
 public class ItemLogic {
@@ -16,7 +17,7 @@ public class ItemLogic {
 	VenderOrderJdbc venderOrderJdbc;
 
 	@Autowired
-	ItemJdbc itemjdbc;
+	ItemJdbc itemJdbc;
 	
 	@Autowired
 	ClientOrderJdbc clientOrderJdbc;
@@ -24,7 +25,7 @@ public class ItemLogic {
 	//データベースから在庫履歴を取得する。
 			public ArrayList<InventoryModel>getInventoryLog(String searchWord) {
 				ArrayList<InventoryModel> returnList = new ArrayList<InventoryModel>();
-				returnList =itemjdbc.getInventoryLog(searchWord);
+				returnList =itemJdbc.getInventoryLog(searchWord);
 
 				return returnList;
 			}
@@ -32,7 +33,7 @@ public class ItemLogic {
 			//データベース内の在庫履歴を更新する。
 			public ArrayList<InventoryModel>getInventoryUpdate(String searchWord,String updateStock) {
 				ArrayList<InventoryModel> returnList = new ArrayList<InventoryModel>();
-				returnList =itemjdbc.getInventoryUpdate(searchWord,updateStock);
+				returnList =itemJdbc.getInventoryUpdate(searchWord,updateStock);
 
 				return returnList;
 			}
@@ -101,5 +102,4 @@ public class ItemLogic {
 		return returnText;
 	}
 	
-
 }
