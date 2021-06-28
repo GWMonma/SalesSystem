@@ -70,7 +70,11 @@ public class ClientOrderJdbc {
 					//出荷日記入済み(出荷済み)の情報を取得
 					String sql = "select * from clientorder where shipment_date is not null && user_no=?";
 					itemDataList = jdbcTemplate.queryForList(sql,userNo);
-				}else {
+				}else if(searchWord==""){
+					String sql = "SELECT * FROM clientorder";
+					itemDataList = jdbcTemplate.queryForList(sql);
+				}
+				else {
 					System.out.println("userNo="+userNo);
 					String sql = "SELECT * FROM clientorder WHERE item_name LIKE ? && user_no=?";
 					itemDataList = jdbcTemplate.queryForList(sql, '%'+searchWord+'%',userNo);
