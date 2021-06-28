@@ -3,25 +3,49 @@
 <head>
 	<meta charset="utf-8">
 	<title>仕入管理</title>
+	<link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
-<body >
+<body>
+<header class="header">
+       <div class="header_wrap">
+       	<h1 class="header_ttl">仕入管理画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+	<br>
 	<form method="POST" action="VenderSearch" >
 	商品名<input type="text" name="item_name" th:value="${item_name}" required>	
-	<input type="submit" value="検索">
+	<input class="btn" type="submit" value="検索">
 	</form>
 	
 	<form method="POST" action="VenderOrderDateUpdate">
 	商品番号<input type="text" name="date_update" size=5 required>
-	<input type="submit" value="仕入日更新">
+	<input class="btn" type="submit" value="仕入日更新">
 	<input type="hidden" name="item_name" th:value="${item_name}" />
 	</form>
-	
 	<br>
 	<div th:if="${resultText} != null"> 
 		<h3 th:text="${resultText}"></h3>
   	</div>
+  	<br>
   	
-	<table>
+	<div th:if="${venderOrderList != null}">
+	<table border="1">
 		<tr>
 			<th>No</th><th>商品名</th><th>商品番号</th><th>個数</th><th>金額</th><th>発注日</th><th>仕入れ予定日</th>
 		</tr>
@@ -37,7 +61,7 @@
 		
 		</tr>
 	</table>
-
+	</div>
   	
 </body>
 </html>
