@@ -3,9 +3,31 @@
 <head>
     <title>見積入力</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h2>見積情報入力</h2>
+	<header class="header">
+		<div class="header_wrap">
+		<h1 class="header_ttl">見積入力画面</h1>
+
+			<nav  class="header_nav">
+				<ul  class="header_ul">
+					<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+						<input class="btn header_btn" type="submit" value="管理者メニューへ">
+					</form>
+					</li>
+
+					<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+						<input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+					</li>
+				</ul>
+	    	</nav>
+		</div>
+	</header>
 	<div th:if="${resultText == null}">
 		<h4>見積情報を入力してください。</h4>
 	</th:if>
@@ -14,32 +36,51 @@
 		<h4 th:text="${resultText}"></h4>
 	</th:if>
 	</div>
+	<br>
 	
 	<div th:if="${totalPrice == null}">
 		<form method="POST" action="Quotationcheck">
-			商品No<input type="text" name="itemNo" required/>
-			<br><br>
-			個　数<input type="text" name="itemBuyCount" required/>
-			<br><br>
-			金　額<input type="text" name="totalPrice" value="未定" readonly/>
-			<br><br>
-			<input type="submit" value="最終確認">
+		<table class="inputTable">
+			<tr class="inputTr">
+				<td class="inputTd">商品No</td>
+				<td class="inputTd"><input type="text" name="itemNo" required/></td>
+			</tr>
+			<tr class="inputTr">
+				<td class="inputTd">個数</td>
+				<td class="inputTd"><input type="text" name="itemBuyCount" required/></td>
+			</tr>
+			<tr class="inputTr">
+				<td class="inputTd">金額</td>
+				<td class="inputTd"><input type="text" name="totalPrice" value="未定" readonly/></td>
+			</tr>
+		</table>
+		<br>
+		<input class="btn" type="submit" value="最終確認">
 		</form>
 	</th:if>
 	</div>
 	
 	<div th:if="${totalPrice != null}">
 		<form method="POST" action="quotationSave">
-			商品No　　<p style="display:inline" th:text="${itemNo}"/>
-			<br><br>
-			個　数　　<p style="display:inline" th:text="${itemBuyCount}"/>
-			<br><br>
-			金　額　　<p style="display:inline" th:text="${totalPrice}"/>
-			<br><br>
+			<table class="inputTable">
+				<tr class="inputTr">
+					<td class="inputTd">商品No</td>
+					<td class="inputTd"><p style="display:inline" th:text="${itemNo}"/></td>
+				</tr>
+				<tr class="inputTr">
+					<td class="inputTd">個数</td>
+					<td class="inputTd"><p style="display:inline" th:text="${itemBuyCount}"/></td>
+				</tr>
+				<tr class="inputTr">
+					<td class="inputTd">金額</td>
+					<td class="inputTd"><p style="display:inline" th:text="${totalPrice}"/></td>
+				</tr>
+			</table>
+			<br>
+			<input class="btn" type="submit" value="見積登録">
 			<input type="hidden" name="itemNo" th:value="${itemNo}"/>
 			<input type="hidden" name="itemBuyCount" th:value="${itemBuyCount}"/>
 			<input type="hidden" name="totalPrice" th:value="${totalPrice}"/>
-			<input type="submit" value="見積登録">
 			</form>
 	</th:if>
 	</div>
@@ -49,7 +90,7 @@
 		<details>
 			<summary>商品一覧表</summary>
 		
-			<table border="1">
+			<table>
 				<tr>
 					<th>商品番号</th>
 					<th>商品名</th>
@@ -67,9 +108,5 @@
 			</table>
 		</details>
 	</div>
-
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
 </body>
 </html>
