@@ -112,5 +112,30 @@ public class VenderOrderJdbc {
 		}
 		return "入荷が確定";		
 	}
+	
+	//商品の情報を取得
+		public  ArrayList<VenderOrderModel> getVenderOrderDataList(){
+			ArrayList<VenderOrderModel> returnList = new ArrayList<VenderOrderModel>();
+			try {
+			String sql = "SELECT * FROM venderorder";
+			List <Map<String, Object>> itemDataList = this.jdbcTemplate.queryForList(sql);
+			//格納する
+			for(Map<String, Object> mapData : itemDataList) {
+				VenderOrderModel returnData = new VenderOrderModel();
+				returnData.setVender_order_no((int)mapData.get("vender_order_no"));
+				returnData.setItem_name((String)mapData.get("item_name"));
+				returnData.setItem_product_no((String)mapData.get("item_product_no"));
+				returnData.setItem_buy_count((int)mapData.get("item_buy_count"));
+				returnData.setTotal_price((int)mapData.get("total_price"));
+				returnData.setItem_buy_date((Date)mapData.get("item_buy_date"));
+				returnData.setArrival_due_date((Date)mapData.get("arrival_due_date"));
+				returnData.setArrival_date((Date)mapData.get("arrival_date"));
+				returnList.add(returnData);
+			}
+			}catch(Exception ex) {
+				return null;
+			}
+			return returnList;
+		}
 
 }
