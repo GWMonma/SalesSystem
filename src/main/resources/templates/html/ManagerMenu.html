@@ -16,14 +16,8 @@
 		<nav  class="header_nav">
 			<ul  class="header_ul">
 				<li  class="header_li">
-					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
-				     	<input type="submit" value="管理者メニューへ">
-				   </form>
-				</li>
-
-				<li  class="header_li">
 					<form action="#" th:action="@{/logout}" method="post">
-					    <input type="submit" value="ログアウト">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
 					</form>
 				</li>
 			</ul>
@@ -32,23 +26,19 @@
 </header>
 
 
-   <p th:text=" ${message}" />
+   <p class="message" th:text=" ${message}" />
 
-   <form class="manager_menu"action="#" th:action="@{/MarketingManagement}" method="post">
-     <input type="submit" value="販売管理">
+   <form class="manager_form" action="#" th:action="@{/MarketingManagement}" method="post">
+     <input class="btn"  type="submit" value="販売管理">
    </form>
 
-   <form class="manager_menu" action="#" th:action="@{/InventoryManagement}" method="post">
-     <input type="submit" value="在庫管理">
+   <form class="manager_form" action="#" th:action="@{/InventoryManagement}" method="post">
+     <input class="btn" type="submit" value="在庫管理">
    </form>
 
-   <form class="manager_menu" action="#" th:action="@{/PurchaseManagement}" method="post">
-     <input type="submit" value="購買管理">
+   <form class=".manager_form" action="#" th:action="@{/PurchaseManagement}" method="post">
+     <input  class="btn" type="submit" value="購買管理">
    </form>
-
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
 
 </body>
 </html>
