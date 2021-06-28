@@ -110,3 +110,30 @@ td{
     border: 1px solid;
     padding: 7px;
 }
+
+/*見積入力画面と発注入力画面のテーブル関連*/
+.inputTable{
+	border: 0px;
+}
+
+.inputTd{
+	border: 0px;
+}
+
+.inputTd{
+	border: 0px;
+}
+
+/*入荷管理画面関連*/
+.formFlex{
+	display:inline-flex
+}
+
+.arrivalDataSearchForm{
+	margin-right: 40px;
+}
+
+.arrivalDataSearchBtn{
+	margin-left: 20px;
+	margin-right: 20;
+}
