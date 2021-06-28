@@ -3,9 +3,32 @@
 <head>
     <title>入荷管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>入荷管理画面</h1>
+	<header class="header">
+		<div class="header_wrap">
+		<h1 class="header_ttl">入荷管理画面</h1>
+
+			<nav  class="header_nav">
+				<ul  class="header_ul">
+					<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+						<input class="btn header_btn" type="submit" value="管理者メニューへ">
+					</form>
+					</li>
+
+					<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+						<input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+					</li>
+				</ul>
+	    	</nav>
+		</div>
+	</header>
+
 <div th:if="${resultText == null}">
 	<h4>入荷確定情報を入力してください。</h4>
 </th:if>
@@ -14,11 +37,10 @@
 	<h4 th:text="${resultText}"></h4>
 </th:if>
 </div>
-	
-	<h4>入荷確定情報更新</h4>
+<br>
 	<form method="POST" action="ArrivalDateUpdate">
 		<input type="text" name="itemNo" placeholder="入荷番号" required/>
-		　<input type="submit" value="入荷確定">
+		<input class="btn" type="submit" value="入荷確定">
 		<input type="hidden" name="searchItemName" th:value="${searchItemName}">
 		<input type="hidden" name="selectBtn" th:value="${selectBtn}"/>
 		<input type="hidden" name="search" th:value="${search}"/>
@@ -26,6 +48,7 @@
 	
 	<br>
 	<hr width="100%" size="3" noshade>
+	<br>
 	
 	<div th:if="${searchResultText != null}">
 		<h4 th:text="'入荷情報検索　'+${searchResultText}"></h4>
@@ -35,22 +58,26 @@
 		<h4>入荷情報検索</h4>
 	</th:if>
 	</div>
-	<form method="POST" action="ArrivalDataSearch">
-		<button type="submit" name="selectBtn" value="beforeArrival">入荷前</button>
-		<button type="submit" name="selectBtn" value="available">入荷済み</button>
+	<br>
+	
+	<div class="formFlex">
+	<form class="arrivalDataSearchForm" method="POST" action="ArrivalDataSearch">
+		<button class="btn arrivalDataSearchBtn" type="submit" name="selectBtn" value="beforeArrival">入荷前</button>
+		<button class="btn arrivalDataSearchBtn" type="submit" name="selectBtn" value="available">入荷済み</button>
 	</form>
 	<br>
 	<form method="POST" action="ArrivalDataKeywordSearch">
 		<input type="text" name="searchItemName" placeholder="商品名" th:value="${searchItemName}" required/>
-		　<input type="submit" value="検索"/>
+		<input class="btn" type="submit" value="検索"/>
 	</form>
-	<br>
+	</div>
+	<br><br>
 	
 <div th:if="${searchList != null}">
-	<details align="center">
+	<details>
 	<summary>入荷情報一覧表</summary>
 	
-	<table border="1" align="center">
+	<table>
 		<tr>
 			<th>入荷番号</th>
 			<th>商品名</th>
@@ -72,10 +99,5 @@
 </th:if>
 </details>
 </div>	
-	
-	<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-	</form>
-
 </body>
 </html>
