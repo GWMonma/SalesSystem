@@ -70,7 +70,6 @@ public class ItemJdbc {
 						returnData.setItemPrice((int)mapData.get("item_price"));
 						returnData.setItemStock((int)mapData.get("item_stock"));
 						returnList.add(returnData);
-					returnList.add(returnData);
 				}
 			}catch(Exception ex) {
 
