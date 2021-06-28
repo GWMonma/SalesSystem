@@ -3,13 +3,35 @@
 <head>
     <title>出荷管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>出荷管理画面</h1>
+	<header class="header">
+       <div class="header_wrap">
+       	<h1 class="header_ttl">出荷管理画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+<br>
 	<form method="POST" action="ShipmentDueDateUpdate">
 	商品番号<input type="text" name="client_order_no" size=5 required>
 	出荷日<input type="date" name="shipment_due_date" size=10 required>
-	<input type="submit" value="出荷予定日更新">
+	<input class="btn" type="submit" value="出荷予定日更新">
 	<input type="hidden" name="searchWord" th:value="${item_name}" />
 	<input type="hidden" name="selectBtn" th:value="${selectBtn}"/>
 	<input type="hidden" name="search" th:value="${search}"/>	
@@ -17,24 +39,32 @@
 	
 	<form method="POST" action="ShipmentDateUpdate">
 	商品番号<input type="text" name="client_order_no" size=5 required>
-	<input type="submit" value="出荷">
+	<input class="btn" type="submit" value="出荷">
 	<input type="hidden" name="searchWord" th:value="${item_name}" />
 	<input type="hidden" name="selectBtn" th:value="${selectBtn}"/>
 	<input type="hidden" name="search" th:value="${search}"/>	
 	</form>
-	 
-	<form method="POST" action="ClientOrderSearchButton" >
-	<button type="submit" name="selectBtn" value="unentered">出荷日予定未入力</button>
-	<button type="submit" name="selectBtn" value="entered">出荷前</button>
-	<button type="submit" name="selectBtn" value="shipped">出荷済</button>
-	</form>
+	 <br>
 	<form method="POST" action="ClientOrderSearchForm" >
 	商品名<input type="text" name="searchWord" th:value="${item_name}" required>	
-	<input type="submit" value="検索">
+	<input class="btn" type="submit" value="検索">
 	</form>
+	
+	<form method="POST" action="ClientOrderSearchButton" >
+	<button class="btn" type="submit" name="selectBtn" value="unentered">出荷日予定未入力</button>
+	<button class="btn" type="submit" name="selectBtn" value="entered">出荷前</button>
+	<button class="btn" type="submit" name="selectBtn" value="shipped">出荷済</button>
+	</form>
+	<br>
+	<div th:if="${message} != null"> 
+		<h3 th:text="${message}"></h3>
+  	</div>
 	<div th:if="${resultText} != null"> 
 		<h3 th:text="${resultText}"></h3>
   	</div>
+  	
+  	
+  	<br>
 	
 <div th:if="${clientOrderList != null}">
 	
@@ -57,6 +87,8 @@
 			
 		</tr>
 	</table>
+	
+	
 </div>
 
 </body>
