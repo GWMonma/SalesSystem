@@ -17,13 +17,13 @@
 			<ul  class="header_ul">
 				<li  class="header_li">
 					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
-				     	<input type="submit" value="管理者メニューへ">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
 				   </form>
 				</li>
 
 				<li  class="header_li">
 					<form action="#" th:action="@{/logout}" method="post">
-					    <input type="submit" value="ログアウト">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
 					</form>
 				</li>
 			</ul>
@@ -36,14 +36,14 @@
 </th:if>
 </div>
 <div th:if="${resultText != null}">
-	<h4 th:text="${resultText}"></h4>
+	<h4 class="message" th:text="${resultText}"></h4>
 </th:if>
 </div>
 
 <!-- 検索 -->
-<form method="POST" action="SalesSearch" >
+<form class="manager_form" method="POST" action="SalesSearch" >
 	商品名<input type="text" name="item_name" th:value="${item_name}" required>
-	<input type="submit" value="検索">
+	<input  class="btn" type="submit" value="検索">
 </form>
 
 <div th:if="${searchList != null}">
@@ -68,13 +68,13 @@
 </div>
 
 <!-- 売上書出力 -->
-<form method="POST" action="SalesOutput" >
+<form class="manager_form" method="POST" action="SalesOutput" >
 	 <input type="month" name="item_month" th:value="${item_month}" required>
-   <input class="btn btn-danger" type="submit" value="出力表示" />
+   <input class="btn" type="submit" value="出力表示" />
 </form>
 
 <div th:if="${message != null}">
-	    <p th:text="${message}"></p>
+	    <p class ="message" th:text="${message}"></p>
 </div>
 
 

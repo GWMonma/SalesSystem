@@ -16,13 +16,13 @@
 			<ul  class="header_ul">
 				<li  class="header_li">
 					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
-				     	<input type="submit" value="管理者メニューへ">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
 				   </form>
 				</li>
 
 				<li  class="header_li">
 					<form action="#" th:action="@{/logout}" method="post">
-					    <input type="submit" value="ログアウト">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
 					</form>
 				</li>
 			</ul>
@@ -31,23 +31,23 @@
 </header>
 
 <!-- 検索 -->
-<form method="POST" action="InventrySearch" >
-	商品名<input type="text" name="item_name" th:value="${item_name}" required>
-	<input type="submit" value="検索">
+<form  class="manager_form" method="POST" action="InventrySearch" >
+	<p class="form_text">商品名<input type="text" name="item_name" th:value="${item_name}" required><p>
+	<input class="btn inventory_btn" type="submit" value="検索">
 </form>
 
 <!-- 更新 -->
-<form method="POST" action="InventryUpdate" >
-	商品No<input type="text" name="item_no" th:value="${item_no}" required>
-	<br>
-	在庫数<input type="text" name="item_stock" th:value="${item_stock}" required>
-	<input type="submit" value="更新">
+<form class="manager_form" method="POST" action="InventryUpdate" >
+	<p class="form_text">商品No<input type="text" name="item_no" th:value="${item_no}" required></p>
+
+	<p class="form_text">在庫数<input type="text" name="item_stock" th:value="${item_stock}" required></p>
+	<input class="btn inventory_btn" type="submit" value="更新">
 </form>
 
 	<br>
 	<!-- メッセージ表示 -->
 	<div th:if="${resultText} != null">
-		<h3 th:text="${resultText}"></h3>
+		<h3 class="message" th:text="${resultText}"></h3>
   	</div>
 
 	<table>
@@ -65,8 +65,8 @@
 	</table>
 
 	<!-- 管理画面に戻るボタン-->
-	<form class="manager_menu"action="#" th:action="@{/InventoryManagement}" method="post">
-	     	<input type="submit" value="在庫管理へ">
+	<form class="manager_form" action="#" th:action="@{/InventoryManagement}" method="post">
+	     	<input class="btn" type="submit" value="在庫管理へ">
 	</form>
 
 </body>

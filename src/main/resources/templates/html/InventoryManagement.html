@@ -16,13 +16,13 @@
 			<ul  class="header_ul">
 				<li  class="header_li">
 					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
-				     	<input type="submit" value="管理者メニューへ">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
 				   </form>
 				</li>
 
 				<li  class="header_li">
 					<form action="#" th:action="@{/logout}" method="post">
-					    <input type="submit" value="ログアウト">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
 					</form>
 				</li>
 			</ul>
@@ -31,21 +31,17 @@
 </header>
 
 
-   <form action="#" th:action="@{/ArrivalManagement}" method="post">
-     <input type="submit" value="入荷管理">
+   <form class="manager_form" action="#" th:action="@{/ArrivalManagement}" method="post">
+     <input  class="btn" type="submit" value="入荷管理">
    </form>
 
-   <form action="#" th:action="@{/ShipmentManagement}" method="post">
-     <input type="submit" value="出荷管理">
+   <form class="manager_form" action="#" th:action="@{/ShipmentManagement}" method="post">
+     <input  class="btn" type="submit" value="出荷管理">
    </form>
 
-   <form action="#" th:action="@{/InventoryAdjustment}" method="post">
-     <input type="submit" value="在庫調整/棚卸">
+   <form class="manager_form" action="#" th:action="@{/InventoryAdjustment}" method="post">
+     <input  class="btn" type="submit" value="在庫調整/棚卸">
    </form>
-
-
-
-
 
 </body>
 </html>

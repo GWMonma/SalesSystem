@@ -74,6 +74,14 @@ body{
 	  cursor: pointer !important;
 	}
 
+	.btn.inventory_btn{
+	 padding: 4px 8px;
+	}
+
+	.form_text{
+		margin-bottom: 20px;
+	}
+
 /*管理画面内のボタン関連*/
 .ttl{
 	font-size: 20px;

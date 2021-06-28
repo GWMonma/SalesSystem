@@ -3,26 +3,44 @@
 <head>
     <title>受注管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
-	<input type="submit" value="管理者メニューへ">
-	</form>
-<h1>受注管理画面</h1>
-<p th:text=" ${message}" />
+<header class="header">
 
+       <div class="header_wrap">
+       	<h1 class="header_ttl">受注管理画面</h1>
 
-<form action="#" th:action="@{/ClientOrderInput}" method="post">
-     <input type="submit" value="受注入力">
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+<p class="message" th:text=" ${message}" />
+
+	<form class="manager_form" action="#" th:action="@{/ClientOrderInput}" method="post">
+     <input  class="btn" type="submit" value="受注入力">
    </form>
 
-   <form action="#" th:action="@{/ClientOrderSearch}" method="post">
-     <input type="submit" value="受注検索">
+   <form class="manager_form" action="#" th:action="@{/ClientOrderSearch}" method="post">
+     <input  class="btn" type="submit" value="受注検索">
    </form>
-   
-   <form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-    </form>
+
+
 
 
 </body>
