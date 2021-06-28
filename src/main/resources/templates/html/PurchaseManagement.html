@@ -3,22 +3,41 @@
 <head>
     <title>購買管理</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <link rel="stylesheet" th:href="@{/css/reset.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/System.css}" type="text/css">
 </head>
 <body>
-<h1>購買管理画面</h1>
 
-<form action="#" th:action="@{/VenderOrderManagement}" method="post">
-     <input type="submit" value="発注管理">
+<header class="header">
+
+       <div class="header_wrap">
+       	<h1 class="header_ttl">購買管理画面</h1>
+
+		<nav  class="header_nav">
+			<ul  class="header_ul">
+				<li  class="header_li">
+					<form class="manager_menu"action="#" th:action="@{/BackManager}" method="post">
+				     	<input class="btn header_btn" type="submit" value="管理者メニューへ">
+				   </form>
+				</li>
+
+				<li  class="header_li">
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input class="btn header_btn" type="submit" value="ログアウト">
+					</form>
+				</li>
+			</ul>
+	      </nav>
+	</div>
+</header>
+
+<form class="manager_form" action="#" th:action="@{/VenderOrderManagement}" method="post">
+     <input class="btn" type="submit" value="発注管理">
    </form>
 
-   <form action="#" th:action="@{/VenderStockManagement}" method="post">
-     <input type="submit" value="仕入れ管理">
+   <form class="manager_form" action="#" th:action="@{/VenderStockManagement}" method="post">
+     <input class="btn" type="submit" value="仕入れ">
    </form>
-
-
-<form action="#" th:action="@{/logout}" method="post">
-    <input type="submit" value="logout">
-</form>
 
 </body>
 </html>
