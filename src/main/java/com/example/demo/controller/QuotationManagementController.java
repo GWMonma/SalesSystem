@@ -147,18 +147,31 @@ public class QuotationManagementController  {
 	 //見積検索画面、検索用
 	 @RequestMapping("QuotationSearchResult")
 	 public String quotationSearchResult(@RequestParam("searchWord") String searchWord, Model model) {
+ 		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		 ArrayList<QuotationModel> searchList =  quotationLogic.quotationSearchListLogic(searchWord);
+		 ArrayList<QuotationModel> QuotationTotalList = quotationLogic.quotationSearchListLogic();
 		 model.addAttribute("searchWord", searchWord);
 		 if(searchList.size()>0) {
 			 model.addAttribute("searchList", searchList);
 		 }
-		 model.addAttribute("resultText", searchList.size()+"件表示");
+		 model.addAttribute("resultText", QuotationTotalList.size()+"件中　"+searchList.size()+"件表示");
 		 return "html/QuotationSearch";
 	 }
 	 
 	 //見積検索画面、見積情報削除用
 	 @RequestMapping("QuotationDeleteResult")
 	 public String QuotationDeleteResult(@RequestParam("searchWord") String searchWord, @RequestParam("deleteButton") String deleteButton, Model model) {
+ 		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		 int quotationNo = Integer.parseInt(deleteButton);
 		 System.out.println(quotationNo);
 		 String resultText = quotationLogic.quotationDeleteLogic(quotationNo);
@@ -175,6 +188,12 @@ public class QuotationManagementController  {
 	 //見積書を出力
 	 @RequestMapping("QuotationOutput")
 	 public String QuotationOutput(@RequestParam("searchWord") String searchWord, Model model) {
+ 		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		 ArrayList<QuotationModel> searchList = new ArrayList<QuotationModel>();
 		 String resultText = quotationLogic.QuotationOutputLogic();
 		 model.addAttribute("resultText", resultText);
@@ -191,5 +210,5 @@ public class QuotationManagementController  {
 		 }
 		 return "html/QuotationSearch";
 	 }
-	
+	 
 }
