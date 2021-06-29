@@ -41,16 +41,16 @@ public class  VenderStockManagementController  {
 	 //フォームから入力された値を受け取りデータベースと照合
 	    @RequestMapping("VenderSearch")
 	    public String venderSearch(@RequestParam("item_name") String item_name, Model model){
-    		if(session.getAttribute("data") == null) {
-    			message ="IDとパスワードを入力してください";
-    	    		model.addAttribute("indexForm", new LoginModel());
-    	    		model.addAttribute("message" , message);
-    	    		return "html/Login";
-    		}
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+			model.addAttribute("indexForm", new LoginModel());
+			model.addAttribute("message" , message);
+			return "html/Login";
+		}
 	    	ArrayList<VenderOrderModel> list = venderOrderJdbc.getVenderOrderLog(item_name);
 	    	if(list.size()>0) {
 				model.addAttribute("venderOrderList",list);
-				model.addAttribute("resultText",list.size()+"件");
+				model.addAttribute("resultText", "仕入予定件数："+list.size()+"件");
 	    	}else {
 	    		model.addAttribute("resultText", "該当する仕入れ情報はありません");
 	    	}

@@ -424,7 +424,8 @@ public class ClientOrderLogic {
 
 	//受注帳票出力
 	public String newClientOrderExcel(String searchWord,int userNo) {
-			
+		Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
+		String userName = (String) sessionlist.get("user_name");
 		    ArrayList<ClientOrderModel> list = ClientOrderJdbc.getClientOrderLog(searchWord, userNo);
 		    
 			//現在の日付を取得
@@ -462,9 +463,9 @@ public class ClientOrderLogic {
 	        sheet.setColumnWidth(8, 1000);
 	      
 			//セルの結合
-			sheet.addMergedRegion(new CellRangeAddress(2, 3, 2, 6));
+			sheet.addMergedRegion(new CellRangeAddress(2, 3, 2, 7));
 			sheet.addMergedRegion(new CellRangeAddress(4, 4, 2, 4));
-			sheet.addMergedRegion(new CellRangeAddress(4, 4, 5, 8));
+			sheet.addMergedRegion(new CellRangeAddress(4, 4, 5, 7));
 			sheet.addMergedRegion(new CellRangeAddress(5, 5, 2, 4));
 			sheet.addMergedRegion(new CellRangeAddress(7, 7, 2, 4));
 			//フォント タイトル
@@ -571,7 +572,7 @@ public class ClientOrderLogic {
 					case 4://ユーザー名
 						cell = row.createCell(2);
 						cell.setCellStyle(styleVerticalCenterLeft);
-						cell.setCellValue(userNo+"　　様");
+						cell.setCellValue(userName+"　　様");
 						cell = row.createCell(5);
 						cell.setCellStyle(styleVerticalCenterRight);
 						cell.setCellValue("株式会社グッドハウス");
@@ -586,7 +587,7 @@ public class ClientOrderLogic {
 					case 7:
 						cell = row.createCell(2);
 						cell.setCellStyle(styleVerticalCenterLeft);
-						cell.setCellValue("合計金額　　"+COTotalPrice);
+						cell.setCellValue("合計金額　　"+COTotalPrice+" 円");
 						continue;
 					case 8:
 						cell = row.createCell(2);
@@ -624,7 +625,7 @@ public class ClientOrderLogic {
 					cell.setCellValue(list.get(no-9).getItem_buy_count());
 					cell.setCellStyle(styleVerticalCenterGrid);
 					cell = row.createCell(6);
-					cell.setCellValue(list.get(no-9).getTotal_price());
+					cell.setCellValue(list.get(no-9).getTotal_price()+"円");
 					cell.setCellStyle(styleVerticalCenterGrid);
 					cell = row.createCell(7);
 					SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日");
@@ -657,13 +658,13 @@ public class ClientOrderLogic {
 					
 			//ファイルの出力
 			FileOutputStream output = null;
-			String path = "C:\\Users\\Education\\Documents\\受注情報.xlsx";
+			String path = "C:\\Users\\Education\\Desktop\\sample\\受注情報.xlsx";
 				int pathNo = 1;
 				//ファイルの存在を確認する
 				File file = new File(path);
 				while(file.exists()) {
 					//存在する場合
-					path = "C:\\Users\\Education\\Documents\\受注情報("+pathNo+").xlsx";
+					path = "C:\\Users\\Education\\Desktop\\sample\\受注情報("+pathNo+").xlsx";
 					file = new File(path);
 					pathNo++;
 				}
@@ -689,4 +690,3 @@ public class ClientOrderLogic {
 		}
 
 }
-
