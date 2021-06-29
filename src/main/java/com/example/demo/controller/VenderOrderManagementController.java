@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +14,15 @@ import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.logic.ItemLogic;
 import com.example.demo.logic.VenderOrderLogic;
 import com.example.demo.model.InventoryModel;
+import com.example.demo.model.LoginModel;
 import com.example.demo.model.VenderOrderModel;
 
 @Controller
 public class VenderOrderManagementController {
+	String message;
+	@Autowired
+	HttpSession session;
+	
 	@Autowired
 	private VenderOrderLogic venderOrderLogic;
 	
@@ -28,6 +35,12 @@ public class VenderOrderManagementController {
 	//ページを表示
 	@RequestMapping("VenderOrderInput")
 	public String venderOrderInputPage(Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
 		model.addAttribute("list", list);
 		return "html/VenderOrderInput";
@@ -36,6 +49,12 @@ public class VenderOrderManagementController {
 	//計算を行い、合計金額を表示する
 	@RequestMapping("VenderOrderCheck")
 	public String orderCheck(@RequestParam("itemNo") String itemNo, @RequestParam("itemBuyCount") String itemBuyCount, Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		int no = -1;
 		int buyCount = -1;
 		ArrayList<InventoryModel> list = itemJdbc.getItemDataList();
@@ -72,7 +91,12 @@ public class VenderOrderManagementController {
 	//発注情報を保存する
 	@RequestMapping("VenderOrderSave")
 	public String venderOrderSave(@RequestParam("itemNo") int itemNo, @RequestParam("itemBuyCount") int itemBuyCount, @RequestParam("totalPrice") int totalPrice,Model model) {
-		
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		//保存するためのLogic
 		String resultText = venderOrderLogic.venderOrderSaveLogic(itemNo, itemBuyCount, totalPrice);
 		int checkItemTotalPrice = -10;
@@ -99,11 +123,23 @@ public class VenderOrderManagementController {
 	//ページを表示
 	@RequestMapping("VenderOrderSearch")
 	public String venderOrderSearchPage(Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		return "html/VenderOrderSearch";
 	}
 	
 	@RequestMapping("VenderOrderSearchResult")
 	public String venderOrderSearch(@RequestParam("searchWord") String searchWord, Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		ArrayList<VenderOrderModel> returnList = venderOrderLogic.getVenderOrderLog(searchWord);
 		//検索結果を渡す
 		if(returnList.size()==0){

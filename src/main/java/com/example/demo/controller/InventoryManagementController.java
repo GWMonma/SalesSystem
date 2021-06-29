@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.jdbc.ClientOrderJdbc;
-import com.example.demo.jdbc.ItemJdbc;
 import com.example.demo.logic.ClientOrderLogic;
 import com.example.demo.logic.ItemLogic;
 import com.example.demo.logic.VenderOrderLogic;
@@ -29,9 +28,6 @@ public class InventoryManagementController {
 	HttpSession session;
 
 	@Autowired
-	private ItemJdbc itemJdbc;
-
-	@Autowired
 	private ClientOrderJdbc clientOrderJdbc;
 	
 	@Autowired
@@ -39,6 +35,9 @@ public class InventoryManagementController {
 	
 	@Autowired
 	VenderOrderLogic venderOrderLogic;
+	
+	@Autowired
+	ClientOrderLogic COLogic;
 
 
 
@@ -49,7 +48,7 @@ public class InventoryManagementController {
     			message ="IDとパスワードを入力してください";
     	    		model.addAttribute("indexForm", new LoginModel());
     	    		model.addAttribute("message" , message);
-    	    		return "Login";
+    	    		return "html/Login";
     		}
 
         	return "html/ArrivalManagement";
@@ -58,12 +57,12 @@ public class InventoryManagementController {
 	    /*出荷管理画面へ遷移*/
 	    @RequestMapping("ShipmentManagement")
 	    public String shipment(Model model) {
-	    	if(session.getAttribute("data") == null) {
-	    		message ="IDとパスワードを入力してください";
-	    	    model.addAttribute("indexForm", new LoginModel());
-	    	    model.addAttribute("message" , message);
-	    	    return "Login";
-	    	}
+    		if(session.getAttribute("data") == null) {
+    			message ="IDとパスワードを入力してください";
+    	    		model.addAttribute("indexForm", new LoginModel());
+    	    		model.addAttribute("message" , message);
+    	    		return "html/Login";
+    		}
 
 	        return "html/ShipmentManagement";
 	    }
@@ -71,12 +70,12 @@ public class InventoryManagementController {
 	    /*在庫管理画面へ遷移*/
 	    @RequestMapping("InventoryManagement")
 	    public String inventory(Model model) {
-		if(session.getAttribute("data") == null) {
-			message ="IDとパスワードを入力してください";
-		    model.addAttribute("indexForm", new LoginModel());
-		    model.addAttribute("message" , message);
-		    return "Login";
-		}
+    		if(session.getAttribute("data") == null) {
+    			message ="IDとパスワードを入力してください";
+    	    		model.addAttribute("indexForm", new LoginModel());
+    	    		model.addAttribute("message" , message);
+    	    		return "html/Login";
+    		}
 	        return "html/InventoryManagement";
 	    }
 
@@ -92,12 +91,15 @@ public class InventoryManagementController {
 	        return "html/InventoryAdjustment";
 	    }
 
-	    @Autowired
-		private ItemLogic ItemLogic;
-
 	    @RequestMapping("InventrySearch")
 		public String inventoryadjustmentsearch(@RequestParam("item_name") String searchWord, Model model) {
-			ArrayList<InventoryModel> returnList = ItemLogic.getInventoryLog(searchWord);
+    		if(session.getAttribute("data") == null) {
+    			message ="IDとパスワードを入力してください";
+    	    		model.addAttribute("indexForm", new LoginModel());
+    	    		model.addAttribute("message" , message);
+    	    		return "html/Login";
+    		}
+	    	ArrayList<InventoryModel> returnList = itemLogic.getInventoryLog(searchWord);
 			//検索結果を渡す
 			if(returnList.size()==0){
 				model.addAttribute("searchList", null);
@@ -108,14 +110,16 @@ public class InventoryManagementController {
 			return "html/InventoryAdjustment";
 		}
 	
-	
-//出荷管理↓	
-		 @Autowired
-		 ClientOrderLogic COLogic;
-
+	//出荷管理↓
 	//データベースと照合して受注情報を表示(ボタン)
 	@RequestMapping("ClientOrderSearchButton")
 		public String orderSearchButton(@RequestParam("selectBtn") String selectBtn,Model model){
+			if(session.getAttribute("data") == null) {
+				message ="IDとパスワードを入力してください";
+				model.addAttribute("indexForm", new LoginModel());
+				model.addAttribute("message" , message);
+				return "html/Login";
+			}
 		//セッションからuser_noを取得
     	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
 		int userNo = (int) sessionlist.get("user_no");
@@ -138,6 +142,12 @@ public class InventoryManagementController {
 	//商品名をデータベースと照合して受注情報を表示(フォーム)
 	@RequestMapping("ClientOrderSearchForm")
 	public String orderSearchForm(@RequestParam("searchWord") String searchWord, Model model){
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
 		//セッションからuser_noを取得
     	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
 		int userNo = (int) sessionlist.get("user_no");
@@ -150,10 +160,17 @@ public class InventoryManagementController {
 		model.addAttribute("resultText", "検索結果："+list.size()+"件");
 	  	return "html/ShipmentManagement";
 	}
-
+	
+	
 	//出荷予定日の更新
 		@RequestMapping("ShipmentDueDateUpdate")
 		public String shipmentDueDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("shipment_due_date") String shipment_due_date ,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+    		if(session.getAttribute("data") == null) {
+    			message ="IDとパスワードを入力してください";
+    	    		model.addAttribute("indexForm", new LoginModel());
+    	    		model.addAttribute("message" , message);
+    	    		return "html/Login";
+    		}
 			//セッションからuser_noを取得
 	    	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
 			int userNo = (int) sessionlist.get("user_no");
@@ -167,7 +184,6 @@ public class InventoryManagementController {
 	    	}
 	    	String returnText = COLogic.checkShipmentDueDateLogic(Integer.parseInt(client_order_no),shipment_due_date, userNo);
 			model.addAttribute("resultText",returnText);
-			
 			
 	    	//キーワード検索
 	    	if(selectBtn.equals("")&& search.equals("word")){
@@ -187,13 +203,19 @@ public class InventoryManagementController {
 	    	if(list.size()>0) {
 	    		model.addAttribute("clientOrderList", list);
 	    	}
-	    	model.addAttribute("message","出荷予定日の更新が完了しました");
+
 			return "html/ShipmentManagement";
 		}
 		 	
 		//出荷日の更新(出荷確定処理)
 		@RequestMapping("ShipmentDateUpdate")
 		public String shipmentDateUpdate(@RequestParam("client_order_no") String client_order_no,@RequestParam("searchWord") String searchWord,@RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model){
+    		if(session.getAttribute("data") == null) {
+    			message ="IDとパスワードを入力してください";
+    	    		model.addAttribute("indexForm", new LoginModel());
+    	    		model.addAttribute("message" , message);
+    	    		return "html/Login";
+    		}
 			//セッションからuser_noを取得
 	    	Map<String, Object> sessionlist = (Map<String, Object>) session.getAttribute("data");
 			int userNo = (int) sessionlist.get("user_no");
@@ -207,7 +229,6 @@ public class InventoryManagementController {
 	    	}
 	    	String returnText = COLogic.checkClientOrderNoLogic(Integer.parseInt(client_order_no), userNo);
 	    	model.addAttribute("resultText",returnText);
-	    	
 	    	
 			//キーワード検索
 	    	if(selectBtn.equals("")&& search.equals("word")){
@@ -227,7 +248,7 @@ public class InventoryManagementController {
 	    	if(list.size()>0) {
 	    		model.addAttribute("clientOrderList", list);
 	    	}
-	    	model.addAttribute("message","出荷が完了しました");
+			
 			return "html/ShipmentManagement";
 		}
 //出荷管理↑
@@ -236,9 +257,14 @@ public class InventoryManagementController {
 		
   //在庫の更新
     @RequestMapping("InventryUpdate")
-  		public String inventoryadjustmentupdate(@RequestParam("item_no") String searchWord, @RequestParam("item_stock") String updateStock,Model model)
-    {
-  			ArrayList<InventoryModel> returnList = ItemLogic.getInventoryUpdate(searchWord,updateStock);
+  		public String inventoryadjustmentupdate(@RequestParam("item_no") String searchWord, @RequestParam("item_stock") String updateStock,Model model){
+			if(session.getAttribute("data") == null) {
+				message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+			}
+    		ArrayList<InventoryModel> returnList = itemLogic.getInventoryUpdate(searchWord,updateStock);
 
   			//更新結果を渡す
   			if(returnList.size()==0){
@@ -255,6 +281,12 @@ public class InventoryManagementController {
     //入荷確定処理
     @RequestMapping("ArrivalDateUpdate")
     public String arrivalDueDateUpdate(@RequestParam("itemNo") String itemNo, @RequestParam("searchItemName") String searchItemName, @RequestParam("selectBtn") String selectBtn, @RequestParam("search") String search, Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
     	int no;
     	//intに変換可能か確認する
     	String noConfirmationStr = itemLogic.inputConfirmation(itemNo);
@@ -304,6 +336,12 @@ public class InventoryManagementController {
     //検索機能
     @RequestMapping("ArrivalDataKeywordSearch")
     public String arrivalDateSearch(@RequestParam("searchItemName") String searchItemName, Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
     	ArrayList<VenderOrderModel> searchList = venderOrderLogic.getVenderOrderLog(searchItemName);
     	if(searchList.size()>0) {
     		model.addAttribute("searchList", searchList);
@@ -317,6 +355,12 @@ public class InventoryManagementController {
     //入荷前、入荷済みボタン用。検索機能
     @RequestMapping("ArrivalDataSearch")
     public String arrivalDataSearchBtn(@RequestParam("selectBtn") String selectBtn, Model model) {
+		if(session.getAttribute("data") == null) {
+			message ="IDとパスワードを入力してください";
+	    		model.addAttribute("indexForm", new LoginModel());
+	    		model.addAttribute("message" , message);
+	    		return "html/Login";
+		}
     	String selectBtnText = venderOrderLogic.arrivalStateBtnStr(selectBtn);
     	if(selectBtnText.equals("エラー")) {
     		model.addAttribute("resultText", selectBtnText+"が発生しました。");
