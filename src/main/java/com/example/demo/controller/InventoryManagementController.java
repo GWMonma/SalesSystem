@@ -86,7 +86,7 @@ public class InventoryManagementController {
 			message ="IDとパスワードを入力してください";
 		    model.addAttribute("indexForm", new LoginModel());
 		    model.addAttribute("message" , message);
-		    return "Login";
+		    return "html/Login";
 		}
 	        return "html/InventoryAdjustment";
 	    }
