@@ -47,7 +47,7 @@ public class QuotationManagementController  {
     	    		return "html/Login";
     		}
 
-	        return "QuotationManagement";
+	        return "html/QuotationManagement";
 	    }
 	
 	 //見積入力画面
