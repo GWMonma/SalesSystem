@@ -154,12 +154,11 @@ public class QuotationManagementController  {
 	    		return "html/Login";
 		}
 		 ArrayList<QuotationModel> searchList =  quotationLogic.quotationSearchListLogic(searchWord);
-		 ArrayList<QuotationModel> QuotationTotalList = quotationLogic.quotationSearchListLogic();
 		 model.addAttribute("searchWord", searchWord);
 		 if(searchList.size()>0) {
 			 model.addAttribute("searchList", searchList);
 		 }
-		 model.addAttribute("resultText", QuotationTotalList.size()+"件中　"+searchList.size()+"件表示");
+		 model.addAttribute("resultText", "検索結果："+searchList.size()+"件");
 		 return "html/QuotationSearch";
 	 }
 	 
