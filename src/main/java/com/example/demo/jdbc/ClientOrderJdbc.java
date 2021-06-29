@@ -28,10 +28,21 @@ public class ClientOrderJdbc {
 			return "出荷予定日の更新が完了しました。";
 		}
 	
-	//出荷日の更新
+	//出荷日の更新(出荷) 
 		public String shipmentDateUpdateJdbc(int client_order_no) {
 			try {
+				//出荷
 				this.jdbcTemplate.update("update clientorder set shipment_date = current_timestamp where client_order_no= ?",client_order_no);
+				
+				//出荷した分だけ在庫を減らす
+				 //出荷する商品の名前と数を取得
+				String sql = "SELECT * FROM clientorder where client_order_no=?";
+				Map<String, Object> clientOrderData = this.jdbcTemplate.queryForMap(sql,client_order_no);
+				//データの取得
+					String itemName = (String) clientOrderData.get("item_name");
+					int itemBuyCount =(int) clientOrderData.get("item_buy_count");
+				 //在庫数の更新
+				this.jdbcTemplate.update("update item set item_stock = item_stock - ? where item_name=?",itemBuyCount,itemName);
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
 			}
