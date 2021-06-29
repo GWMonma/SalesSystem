@@ -24,7 +24,7 @@ public class ClientOrderJdbc {
 				this.jdbcTemplate.update("update clientorder set shipment_due_date= ? where client_order_no= ?",shipment_due_date,client_order_no);
 			}catch(Exception ex) {
 				return "エラーが発生しました。";
-			}
+			}　
 			return "出荷予定日の更新が完了しました。";
 		}
 	
