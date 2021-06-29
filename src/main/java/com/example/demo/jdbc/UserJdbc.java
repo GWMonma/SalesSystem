@@ -18,7 +18,7 @@ public class UserJdbc {
 	    	String message;
 	        try {
 	    		/*SQL文を実行し、データベースの中にあるユーザーIDとパスワードが一致したものを表示*/
-	    		list = jdbcTemplate.queryForMap("SELECT user_no, user_id, password FROM user WHERE user_id = ? AND password = ?", id, pass);
+	    		list = jdbcTemplate.queryForMap("SELECT user_no, user_id, password, user_name FROM user WHERE user_id = ? AND password = ?", id, pass);
 
 	    	} catch(Exception e) {
 	    		  // 取得時にExceptionが発生した場合
