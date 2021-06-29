@@ -49,13 +49,13 @@
 	<br>
 	<hr width="100%" size="3" noshade>
 	<br>
-	
 	<div th:if="${searchResultText != null}">
-		<h4 th:text="'入荷情報検索　'+${searchResultText}"></h4>
+		<h4 th:text="${searchResultText}"></h4>
 	</th:if>
 	</div>
 	<div th:if="${searchResultText == null}">
 		<h4>入荷情報検索</h4>
+		<h4>商品名を入力してください</h4>
 	</th:if>
 	</div>
 	<br>
