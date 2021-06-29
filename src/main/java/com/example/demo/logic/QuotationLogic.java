@@ -94,7 +94,8 @@ public class QuotationLogic {
 					searchNoList = itemJdbc.getInventoryLog(searchWord[0]);
 					returnList = quotationJdbc.quotationSearchList(userNo, searchNoList);
 				}else if(searchWord.length==0){
-					//品番取得、合計金額計算
+					//全件取得
+					searchNoList = itemJdbc.getInventoryLog("");
 					returnList = quotationJdbc.quotationSearchList(userNo, searchNoList);
 				}
 			return returnList;
