@@ -33,7 +33,7 @@ public class SalesManagementController  {
 	    		message ="IDとパスワードを入力してください";
 	    	    model.addAttribute("indexForm", new LoginModel());
 	    	    model.addAttribute("message" , message);
-	    	    return "Login";
+	    	    return "html/Login";
 	    	}
 
 	        return "html/SalesManagement";
@@ -56,7 +56,6 @@ public class SalesManagementController  {
 	        return "html/SalesTotal";
 	    }
 
-	    /*新しいの*/
 	    /*売上出力表示*/
 	    @RequestMapping("SalesOutput")
 	    public String salesOutput(@RequestParam("item_month") String SearchWord,Model model) throws EncryptedDocumentException, IOException {
