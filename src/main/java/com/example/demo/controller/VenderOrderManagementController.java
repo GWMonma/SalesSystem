@@ -140,6 +140,9 @@ public class VenderOrderManagementController {
 	    		model.addAttribute("message" , message);
 	    		return "html/Login";
 		}
+		//全件取得
+		ArrayList<VenderOrderModel> venderOrderTotalList = venderOrderLogic.getVenderOrderLog();
+		//検索
 		ArrayList<VenderOrderModel> returnList = venderOrderLogic.getVenderOrderLog(searchWord);
 		//検索結果を渡す
 		if(returnList.size()==0){
@@ -147,11 +150,9 @@ public class VenderOrderManagementController {
 		}else{
 			model.addAttribute("searchList", returnList);
 		}	
-		model.addAttribute("resultText", "検索結果："+returnList.size()+"件");
+		model.addAttribute("resultText", "発注情報："+venderOrderTotalList.size()+"件　　検索結果："+returnList.size()+"件");
 		model.addAttribute("searchWord", searchWord);
 		return "html/VenderOrderSearch";
 	}
 	
 }
-
-
