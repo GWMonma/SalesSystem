@@ -159,7 +159,7 @@ public class QuotationManagementController  {
 		 if(searchList.size()>0) {
 			 model.addAttribute("searchList", searchList);
 		 }
-		 model.addAttribute("resultText", QuotationTotalList.size()+"件中　"+searchList.size()+"件表示");
+		 model.addAttribute("resultText", "見積情報："+QuotationTotalList.size()+"件　　検索結果："+searchList.size()+"件");
 		 return "html/QuotationSearch";
 	 }
 	 
