@@ -112,6 +112,7 @@ public class QuotationLogic {
 			//ユーザー番号を取得
 			Map<String, Object> list = (Map<String, Object>) session.getAttribute("data");
 			int userNo = (int) list.get("user_no");
+			String userName = (String) list.get("user_name");
 			//見積情報を取得
 			ArrayList<InventoryModel> searchNoList = itemJdbc.getInventoryLog("");
 			ArrayList<QuotationModel> quotationList = quotationJdbc.quotationSearchList(userNo, searchNoList);
@@ -246,7 +247,7 @@ public class QuotationLogic {
 					case 4://ユーザー名
 						cell = row.createCell(2);
 						cell.setCellStyle(styleVerticalCenterLeft);
-						cell.setCellValue(list.get("user_id")+"様");
+						cell.setCellValue(userName+" 様");
 						cell = row.createCell(5);
 						cell.setCellStyle(styleVerticalCenterRight);
 						cell.setCellValue("株式会社グッドハウス");
