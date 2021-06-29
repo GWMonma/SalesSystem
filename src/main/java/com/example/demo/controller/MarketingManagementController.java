@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.model.LoginModel;
+
 /*販売管理関係のコントローラー*/
 @Controller
 public class  MarketingManagementController {
@@ -18,8 +20,28 @@ public class  MarketingManagementController {
 	  /*販売管理画面へ遷移*/
 	 @RequestMapping("MarketingManagement")
 	 public String marketingmanagement(Model model) {
+		 if(session.getAttribute("data") == null) {
+				message ="IDとパスワードを入力してください";
+			    model.addAttribute("indexForm", new LoginModel());
+			    model.addAttribute("message" , message);
+			    return "html/Login";
+			}
 
-	     return "MarketingManagement";
+	     return "html/MarketingManagement";
+	 }
+
+
+	 /*売上集計画面へ遷移*/
+	 @RequestMapping("SalesTotal")
+	 public String SalesTotal(Model model) {
+		 if(session.getAttribute("data") == null) {
+				message ="IDとパスワードを入力してください";
+			    model.addAttribute("indexForm", new LoginModel());
+			    model.addAttribute("message" , message);
+			    return "html/Login";
+			}
+
+	     return "html/SalesTotal";
 	 }
 
     /*Jdbcテンプレート*/

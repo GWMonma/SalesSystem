@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.model.LoginModel;
+
 /*購買管理関係のコントローラー*/
 @Controller
 public class  PurchaseManagementController  {
@@ -18,22 +20,40 @@ public class  PurchaseManagementController  {
 	 /*購買管理画面へ遷移*/
 	    @RequestMapping("PurchaseManagement")
 	    public String purchase(Model model) {
-	    	System.out.println( session.getAttribute("data"));
-	        return "PurchaseManagement";
+	    	if(session.getAttribute("data") == null) {
+	    		message ="IDとパスワードを入力してください";
+	    	    model.addAttribute("indexForm", new LoginModel());
+	    	    model.addAttribute("message" , message);
+	    	    return "html/Login";
+	    	}
+
+	        return "html/PurchaseManagement";
 	    }
 
 	    /*発注管理画面へ遷移*/
 	    @RequestMapping("VenderOrderManagement")
 	    public String venderorder(Model model) {
-	    	System.out.println( session.getAttribute("data"));
-	        return "VenderOrderManagement";
+	    	if(session.getAttribute("data") == null) {
+	    		message ="IDとパスワードを入力してください";
+	    	    model.addAttribute("indexForm", new LoginModel());
+	    	    model.addAttribute("message" , message);
+	    	    return "html/Login";
+	    	}
+
+	        return "html/VenderOrderManagement";
 	    }
 
 	    /*仕入れ管理画面へ遷移*/
 	    @RequestMapping("VenderStockManagement")
 	    public String venderstock(Model model) {
-	    	System.out.println( session.getAttribute("data"));
-	        return "VenderStockManagement";
+	    	if(session.getAttribute("data") == null) {
+	    		message ="IDとパスワードを入力してください";
+	    	    model.addAttribute("indexForm", new LoginModel());
+	    	    model.addAttribute("message" , message);
+	    	    return "html/Login";
+	    	}
+
+	        return "html/VenderStockManagement";
 	    }
 
 
